@@ -1,2 +1,2 @@
 # LESYMAP
-R Toolbox for Lesion to Symptom Mapping
+Lesion to Symptom Mapping for R
