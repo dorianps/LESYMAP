@@ -20,5 +20,6 @@ before_install:
   - reldir=latest
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then wget https://github.com/stnava/ANTsRCore/releases/download/${reldir}/ANTsRCore_${ANTsRCorerel}_R_x86_64-pc-linux-gnu.tar.gz; R CMD INSTALL ANTsRCore_${ANTsRCorerel}_R_x86_64-pc-linux-gnu.tar.gz; fi
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then wget http://github.com/stnava/ANTsRCore/releases/download/${reldir}/ANTsRCore_${ANTsRCorerel}.tgz; R CMD INSTALL ANTsRCore_${ANTsRCorerel}.tgz; fi
-  - cd ${basedir}
-  - Rscript -e 'devtools::install_github("stnava/ANTsR")'
+  - ANTsRrel=0.5.4
+    - if [ "$TRAVIS_OS_NAME" == "linux" ]; then wget https://github.com/stnava/ANTsR/releases/download/${reldir}/ANTsR_${ANTsRrel}_R_x86_64-pc-linux-gnu.tar.gz; R CMD INSTALL ANTsR_${ANTsRrel}_R_x86_64-pc-linux-gnu.tar.gz; fi
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then wget http://github.com/stnava/ANTsR/releases/download/${reldir}/ANTsR_${ANTsRrel}.tgz; R CMD INSTALL ANTsR_${ANTsRCorerel}.tgz; fi
