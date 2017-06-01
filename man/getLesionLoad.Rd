@@ -31,12 +31,12 @@ must be lesioned to be kept among returned parcels}
 \value{
 Matrix of lesion loads (0 to 1). Each column is a single
 parcel and each row a single subject. Parcel numbers are placed
-as column names.
+as column names. 1 means 100% lesioned.
 }
 \description{
-Computea lesion loads from a series of images. A parcellation
-image (or simple mask) is used to define the regions to 
-compute lesion loads from.
+Computes lesion loads from a series of images. A parcellation
+image (or simple mask) is required to define the regions from
+thish to compute the lesion load.
 }
 \author{
 Dorian Pustina

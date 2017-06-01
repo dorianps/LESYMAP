@@ -247,7 +247,7 @@ lesymap <- function(lesions.list, behavior,
   tstamp = "%H:%M:%S"
   toc = Sys.time()
 
-  if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Starting LESYMAP', ver, "\n"))
+  if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Running LESYMAP', ver, "\n"))
   if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Checking a few things...\n'))
 
   # make sure FWERperm is selected only for enabled methods

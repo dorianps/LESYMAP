@@ -38,13 +38,6 @@ lsm_BMfast <- function(lesmat, behavior, permuteNthreshold=9, alternative="great
                        FWERperm=F, v=1, pThreshold=0.05,
                        showInfo=F,...) {
   
-#   if (!usePkg('Rcpp') | !usePkg('RcppArmadillo')) 
-#     stop('Packages Rcpp and RcppArmadillo must be installed to use BMfast.')
-#   # below source still doesn't work in R CMD call
-#   if (length(find('BMfast', mode='function')) == 0) {
-#     Rcpp::sourceCpp(file.path( getSrcDirectory(lsm_BMfast) , 'BMfast.cpp'))
-#   }
-  
   
   # check the assumption of min subjects in BM is not violated
   # find voxels that need permutation
