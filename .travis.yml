@@ -9,7 +9,6 @@ r:
 
 before_install:
   - basedir=${PWD}
-  - cd ..
   - cd ~/
   - Rscript -e 'if (!"Rcpp" %in% rownames(installed.packages())) install.packages("Rcpp", dependencies = TRUE)'
   - Rscript -e 'if (!"devtools" %in% rownames(installed.packages())) install.packages("devtools", dependencies = TRUE)'
@@ -23,3 +22,5 @@ before_install:
   - ANTsRrel=0.5.4
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then wget http://github.com/stnava/ANTsR/releases/download/${reldir}/ANTsR_${ANTsRrel}_R_x86_64-pc-linux-gnu.tar.gz; R CMD INSTALL ANTsR_${ANTsRrel}_R_x86_64-pc-linux-gnu.tar.gz; fi
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then wget http://github.com/stnava/ANTsR/releases/download/${reldir}/ANTsR_${ANTsRrel}.tgz; R CMD INSTALL ANTsR_${ANTsRrel}.tgz; fi
+  - cd ${basedir}
+
