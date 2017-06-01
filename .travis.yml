@@ -10,4 +10,4 @@ r:
 before_install:
   - Rscript -e 'if (!"Rcpp" %in% rownames(installed.packages())) install.packages("Rcpp", dependencies = TRUE)'
   - Rscript -e 'if (!"devtools" %in% rownames(installed.packages())) install.packages("devtools", dependencies = TRUE)'
-  - Rscript -e 'devtools::install("stnava/ANTsR")'
+  - Rscript -e 'devtools::install_github("stnava/ANTsR")'
