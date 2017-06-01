@@ -23,6 +23,10 @@ Suggests:
     caret,
     lmPerm,
     nparcomp
+Remotes:
+    stnava/ITKR,
+    stnava/ANTsRCore,
+    stnava/ANTsR
 LinkingTo: Rcpp, RcppArmadillo
 NeedsCompilation: yes
 RoxygenNote: 5.0.1
