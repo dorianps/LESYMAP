@@ -1,5 +1,5 @@
-# LESYMAP
 Tests: [![Travis Build Status](https://travis-ci.org/dorianps/LESYMAP.png?branch=master)](https://travis-ci.org/dorianps/LESYMAP)
+# LESYMAP
 Lesion to Symptom Mapping (R toolbox)
 
 
