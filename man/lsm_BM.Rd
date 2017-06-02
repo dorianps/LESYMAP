@@ -25,6 +25,8 @@ data follow an inverted relationship choose "less" or
 "two.sided".}
 
 \item{showInfo}{display info messagges when running the function.}
+
+\item{...}{other arguments received from \code{\link{lesymap}}.}
 }
 \value{
 List with vectors of statistic, pvalue, and zscore.

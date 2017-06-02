@@ -151,6 +151,9 @@
 #'
 #' @param saveDir (default=NA) save results in the specified folder.
 #'
+#' @param ... arguments that will be passed down to other functions
+#' (i.e., sparsness=0.045)
+#'
 #'
 #' @details
 #' Several other parameters ccan be specified to lesymap()

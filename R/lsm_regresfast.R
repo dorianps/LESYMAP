@@ -22,6 +22,7 @@
 #' selection after obtaining cluster size distrubution.
 #' @param nperm Number of permutations to perform when needed.
 #' @param showInfo display info messagges when running the function.
+#' @param ... other arguments received from \code{\link{lesymap}}.
 #'
 #' @author Dorian Pustina
 #'

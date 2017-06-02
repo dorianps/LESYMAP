@@ -16,7 +16,7 @@
 #' @param justValidate just check the CV of provided sparseness
 #' @param cvRepetitions number of cross-validations
 #' @param mycoption standard SCCAN parameter
-#' @param robbust standard SCCAN parameter
+#' @param robust standard SCCAN parameter
 #' @param nvecs standard SCCAN parameter
 #' @param sparseness standard SCCAN parameter
 #' @param cthresh standard SCCAN parameter
@@ -24,6 +24,8 @@
 #' @param npermsSCCAN SCCAN permutations
 #' @param smooth standard SCCAN parameter
 #' @param sparseness.behav what sparsness to use for behavior
+#' @param ... other arguments received from \code{\link{lesymap}}
+#' or \code{\link{lsm_sccan}}.
 #'
 #' @return
 #' List with: \cr

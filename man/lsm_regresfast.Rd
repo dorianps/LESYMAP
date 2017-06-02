@@ -40,6 +40,8 @@ back in a matrix.}
 selection after obtaining cluster size distrubution.}
 
 \item{showInfo}{display info messagges when running the function.}
+
+\item{...}{other arguments received from \code{\link{lesymap}}.}
 }
 \description{
 Lesion to symptom mapping performed on a prepared matrix.

@@ -17,6 +17,7 @@
 #' data follow an inverted relationship choose "less" or
 #' "two.sided".
 #' @param showInfo display info messagges when running the function.
+#' @param ... other arguments received from \code{\link{lesymap}}.
 #'
 #' @return List with vectors of statistic, pvalue, and zscore.
 #'

@@ -146,6 +146,9 @@ worse due to more multuple comparison corrections. This argument
 is ignored when performing SCCAN analyses.}
 
 \item{showInfo}{logical (default=TRUE), display time-stamped info messages}
+
+\item{...}{arguments that will be passed down to other functions
+(i.e., sparsness=0.045)}
 }
 \value{
 The following objects are typically found in the returned list:

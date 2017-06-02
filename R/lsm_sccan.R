@@ -25,6 +25,7 @@
 #' map is returned.
 #' @param showInfo logical (default-TRUE) display messages
 #' @param tstamp timestamp format used in LESYMAP
+#' @param sparseness (default=1) SCCAN parameter, see \code{\link[ANTsR]{sparseDecom2}}
 #' @param mycoption (default=1) SCCAN parameter, see \code{\link[ANTsR]{sparseDecom2}}
 #' @param robust (ddefault=1) SCCAN parameter, see \code{\link[ANTsR]{sparseDecom2}}
 #' @param nvecs (default=1) SCCAN parameter, see \code{\link[ANTsR]{sparseDecom2}}
@@ -32,6 +33,7 @@
 #' @param its (default=20) SCCAN parameter, see \code{\link[ANTsR]{sparseDecom2}}
 #' @param smooth (default=0.4) SCCAN parameter, see \code{\link[ANTsR]{sparseDecom2}}
 #' @param npermsSCCAN (default=0) SCCAN permutations, see \code{\link[ANTsR]{sparseDecom2}}
+#' @param ... other arguments received from \code{\link{lesymap}}.
 #'
 #' @return List with vectors of \code{statistic}, \code{pvalue}, \code{optimalSparseness},
 #' \code{CVcorrelation.stat}, \code{CVcorrelation.pval}

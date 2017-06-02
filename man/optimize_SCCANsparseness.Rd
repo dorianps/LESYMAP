@@ -33,6 +33,8 @@ optimize_SCCANsparseness(lesmat, behavior, mask, nfolds = 4,
 
 \item{mycoption}{standard SCCAN parameter}
 
+\item{robust}{standard SCCAN parameter}
+
 \item{sparseness}{standard SCCAN parameter}
 
 \item{nvecs}{standard SCCAN parameter}
@@ -47,7 +49,8 @@ optimize_SCCANsparseness(lesmat, behavior, mask, nfolds = 4,
 
 \item{sparseness.behav}{what sparsness to use for behavior}
 
-\item{robbust}{standard SCCAN parameter}
+\item{...}{other arguments received from \code{\link{lesymap}}
+or \code{\link{lsm_sccan}}.}
 }
 \value{
 List with: \cr

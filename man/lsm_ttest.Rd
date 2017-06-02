@@ -15,6 +15,15 @@ and subjects (rows).}
 \item{var.equal}{logical (default=TRUE) should the
 variance between groups considered equal (t-test) or
 unequal (Welch test).}
+
+\item{alternative}{(default='greater') Sets the expected
+relationship between voxel value and behavior. By default
+voxels with zero are not lesioned, and behavior is expected to
+be higher, thus \code{alternative='greater'}. If the relationship in your
+data is inverted, use \code{alternative='less'}, and if
+you don't know your data, use \code{alternative='two.sided'}.}
+
+\item{...}{other arguments received from \code{\link{lesymap}}.}
 }
 \value{
 List with vectors of statistic, pvalue, and zscore.

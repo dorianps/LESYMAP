@@ -39,6 +39,8 @@ map is returned.}
 
 \item{robust}{(ddefault=1) SCCAN parameter, see \code{\link[ANTsR]{sparseDecom2}}}
 
+\item{sparseness}{(default=1) SCCAN parameter, see \code{\link[ANTsR]{sparseDecom2}}}
+
 \item{nvecs}{(default=1) SCCAN parameter, see \code{\link[ANTsR]{sparseDecom2}}}
 
 \item{cthresh}{(default=150) SCCAN parameter, see \code{\link[ANTsR]{sparseDecom2}}}
@@ -48,6 +50,8 @@ map is returned.}
 \item{npermsSCCAN}{(default=0) SCCAN permutations, see \code{\link[ANTsR]{sparseDecom2}}}
 
 \item{smooth}{(default=0.4) SCCAN parameter, see \code{\link[ANTsR]{sparseDecom2}}}
+
+\item{...}{other arguments received from \code{\link{lesymap}}.}
 }
 \value{
 List with vectors of \code{statistic}, \code{pvalue}, \code{optimalSparseness},

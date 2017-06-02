@@ -9,7 +9,7 @@ checkAntsInput(input, checkHeaders = F)
 \arguments{
 \item{input}{the variable to be checked}
 
-\item{checkHeaders}{make sure all images have 
+\item{checkHeaders}{make sure all images have
 the same headers}
 }
 \value{
@@ -22,12 +22,13 @@ of an antsImage, list of antsImages, or simply filenames.
 If none of the above, an error is returned.
 }
 \examples{
+\dontrun{
         files = Sys.glob('/data/jag/nifti/*.nii.gz')
-         myimagelist = imageFileNames2ImageList(files)  
+         myimagelist = imageFileNames2ImageList(files)
          checkAntsInput(myimagelist) # returns 'antsImageList'
          checkAntsInput(antsFiles) # returns 'antsFiles'
          checkAntsInput(myimagelist[[1]]) # returns 'antsImage'
-         
+         }
 }
 \author{
 Dorian Pustina

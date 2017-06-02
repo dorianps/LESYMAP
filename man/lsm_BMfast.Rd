@@ -37,10 +37,12 @@ or other voxels (i.e., v=10 for 10 highest voxel)}
 \item{pThreshold}{(default=0.05) what threshold to use for FWER}
 
 \item{showInfo}{display info messagges when running the function.}
+
+\item{...}{other arguments received from \code{\link{lesymap}}.}
 }
 \value{
 List with vectors of statistic, pvalue, zscore.
-If FWER is selected, perm.vector and perm.FWERthresh 
+If FWER is selected, perm.vector and perm.FWERthresh
 will also be returned.
 }
 \description{

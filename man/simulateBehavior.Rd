@@ -17,35 +17,41 @@ for each different label (value) in the image.
 Zero and non-affected labels are not returned
 by default. The parcellation input can be an
 antsImage or a character vector pointing to a
-file.
-@param label if the parcellation has multiple
+file.}
+
+\item{label}{if the parcellation has multiple
 labels, you can select which labels
-to simulate behaviors for (i.e., 
+to simulate behaviors for (i.e.,
 c(101,43) to simulate behavior for
-labels with value 101 and 43 only)
-@param mask mask to restrict the count of lesioned voxels.
+labels with value 101 and 43 only)}
+
+\item{mask}{mask to restrict the count of lesioned voxels.
 It is not recommended to use a mask, because
 lesions should affect behavior as they are,
 without the user restricting the lesions to
-masks defined a posteriori.
-@param errorWeight the amount of error to be added
+masks defined a posteriori.}
+
+\item{errorWeight}{the amount of error to be added
 (i.e., 0.5 means half of the simulation
-will be error, the other half signal)
-@param binaryCheck check to make sure all lesions are binary
-@param exponent power exponent to elevate behavior in order
+will be error, the other half signal)}
+
+\item{binaryCheck}{check to make sure all lesions are binary}
+
+\item{exponent}{power exponent to elevate behavior in order
 to increase non-linearity relationship with
 lesion load. 1 is default, and 3 is what Wang (2013)
 reported as lesion load relationship with
-behavior.
-
-@return List of three objects:
-- behavload - a matrix of simulated behavioral scores. Each column
-shows simulation for a single parcel. Column names
- indicate the label number in the parcellation file.
-- lesload - same as behavload, but indicates lesions loads from
-which behavior was simulated.
-- lesbehavCorrelation - vector of correlation values (Pearson)
-between lesion load and simulated scores.}
+behavior.}
+}
+\value{
+List of three objects:
+ - behavload - a matrix of simulated behavioral scores. Each column
+ shows simulation for a single parcel. Column names
+  indicate the label number in the parcellation file.
+ - lesload - same as behavload, but indicates lesions loads from
+ which behavior was simulated.
+ - lesbehavCorrelation - vector of correlation values (Pearson)
+ between lesion load and simulated scores.
 }
 \description{
 Function simulate behavioral scores based

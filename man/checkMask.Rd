@@ -7,10 +7,10 @@
 checkMask(lesions.list, mask)
 }
 \arguments{
-\item{mask}{antsImage of mask to check}
-
-\item{lesion.list}{list of antsImages or character vector
+\item{lesions.list}{list of antsImages or character vector
 of filenames}
+
+\item{mask}{antsImage of mask to check}
 }
 \value{
 Nothing returned, funciton stops with error if

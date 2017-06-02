@@ -30,6 +30,8 @@ passing the results to a colleague.}
 \item{plot.axis}{see plot.antsImage}
 
 \item{plot.quality}{see plot.antsImage}
+
+\item{...}{other arguments to use for plot().}
 }
 \value{
 Nothing is returned.
