@@ -36,19 +36,6 @@ List of objects named as follows:
    patchvoxels - vector of voxel count for each patch
    patchvolumes - vector of volume size for each patch
    patchmatrix  - matrix of patches
-
-
- @examples
- \dontrun{
- files = Sys.glob('/data/jag/VLSM/*.nii.gz')
- lesions = imageFileNames2ImageList(files)
-
- patches = getUniqueLesionPatches(files) # slower
- patches = getUniqueLesionPatches(lesions) # faster
- avgles = antsAverageImages(lesions)
- mask = thresholdImage(avgles, 0.1, Inf)
- patches = getUniqueLesionPatches(lesions, mask=mask) # even faster
- }
 }
 \description{
 Compute uniqe patches of voxels with the same
@@ -57,6 +44,19 @@ the amount of unique information in a lesion dataset.
 I.e., your dataset can have 1000 subjects but still have
 little spatial discrimination because all lesions are
 similar
+}
+\examples{
+\dontrun{
+ files = Sys.glob('/data/jag/VLSM/*.nii.gz')
+ lesions = imageFileNames2ImageList(files)
+
+ patches = getUniqueLesionPatches(files) # slower
+ patches = getUniqueLesionPatches(lesions) # faster
+ avgles = antsAverageImages(lesions)
+ mask = thresholdImage(avgles, 0.1, Inf)
+ patches = getUniqueLesionPatches(lesions, mask=mask) # even faster
+}
+
 }
 \author{
 Dorian Pustina

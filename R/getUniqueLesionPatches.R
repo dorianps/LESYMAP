@@ -32,8 +32,8 @@
 #'    patchmatrix  - matrix of patches
 #'
 #'
-#'  @examples
-#'  \dontrun{
+#' @examples
+#' \dontrun{
 #'  files = Sys.glob('/data/jag/VLSM/*.nii.gz')
 #'  lesions = imageFileNames2ImageList(files)
 #'
@@ -42,7 +42,7 @@
 #'  avgles = antsAverageImages(lesions)
 #'  mask = thresholdImage(avgles, 0.1, Inf)
 #'  patches = getUniqueLesionPatches(lesions, mask=mask) # even faster
-#'  }
+#' }
 #'
 #' @author Dorian Pustina
 #'

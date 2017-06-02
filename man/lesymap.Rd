@@ -234,6 +234,16 @@ some examples:
    Normally the peak voxel is used (1), but other voxels can be recorded.
    See Mirman 2017 for this approach.
 }
+\examples{
+filenames = Sys.glob( file.path( dirname(
+ system.file(file.path('extdata','lesions'), 'Subject_001.nii.gz', package='LESYMAP')), 'Subject*.nii.gz'))
+behavior = system.file(file.path('extdata','behavior'), 'behavior.txt', package='LESYMAP')
+template = antsImageRead(system.file(file.path('extdata','template'), 'ch2.nii.gz', package='LESYMAP'))
+lsm = lesymap(filenames, behavior, method = 'BMfast')
+plot(template, lsm$stat.img, window.overlay = range(lsm$stat.img))
+
+
+}
 \author{
 Dorian Pustina
 }
