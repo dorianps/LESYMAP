@@ -17,10 +17,10 @@ Author:   Dorian Pustina
 The quickest way to install is:
 ```
 install.packages('devtools') # if you don't have it yet.
-devtools::install_github('dorianps/LESYMAP')
+devtools::install_github('dorianps/LESYMAP', dependencies = c("Depends", "Imports",
+"LinkingTo", "Suggests"))
 ```
-The above code will install all the dependencies, including ANTsR.  
-It may take ~30-60 mins to install everything.  
+This will install all the dependencies, including ANTsR (may take one hour).  
   
 *****
 ## Use
@@ -33,5 +33,6 @@ example(lesymap)
 # All functions have appropriate documentation. Start by typing
 ?lesymap
 ```
-  
-
+ 
+### Note
+Package is under development, the behavior of some functions may change.
