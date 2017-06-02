@@ -10,7 +10,7 @@
 #' lesions are in the same space before running. By default, voxels
 #' with identical lesion patterns are grouped together in
 #' unique patches, and analysis are run on patches.
-#' Patch-based mapping decreases the number of multipple
+#' Patch-based mapping decreases the number of multiple
 #' comparisons and speeds up the analyses. Multivariate mapping
 #' is performed using an optimized version of sparse canonical
 #' correlations (SCCAN).
