@@ -23,7 +23,7 @@ The above code will install all the dependencies, including ANTsR.
 It may take ~30-60 mins to install everything.  
   
 *****
-## Test
+## Use
 ```
 library(LESYMAP)
 
