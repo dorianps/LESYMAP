@@ -26,11 +26,25 @@ This will install all the dependencies, including ANTsR (may take one hour).
 ```
 library(LESYMAP)
 
+# All functions have appropriate documentation. Start by typing
+?lesymap
+
 # run an example analyses using data provided with lesymap
 example(lesymap)
 
-# All functions have appropriate documentation. Start by typing
-?lesymap
+>  18:34:35 Running LESYMAP 0.0.0.9001   
+18:34:35 Checking a few things...  
+18:34:35 Loading behavioral data...131 scores found.  
+18:34:35 Computing mask from average >= 10% ...  
+18:35:23 Computing unique patches...  
+18:36:01 Found 195102 patches in 326828 voxels - 1.7 times more voxels  
+18:36:01 Using existing lesion matrix... 131x195102  
+18:36:01 Running analysis: BMfast ...  
+18:36:04 Correcting p-values: fdr ...  
+18:36:04 Preparing images...  
+18:36:05 Logging call details...  
+18:36:05 Done! 1.5 mins   
+Hit <Return> to see next plot: 
 ```
  
 ### Note
