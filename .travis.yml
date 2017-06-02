@@ -3,7 +3,7 @@ language: r
 cache: packages
 os:
   - linux
-  - osx
+#  - osx
 r:
   - release
 
