@@ -2,18 +2,14 @@
 Lesion to Symptom Mapping (R toolbox)  
 
 *****  
-## Description  
+## Package details  
 Version: 0.0.0.9001  
+Systems: Linux, Mac or [Windows Linux Subsystem](https://github.com/stnava/ANTsR/wiki/Installing-ANTsR-in-Windows-10-(along-with-FSL,-Rstudio,-Freesurfer,-etc).))  
+Language: R (version 3.0 or above)
 License: Apache License 2.0  
 Author: Dorian Pustina  
 [![Travis Build Status](https://travis-ci.org/dorianps/LESYMAP.png?branch=master)](https://travis-ci.org/dorianps/LESYMAP)  
-
-*****  
-##  Requirements:  
-* Linux or Mac (since Oct 2016 ANTsR [can run in Windows 10](https://github.com/stnava/ANTsR/wiki/Installing-ANTsR-in-Windows-10-(along-with-FSL,-Rstudio,-Freesurfer,-etc).))  
-* [R v3.0 or above](http://www.r-project.org/) 
-* The [ANTsR](http://stnava.github.io/ANTsR/) package
-
+  
 *****
 ## Install
 
