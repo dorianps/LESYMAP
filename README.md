@@ -1,6 +1,5 @@
 # LESYMAP
 Lesion to Symptom Mapping (R toolbox)  
-[![Travis Build Status](https://travis-ci.org/dorianps/LESYMAP.png?branch=master)](https://travis-ci.org/dorianps/LESYMAP)
 
 Documentation coming soon.
 
@@ -11,3 +10,6 @@ Then type
 library(LESYMAP)
 ?lesymap
 ```
+  
+  
+[![Travis Build Status](https://travis-ci.org/dorianps/LESYMAP.png?branch=master)](https://travis-ci.org/dorianps/LESYMAP)
