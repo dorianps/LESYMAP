@@ -23,7 +23,7 @@ This will install all the dependencies, including ANTsR (may take one hour).
   
 *****
 ## Use
-```
+```r
 library(LESYMAP)
 
 # All functions have appropriate documentation. Start by typing
