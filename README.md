@@ -2,11 +2,11 @@
 Lesion to Symptom Mapping (R toolbox)  
 
 *****  
-## Description
-[![Travis Build Status](https://travis-ci.org/dorianps/LESYMAP.png?branch=master)](https://travis-ci.org/dorianps/LESYMAP)
-Version: 0.0.0.9001
-License: Apache License 2.0
-Author: Dorian Pustina
+## Description  
+Version: 0.0.0.9001  
+License: Apache License 2.0  
+Author: Dorian Pustina  
+[![Travis Build Status](https://travis-ci.org/dorianps/LESYMAP.png?branch=master)](https://travis-ci.org/dorianps/LESYMAP)  
 
 *****  
 ##  Requirements:  
