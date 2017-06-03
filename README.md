@@ -33,7 +33,8 @@ library(LESYMAP)
 # run an example analyses using data provided with lesymap
 example(lesymap)
 ```
->  18:34:35 Running LESYMAP 0.0.0.9001   
+```
+18:34:35 Running LESYMAP 0.0.0.9001   
 18:34:35 Checking a few things...  
 18:34:35 Loading behavioral data...131 scores found.  
 18:34:35 Computing mask from average >= 10% ...  
@@ -46,6 +47,7 @@ example(lesymap)
 18:36:05 Logging call details...  
 18:36:05 Done! 1.5 mins   
 Hit \<Return\> to see next plot: 
+```
 
 *****    
 ### Note
