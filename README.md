@@ -46,7 +46,7 @@ example(lesymap)
 18:36:04 Preparing images...  
 18:36:05 Logging call details...  
 18:36:05 Done! 1.5 mins   
-Hit \<Return\> to see next plot: 
+Hit <Return> to see next plot: 
 ```
 
 *****    
