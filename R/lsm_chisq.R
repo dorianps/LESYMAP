@@ -69,8 +69,8 @@ lsm_chisq <- function(lesmat, behavior, YatesCorrect=T,
   temp = unlist(output)
   statistic = temp[seq(1,length(temp),by=2)]
   pvalue = temp[seq(2,length(temp),by=2)]
-  zscore = qnorm(pvalue)
-
+  zscore = qchisq(pvalue, df=1)
+  zscore[is.infinite(zscore)] = 0 # fixing infinite values for p=1
 
   return(list(
     statistic=statistic,
