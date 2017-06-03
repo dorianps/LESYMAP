@@ -54,6 +54,17 @@ map is returned.}
 \item{...}{other arguments received from \code{\link{lesymap}}.}
 }
 \value{
+List of objects returned:
+\itemize{
+\item\code{statistic} - vector of statistical values
+\item\code{pvalue} - vector of pvalues
+\item\code{optimalSparseness} - (optional) optimal value found for sparseness
+\item\code{CVcorrelation.stat} - (optional) Correlation between
+true and predicted score with k-fold validation using
+the optimal sparseness value
+\item\code{CVcorrelation.pval} - (optional) p-value of the above correlation
+}
+
 List with vectors of \code{statistic}, \code{pvalue}, \code{optimalSparseness},
 \code{CVcorrelation.stat}, \code{CVcorrelation.pval}
 }

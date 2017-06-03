@@ -26,7 +26,12 @@ you don't know your data, use \code{alternative='two.sided'}.}
 \item{...}{other arguments received from \code{\link{lesymap}}.}
 }
 \value{
-List with vectors of statistic, pvalue, and zscore.
+List of objects returned:
+\itemize{
+\item\code{statistic} - vector of statistical values
+\item\code{pvalue} - vector of pvalues
+\item\code{zscore} - vector of zscores
+}
 }
 \description{
 Lesion to symptom mapping performed on a prepared matrix.

@@ -24,6 +24,20 @@
 #' @param showInfo display info messagges when running the function.
 #' @param ... other arguments received from \code{\link{lesymap}}.
 #'
+#' @return
+#' List of objects returned:
+#' \itemize{
+#' \item\code{statistic} - vector of statistical values
+#' \item\code{pvalue} - vector of pvalues
+#' \item\code{zscore} - vector of zscores
+#' \item\code{perm.vector} - (optional) vector of permuted statistics
+#' \item\code{perm.FWERthresh} - (optional) permutation threshold established
+#' from the distribution of \code{perm.vector}
+#' \item\code{perm.clusterThreshold} - (optional) permutation threshold established
+#' from the distribution of \code{perm.vector}
+#'
+#' }
+#'
 #' @author Dorian Pustina
 #'
 #' @export

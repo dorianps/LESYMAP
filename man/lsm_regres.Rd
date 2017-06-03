@@ -12,7 +12,12 @@ lsm_regres(lesmat, behavior)
 \item{behavior}{vector of behavioral scores.}
 }
 \value{
-List with vectors of statistic, pvalue, and zscore.
+List of objects returned:
+\itemize{
+\item\code{statistic} - vector of statistical values
+\item\code{pvalue} - vector of pvalues
+\item\code{zscore} - vector of zscores
+}
 }
 \description{
 Lesion to symptom mapping performed on a prepared matrix.

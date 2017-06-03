@@ -41,6 +41,16 @@ or other voxels (i.e., v=10 for 10 highest voxel)}
 \item{...}{other arguments received from \code{\link{lesymap}}.}
 }
 \value{
+List of objects returned:
+\itemize{
+\item\code{statistic} - vector of statistical values
+\item\code{pvalue} - vector of pvalues
+\item\code{zscore} - vector of zscores
+\item\code{perm.vector} - (optional) vector of permuted statistics
+\item\code{perm.FWERthresh} - (optional) permutation threshold established
+from the distribution of \code{perm.vector}
+}
+
 List with vectors of statistic, pvalue, zscore.
 If FWER is selected, perm.vector and perm.FWERthresh
 will also be returned.

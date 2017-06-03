@@ -7,7 +7,13 @@
 #' @param lesmat matrix of voxels (columns) and subjects (raws).
 #' @param behavior vector of behavioral scores.
 #'
-#' @return List with vectors of statistic, pvalue, and zscore.
+#' @return
+#' List of objects returned:
+#' \itemize{
+#' \item\code{statistic} - vector of statistical values
+#' \item\code{pvalue} - vector of pvalues
+#' \item\code{zscore} - vector of zscores
+#' }
 #'
 #' @author Dorian Pustina
 #'

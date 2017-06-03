@@ -64,6 +64,16 @@
 #'          P-values are computed through permutatons with the
 #'          lmp function in lmPerm package.
 #'
+#'        \code{\link[=lsm_chisq]{chisq}} - chi-square test between voxel values and behavior.
+#'          The method is used when your behavior data are binary. Relies on the
+#'          \code{\link[stats]{chisq.test}}
+#'          R function and corrects individual voxel p-values with the Yates method (similar
+#'          to the voxbo software).
+#'
+#'        \code{\link[=lsm_chisq]{chisqPerm}} - chi-square test between voxel values and behavior.
+#'          The method is used when your behavior data are binary. P-values are established
+#'          through permutation tests. Relies on the \code{\link[stats]{chisq.test}} R function.
+#'
 #'        \code{\link[=lsm_sccan]{sccan}} - sparse canonical correlations (NEW). Multivariate
 #'          method that considers all voxels at once. By default,
 #'          lesymap will run a lengthy procedure to determine the optimal
@@ -312,6 +322,10 @@ lesymap <- function(lesions.list, behavior,
 
   if (imagelen != behavlen) stop('Different lengths between lesions and behavior vector.')
 
+  # check behavior is binary if needed
+  if (method %in% c('chisq', 'chisqPerm')) {
+    if (length(unique(behavior)) != 2) stop(paste0('The method "', method, '" requries binary behavioral scores.'))
+  }
 
   # special case for SCCAN
   if (method %in% c('sccan', 'sccanRaw') ) {
@@ -462,10 +476,14 @@ lesymap <- function(lesions.list, behavior,
     lsm = lsm_ttest(lesmat, behavior, ...)
   } else if (method == 'welch') {
     lsm = lsm_ttest(lesmat, behavior, var.equal = F, ...)
+  } else if (method == 'chisq') {
+    lsm = lsm_chisq(lesmat, behavior, runPermutations = F)
+  } else if (method == 'chisqPerm') {
+    lsm = lsm_chisq(lesmat, behavior, runPermutations = T, nperm=nperm)
   } else if (method == 'sccan') {
     lsm = lsm_sccan(lesmat, behavior, mask=mask, showInfo=showInfo, pThreshold=pThreshold, ...)
   } else {
-    stop('The method you selected was not recognized.')
+    stop(paste0('Unrecognized method: "', method, '"'))
   }
   if (showInfo) cat('\n')
 

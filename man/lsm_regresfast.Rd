@@ -43,6 +43,20 @@ selection after obtaining cluster size distrubution.}
 
 \item{...}{other arguments received from \code{\link{lesymap}}.}
 }
+\value{
+List of objects returned:
+\itemize{
+\item\code{statistic} - vector of statistical values
+\item\code{pvalue} - vector of pvalues
+\item\code{zscore} - vector of zscores
+\item\code{perm.vector} - (optional) vector of permuted statistics
+\item\code{perm.FWERthresh} - (optional) permutation threshold established
+from the distribution of \code{perm.vector}
+\item\code{perm.clusterThreshold} - (optional) permutation threshold established
+from the distribution of \code{perm.vector}
+
+}
+}
 \description{
 Lesion to symptom mapping performed on a prepared matrix.
 Regressions are performed between behavior and each column
