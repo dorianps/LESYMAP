@@ -8,7 +8,7 @@ Systems:  Linux, Mac or [Windows Linux Subsystem](https://github.com/stnava/ANTs
 Language: R (version 3.0 or above)  
 License:  Apache License 2.0  
   
-[![Travis Build Status](https://travis-ci.org/dorianps/LESYMAP.png?branch=master)](https://travis-ci.org/dorianps/LESYMAP)  
+[![Travis Build Status](https://travis-ci.org/dorianps/LESYMAP.png?branch=master)](https://travis-ci.org/dorianps/LESYMAP){:target="_blank"}  
   
 *****
 ## Install
