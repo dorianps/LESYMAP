@@ -7,7 +7,6 @@ Version:  0.0.0.9001
 Systems:  Linux, Mac or [Windows Linux Subsystem](https://github.com/stnava/ANTsR/wiki/Installing-ANTsR-in-Windows-10-(along-with-FSL,-Rstudio,-Freesurfer,-etc).)  
 Language: R (version 3.0 or above)  
 License:  Apache License 2.0  
-Author:   Dorian Pustina  
   
 [![Travis Build Status](https://travis-ci.org/dorianps/LESYMAP.png?branch=master)](https://travis-ci.org/dorianps/LESYMAP)  
   
