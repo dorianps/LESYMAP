@@ -21,7 +21,6 @@ Imports:
     Rcpp,
     RcppArmadillo
 Suggests:
-    caret,
     lmPerm,
     nparcomp
 Remotes:

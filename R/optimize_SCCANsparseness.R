@@ -52,7 +52,7 @@ optimize_SCCANsparseness <- function(lesmat, behavior, mask, nfolds = 4, sparsen
   # REQUIRES CARET
   if (! 'caret' %in% rownames(installed.packages())) stop('SCCAN optimization requires the caret package. Try installing with install.packages("caret")')
   myfolds = list()
-  for (i in 1:cvRepetitions) myfolds[[i]] = caret::createFolds(behavior, nfolds)
+  for (i in 1:cvRepetitions) myfolds[[i]] =  LESYMAP:::.createFolds(behavior, nfolds) # caret::createFolds(behavior, nfolds)
 
   cthresh = c(cthresh,0)
 
