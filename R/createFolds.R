@@ -1,3 +1,15 @@
+#' createFolds
+#' 
+#' Used to create folds for k-fold validation
+#' 
+#' @param y split sample by balancing y
+#' @param k number of folds
+#' @param list logical whether to return folds in a list
+#' @param returnTrain logical whether to return training indices (T)
+#' or the test samples (F)
+#' 
+#' @author Caret Package
+#' 
 .createFolds <- function(y, k = 10, list = TRUE, returnTrain = FALSE) {
   if(class(y)[1] == "Surv") y <- y[,"time"]
   if(is.numeric(y)) {
