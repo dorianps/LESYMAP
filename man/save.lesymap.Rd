@@ -5,8 +5,8 @@
 \title{Save the output of lesymap.}
 \usage{
 save.lesymap(lsm, saveDir, infoFile = "Info.txt", template = NA,
-  saveTemplate = F, plot.alpha = 0.8, plot.axis = 3, plot.quality = 8,
-  ...)
+  saveTemplate = F, savePatchImages = T, plot.alpha = 0.8,
+  plot.axis = 3, plot.quality = 8, ...)
 }
 \arguments{
 \item{lsm}{object obtained with lesymap()}
@@ -25,6 +25,9 @@ results will be plotted and saved as image.}
 template image also be saved? Useful when
 passing the results to a colleague.}
 
+\item{savePatchImages}{(default=TRUE) should the patch images
+be saved}
+
 \item{plot.alpha}{see plot.antsImage}
 
 \item{plot.axis}{see plot.antsImage}
@@ -35,7 +38,7 @@ passing the results to a colleague.}
 }
 \value{
 Nothing is returned.
-Files saved include both images and
+Files saved include resulting maps and
 a descriptive file with a lot of
 information about the lesymap run.
 }

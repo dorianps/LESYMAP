@@ -46,7 +46,7 @@ lsm_chisq <- function(lesmat, behavior, YatesCorrect=T,
   # estiamte runtime
   if (showInfo & runPermutations) {
     tic = Sys.time()
-    temp = chisq.test(matrix(chimatrix[,1],nc=2),
+    temp = chisq.test(matrix(chimatrix[,1],ncol=2),
                simulate.p.value=runPermutations,
                correct=YatesCorrect, B=nperm)
     onerun = as.double(difftime(Sys.time(),tic, units = 'sec'))
@@ -57,7 +57,7 @@ lsm_chisq <- function(lesmat, behavior, YatesCorrect=T,
 
 
   output = apply(chimatrix, 2, function(x) {
-                          temp=chisq.test(matrix(x,nc=2),
+                          temp=chisq.test(matrix(x,ncol=2),
                                           simulate.p.value=runPermutations,
                                           B=nperm)
                           return(list(

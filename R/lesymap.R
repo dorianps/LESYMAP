@@ -567,6 +567,7 @@ lesymap <- function(lesions.list, behavior,
 
   rm(lesions.list)
   invisible(gc())
+  class(output) = c('lesymap', class(output))
   return(output)
 
 }

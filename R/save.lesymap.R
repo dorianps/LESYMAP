@@ -13,13 +13,15 @@
 #' @param saveTemplate (default=FALSE) should the
 #' template image also be saved? Useful when
 #' passing the results to a colleague.
+#' @param savePatchImages (default=TRUE) should the patch images
+#' be saved
 #' @param plot.alpha see plot.antsImage
 #' @param plot.axis see plot.antsImage
 #' @param plot.quality see plot.antsImage
 #' @param ... other arguments to use for plot().
 #'
 #' @return Nothing is returned.
-#' Files saved include both images and
+#' Files saved include resulting maps and
 #' a descriptive file with a lot of
 #' information about the lesymap run.
 #'
@@ -27,7 +29,7 @@
 #'
 #' @export
 save.lesymap <- function(lsm, saveDir, infoFile='Info.txt', template=NA, saveTemplate=F,
-                          plot.alpha=0.8, plot.axis=3, plot.quality=8, ...) {
+                          savePatchImages=T, plot.alpha=0.8, plot.axis=3, plot.quality=8, ...) {
 
   if ('callinfo' %in% names(lsm)) callinfo = lsm$callinfo
   else callinfo=list()
@@ -60,8 +62,9 @@ save.lesymap <- function(lsm, saveDir, infoFile='Info.txt', template=NA, saveTem
     if (class(lsm[[indx]]) != 'antsImage') next # smth wrong if this is not image
 
     thisname = names(lsm)[indx]
+    savename = gsub('.img$', '_img', thisname)
 
-    antsImageWrite(lsm[[indx]], filename = file.path(saveDir, paste0(thisname, '-.nii.gz') ))
+    antsImageWrite(lsm[[indx]], filename = file.path(saveDir, paste0(savename, '.nii.gz') ))
 
     if (thisname == 'stat.img' & hastemplate) {
       outname = file.path(saveDir, paste0(thisname, '.png') )
@@ -71,6 +74,18 @@ save.lesymap <- function(lsm, saveDir, infoFile='Info.txt', template=NA, saveTem
     }
   }
   if (hastemplate & saveTemplate) antsImageWrite(template, filename = file.path(saveDir, 'template.nii.gz'))
+
+
+  # patchinfo image save
+  if (savePatchImages & 'patchinfo' %in% names(lsm)) {
+    imgindx =  grep('^patchimg', names(lsm$patchinfo) )
+    for (indx in imgindx) {
+      if (class(lsm[[indx]]) != 'antsImage') next # smth wrong if this is not image
+      thisname = names(lsm$patchinfo)[indx]
+      antsImageWrite(lsm$patchinfo[[indx]], filename = file.path(saveDir, paste0(thisname, '.nii.gz') ))
+    }
+  }
+
 
 
   # save info

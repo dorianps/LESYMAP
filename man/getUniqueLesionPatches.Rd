@@ -26,16 +26,22 @@ subjects will not be considered (default 10\%)}
 }
 \value{
 List of objects named as follows:
-   patchimg - antsImage with the patch number each voxels belongs to
-   patchimg.samples - antsImage mask with a single voxel per patch
-   patchimg.size - antsImage with the patch size at each voxel
-   patchimg.mask - the mask within which the function looked for patches
-   npatches - number of unique patches in the image
-   nvoxels - total number of lesioned voxels, computed as all voxels
-      lesioned in at least one subject, within the specified mask
-   patchvoxels - vector of voxel count for each patch
-   patchvolumes - vector of volume size for each patch
-   patchmatrix  - matrix of patches
+ \itemize{
+ \item\code{patchimg} - antsImage with every voxel assigned a patch number
+ \item\code{patchimg.samples} - antsImage mask of one representative voxel
+ for each patch. Can be used to extract the patchmatrix.
+ \item\code{patchimg.size} - antsImage with the patch size at every voxel
+ \item\code{patchimg.mask} - antsImage of full mask with all voxels. Can
+ be used to put back results in combination with \code{patchindx}.
+ \item\code{patchindx} - vector of patch membership for each voxel. Can
+ be used to put back results in an image.
+ \item\code{npatches} - number of unique patches in the image
+ \item\code{nvoxels} - total number of lesioned voxels in \code{patchimg.mask}
+ \item\code{patchvoxels} - vector of voxel count for each patch
+ \item\code{patchvolumes} - vector of volume size for each patch
+ \item\code{patchmatrix}  - matrix of patches. This is used in lesymap to
+ save time when running repetitive analyses.
+ }
 }
 \description{
 Compute uniqe patches of voxels with the same
@@ -47,14 +53,14 @@ similar
 }
 \examples{
 \dontrun{
- files = Sys.glob('/data/jag/VLSM/*.nii.gz')
- lesions = imageFileNames2ImageList(files)
+onefile = system.file(file.path('extdata','lesions'), 'Subject_001.nii.gz', package='LESYMAP')
+niftifolder = dirname(onefile)
 
- patches = getUniqueLesionPatches(files) # slower
- patches = getUniqueLesionPatches(lesions) # faster
- avgles = antsAverageImages(lesions)
- mask = thresholdImage(avgles, 0.1, Inf)
- patches = getUniqueLesionPatches(lesions, mask=mask) # even faster
+filenames = Sys.glob( file.path(niftifolder, 'Subject*.nii.gz'))
+patches = getUniqueLesionPatches(filenames) # slower
+
+lesions = imageFileNames2ImageList(filenames)
+patches = getUniqueLesionPatches(lesions) # faster
 }
 
 }
