@@ -1,13 +1,25 @@
-sudo: required
-language: r
-cache: packages
+sudo: false
+latex: false
 os:
   - linux
   - osx
-dist: trusty
+compiler:
+  - gcc
+  - clang  
+  
+matrix:
+  allow_failures:
+    - os: osx
+    
+dist: precise
+
+language: r
+
+cache: packages
+
 r:
   - release
-
+  
 before_install:
   - basedir=${PWD}
   - cd ~/
@@ -24,4 +36,6 @@ before_install:
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then wget http://github.com/stnava/ANTsR/releases/download/${reldir}/ANTsR_${ANTsRrel}_R_x86_64-pc-linux-gnu.tar.gz; R CMD INSTALL ANTsR_${ANTsRrel}_R_x86_64-pc-linux-gnu.tar.gz; fi
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then wget http://github.com/stnava/ANTsR/releases/download/${reldir}/ANTsR_${ANTsRrel}.tgz; R CMD INSTALL ANTsR_${ANTsRrel}.tgz; fi
   - cd ${basedir}
+  #- tlmgr install index
+  
 
