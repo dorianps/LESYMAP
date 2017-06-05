@@ -5,7 +5,7 @@ os:
   - osx
 compiler:
   - gcc
-  - clang  
+  #- clang  
   
 matrix:
   allow_failures:
@@ -26,15 +26,15 @@ before_install:
   - Rscript -e 'if (!"Rcpp" %in% rownames(installed.packages())) install.packages("Rcpp", dependencies = TRUE)'
   - Rscript -e 'if (!"devtools" %in% rownames(installed.packages())) install.packages("devtools", dependencies = TRUE)'
   - itkrrel=0.0.1
-  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then wget http://github.com/stnava/ITKR/releases/download/latest/ITKR_${itkrrel}_R_x86_64-pc-linux-gnu.tar.gz; R CMD INSTALL ITKR_${itkrrel}_R_x86_64-pc-linux-gnu.tar.gz; fi
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then wget http://github.com/stnava/ITKR/releases/download/latest/ITKR_${itkrrel}.tgz; R CMD INSTALL ITKR_${itkrrel}.tgz; fi
-  - ANTsRCorerel=0.1.1
+  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then wget https://github.com/stnava/ITKR/releases/download/latest/ITKR_${itkrrel}_R_x86_64-pc-linux-gnu.tar.gz; R CMD INSTALL ITKR_${itkrrel}_R_x86_64-pc-linux-gnu.tar.gz; fi
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then wget https://github.com/stnava/ITKR/releases/download/latest/ITKR_${itkrrel}.tgz; R CMD INSTALL ITKR_${itkrrel}.tgz; fi
+  - ANTsRCorerel=0.2
   - reldir=latest
-  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then wget http://github.com/stnava/ANTsRCore/releases/download/${reldir}/ANTsRCore_${ANTsRCorerel}_R_x86_64-pc-linux-gnu.tar.gz; R CMD INSTALL ANTsRCore_${ANTsRCorerel}_R_x86_64-pc-linux-gnu.tar.gz; fi
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then wget http://github.com/stnava/ANTsRCore/releases/download/${reldir}/ANTsRCore_${ANTsRCorerel}.tgz; R CMD INSTALL ANTsRCore_${ANTsRCorerel}.tgz; fi
+  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then wget https://github.com/stnava/ANTsRCore/releases/download/${reldir}/ANTsRCore_${ANTsRCorerel}_R_x86_64-pc-linux-gnu.tar.gz; R CMD INSTALL ANTsRCore_${ANTsRCorerel}_R_x86_64-pc-linux-gnu.tar.gz; fi
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then wget https://github.com/stnava/ANTsRCore/releases/download/${reldir}/ANTsRCore_${ANTsRCorerel}.tgz; R CMD INSTALL ANTsRCore_${ANTsRCorerel}.tgz; fi
   - ANTsRrel=0.5.4
-  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then wget http://github.com/stnava/ANTsR/releases/download/${reldir}/ANTsR_${ANTsRrel}_R_x86_64-pc-linux-gnu.tar.gz; R CMD INSTALL ANTsR_${ANTsRrel}_R_x86_64-pc-linux-gnu.tar.gz; fi
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then wget http://github.com/stnava/ANTsR/releases/download/${reldir}/ANTsR_${ANTsRrel}.tgz; R CMD INSTALL ANTsR_${ANTsRrel}.tgz; fi
+  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then wget https://github.com/stnava/ANTsR/releases/download/${reldir}/ANTsR_${ANTsRrel}_R_x86_64-pc-linux-gnu.tar.gz; R CMD INSTALL ANTsR_${ANTsRrel}_R_x86_64-pc-linux-gnu.tar.gz; fi
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then wget https://github.com/stnava/ANTsR/releases/download/${reldir}/ANTsR_${ANTsRrel}.tgz; R CMD INSTALL ANTsR_${ANTsRrel}.tgz; fi
   - cd ${basedir}
   #- tlmgr install index
   
