@@ -36,7 +36,7 @@ before_install:
   - if [ "$TRAVIS_OS_NAME" == "linux" ]; then wget https://github.com/stnava/ANTsR/releases/download/${reldir}/ANTsR_${ANTsRrel}_R_x86_64-pc-linux-gnu.tar.gz; R CMD INSTALL ANTsR_${ANTsRrel}_R_x86_64-pc-linux-gnu.tar.gz; fi
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then wget https://github.com/stnava/ANTsR/releases/download/${reldir}/ANTsR_${ANTsRrel}.tgz; R CMD INSTALL ANTsR_${ANTsRrel}.tgz; fi
   - cd ${basedir}
-  - - Rscript -e 'devtools::source_url("https://gist.githubusercontent.com/muschellij2/69c48f469ab34cc05752361645ffa8e0/raw/57e7d3b22907699d260f863a0d337a12567ffc30/rewrite_dcf.R"); rewrite_dcf(drop_remotes = c("ANTsRCore", "ITKR"));'
+  - - Rscript -e 'devtools::source_url("https://gist.githubusercontent.com/muschellij2/69c48f469ab34cc05752361645ffa8e0/raw/57e7d3b22907699d260f863a0d337a12567ffc30/rewrite_dcf.R"); rewrite_dcf(drop_remotes = c("ANTsR,","ANTsRCore", "ITKR"));'
   #- tlmgr install index
   
 
