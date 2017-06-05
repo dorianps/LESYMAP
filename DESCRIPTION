@@ -24,9 +24,9 @@ Suggests:
     lmPerm,
     nparcomp
 Remotes:
-    stnava/ITKR,
+    stnava/ANTsR,
     stnava/ANTsRCore,
-    stnava/ANTsR
+    stnava/ITKR
 LinkingTo: Rcpp, RcppArmadillo
 NeedsCompilation: yes
 RoxygenNote: 5.0.1
