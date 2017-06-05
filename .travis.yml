@@ -4,6 +4,7 @@ cache: packages
 os:
   - linux
 #  - osx
+dist: trusty
 r:
   - release
 
