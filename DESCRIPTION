@@ -19,8 +19,8 @@ Depends:
 Imports:
     stats,
     ANTsRCore,
+    utils,
     Rcpp,
-    RcppArmadillo,
     nparcomp,
     lmPerm
 Remotes:

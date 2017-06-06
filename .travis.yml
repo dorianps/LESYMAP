@@ -21,6 +21,7 @@ r:
   - release
 
 before_install:
+  - export RGL_USE_NULL=TRUE;
   - export itkrrel=0.0.1
   - export gh_user=stnava
   - export ANTsRCorerel=0.2
@@ -31,5 +32,4 @@ before_install:
   - . ./antsr_travis.sh
   - rm antsr_travis.sh
   - cat DESCRIPTION
-
 
