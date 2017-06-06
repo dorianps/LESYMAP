@@ -256,6 +256,8 @@
 #' @export
 #' @useDynLib LESYMAP
 #' @importFrom Rcpp sourceCpp
+#' @import ANTsRCore
+#' @import ANTsR
 
 
 lesymap <- function(lesions.list, behavior,
