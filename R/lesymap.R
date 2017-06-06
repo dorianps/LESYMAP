@@ -268,6 +268,8 @@
 #' @importFrom utils find getSrcDirectory installed.packages
 #' @importFrom utils packageVersion read.table
 
+
+
 lesymap <- function(lesions.list, behavior,
                     mask=NA,
                     patchinfo=NA,
