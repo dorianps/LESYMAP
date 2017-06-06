@@ -18,12 +18,11 @@ Depends:
 Imports:
     ANTsRCore,
     graphics,
+    lmPerm,
+    nparcomp,
     Rcpp,
     stats,
     utils
-Suggests:
-    lmPerm,
-    nparcomp
 Remotes: stnava/ANTsR,
     stnava/ANTsRCore
 LinkingTo: Rcpp, RcppArmadillo
