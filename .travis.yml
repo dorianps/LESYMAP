@@ -5,12 +5,12 @@ os:
   - osx
 compiler:
   - gcc
-  #- clang  
-  
+  #- clang
+
 matrix:
   allow_failures:
     - os: osx
-    
+
 dist: precise
 
 language: r
@@ -19,7 +19,7 @@ cache: packages
 
 r:
   - release
-  
+
 before_install:
   - export itkrrel=0.0.1
   - export gh_user=stnava
@@ -28,7 +28,8 @@ before_install:
   - export antsrrel=0.5.4
   - wget -O antsr_travis.sh http://bit.ly/antsr_travis_sh
   - chmod +x antsr_travis.sh
-  - . ./antsr_travis.sh  
+  - . ./antsr_travis.sh
   - rm antsr_travis.sh
-  
+  - cat DESCRIPTION
+
 
