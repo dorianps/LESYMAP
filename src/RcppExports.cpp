@@ -6,18 +6,6 @@
 
 using namespace Rcpp;
 
-// BMfast
-List BMfast(const arma::mat& X, const arma::colvec& y);
-RcppExport SEXP LESYMAP_BMfast(SEXP XSEXP, SEXP ySEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::mat& >::type X(XSEXP);
-    Rcpp::traits::input_parameter< const arma::colvec& >::type y(ySEXP);
-    rcpp_result_gen = Rcpp::wrap(BMfast(X, y));
-    return rcpp_result_gen;
-END_RCPP
-}
 // BMfast2
 List BMfast2(const arma::mat& X, const arma::colvec& y, bool computeDOF);
 RcppExport SEXP LESYMAP_BMfast2(SEXP XSEXP, SEXP ySEXP, SEXP computeDOFSEXP) {
@@ -28,6 +16,18 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const arma::colvec& >::type y(ySEXP);
     Rcpp::traits::input_parameter< bool >::type computeDOF(computeDOFSEXP);
     rcpp_result_gen = Rcpp::wrap(BMfast2(X, y, computeDOF));
+    return rcpp_result_gen;
+END_RCPP
+}
+// BMfast
+List BMfast(const arma::mat& X, const arma::colvec& y);
+RcppExport SEXP LESYMAP_BMfast(SEXP XSEXP, SEXP ySEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const arma::colvec& >::type y(ySEXP);
+    rcpp_result_gen = Rcpp::wrap(BMfast(X, y));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -47,8 +47,8 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"LESYMAP_BMfast", (DL_FUNC) &LESYMAP_BMfast, 2},
     {"LESYMAP_BMfast2", (DL_FUNC) &LESYMAP_BMfast2, 3},
+    {"LESYMAP_BMfast", (DL_FUNC) &LESYMAP_BMfast, 2},
     {"LESYMAP_regresfast", (DL_FUNC) &LESYMAP_regresfast, 4},
     {NULL, NULL, 0}
 };

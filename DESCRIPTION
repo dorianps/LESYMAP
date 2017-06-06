@@ -16,16 +16,16 @@ Depends:
     R (>= 3.0),
     ANTsR
 Imports:
-    stats,
     ANTsRCore,
-    utils,
+    graphics,
     Rcpp,
-    nparcomp,
+    stats,
+    utils
+Suggests:
     lmPerm,
-    graphics
-Remotes:
-    stnava/ANTsR,
+    nparcomp
+Remotes: stnava/ANTsR,
     stnava/ANTsRCore
 LinkingTo: Rcpp, RcppArmadillo
 NeedsCompilation: yes
-RoxygenNote: 6.0.1
+RoxygenNote: 6.0.1.9000
