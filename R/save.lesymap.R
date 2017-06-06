@@ -28,6 +28,7 @@
 #' @author Dorian Pustina
 #'
 #' @export
+#' @importFrom graphics plot
 save.lesymap <- function(lsm, saveDir, infoFile='Info.txt', template=NA, saveTemplate=F,
                           savePatchImages=T, plot.alpha=0.8, plot.axis=3, plot.quality=8, ...) {
 

@@ -21,7 +21,8 @@ Imports:
     utils,
     Rcpp,
     nparcomp,
-    lmPerm
+    lmPerm,
+    graphics
 Remotes:
     stnava/ANTsR,
     stnava/ANTsRCore

@@ -2,9 +2,7 @@
 % Please edit documentation in R/createFolds.R
 \name{.createFolds}
 \alias{.createFolds}
-\title{createFolds
-
-Used to create folds for k-fold validation}
+\title{createFolds}
 \usage{
 .createFolds(y, k = 10, list = TRUE, returnTrain = FALSE)
 }
@@ -17,6 +15,9 @@ Used to create folds for k-fold validation}
 
 \item{returnTrain}{logical whether to return training indices (T)
 or the test samples (F)}
+}
+\description{
+Used to create folds for k-fold validation
 }
 \author{
 Caret Package

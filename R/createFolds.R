@@ -1,7 +1,7 @@
 #' @rdname createFolds
 #' @title createFolds
 #'
-#' Used to create folds for k-fold validation
+#' @description Used to create folds for k-fold validation
 #'
 #' @param y split sample by balancing y
 #' @param k number of folds
