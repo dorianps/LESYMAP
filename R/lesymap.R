@@ -257,7 +257,6 @@
 #' @export
 #' @useDynLib LESYMAP
 #' @importFrom Rcpp sourceCpp
-<<<<<<< HEAD
 #' @import ANTsR
 #' @import ANTsRCore
 #' @importFrom stats chisq.test cor dt lm optimize
@@ -265,12 +264,7 @@
 #' @importFrom stats quantile residuals runif t.test
 #' @importFrom utils find getSrcDirectory installed.packages
 #' @importFrom utils packageVersion read.table
-=======
-#' @import ANTsRCore
-#' @import ANTsR
 
-
->>>>>>> upstream/master
 lesymap <- function(lesions.list, behavior,
                     mask=NA,
                     patchinfo=NA,
