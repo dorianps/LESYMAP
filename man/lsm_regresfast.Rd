@@ -65,4 +65,3 @@ of the lesmat matrix. Fast function based on compiled code.
 \author{
 Dorian Pustina
 }
-

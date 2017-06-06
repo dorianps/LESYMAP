@@ -61,4 +61,3 @@ Used to run simulation studies.
 \author{
 Dorian Pustina
 }
-

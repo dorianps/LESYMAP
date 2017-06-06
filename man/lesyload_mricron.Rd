@@ -39,4 +39,3 @@ in MRIcron/npm in a ready format for use in lesymap
 \author{
 Dorian Pustina
 }
-

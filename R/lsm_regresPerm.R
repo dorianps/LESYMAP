@@ -15,6 +15,7 @@
 #' @author Dorian Pustina
 #'
 #' @export
+#' @importFrom lmPerm lmp
 
 lsm_regresPerm <- function(lesmat, behavior) {
   statistic = pvalue = rep(NA, ncol(lesmat))
@@ -22,7 +23,7 @@ lsm_regresPerm <- function(lesmat, behavior) {
   if (! 'lmPerm' %in% rownames(installed.packages())) stop('regresPerm requires lmPerm package. Try installing with install.packages("lmPerm")')
 
   temp = lmPerm::lmp(lesmat ~ behavior, perm = 'Prob')
-  temp = ANTsR::bigLMStats(temp)
+  temp = ANTsRCore::bigLMStats(temp)
   statistic = temp$beta.t
   pvalue = temp$beta.pval
   zscore=qnorm(pvalue)

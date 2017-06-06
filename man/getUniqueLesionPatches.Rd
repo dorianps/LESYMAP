@@ -67,4 +67,3 @@ patches = getUniqueLesionPatches(lesions) # faster
 \author{
 Dorian Pustina
 }
-

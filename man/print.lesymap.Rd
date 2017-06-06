@@ -18,4 +18,3 @@ when a lesymap output is called in command line.
 \author{
 Dorian Pustina
 }
-

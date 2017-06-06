@@ -27,4 +27,3 @@ this problem.
 \author{
 Dorian Pustina
 }
-

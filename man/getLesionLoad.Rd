@@ -41,4 +41,3 @@ thish to compute the lesion load.
 \author{
 Dorian Pustina
 }
-

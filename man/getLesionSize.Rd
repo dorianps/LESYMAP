@@ -19,4 +19,3 @@ Compute lesion sizes from a list of antsImages.
 \author{
 Dorian Pustina
 }
-

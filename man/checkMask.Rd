@@ -22,4 +22,3 @@ Function to check if mask is in the same space as inputs
 \author{
 Dorian Pustina
 }
-

@@ -236,17 +236,21 @@
 #' }
 #'
 #' @examples
-#' onefile = system.file(file.path('extdata','lesions'), 'Subject_001.nii.gz', package='LESYMAP')
+#' onefile = system.file(file.path('extdata','lesions'),
+#' 'Subject_001.nii.gz', package='LESYMAP')
 #' niftifolder = dirname(onefile)
 #' filenames = Sys.glob( file.path(niftifolder, 'Subject*.nii.gz'))
-#' behavior = system.file(file.path('extdata','behavior'), 'behavior.txt', package='LESYMAP')
-#' template = antsImageRead(system.file(file.path('extdata','template'), 'ch2.nii.gz', package='LESYMAP'))
+#' behavior = system.file(file.path('extdata','behavior'),
+#' 'behavior.txt', package='LESYMAP')
+#' template = antsImageRead(system.file(file.path('extdata',
+#' 'template'), 'ch2.nii.gz', package='LESYMAP'))
 #' lsm = lesymap(filenames, behavior, method = 'BMfast')
 #' plot(template, lsm$stat.img, window.overlay = range(lsm$stat.img))
 #'
 #' \dontrun{
 #' # Same analysis with SCCAN
-#' lsm = lesymap(filenames, behavior, method = 'sccan', sparseness=0.045, optimizeSparseness=F)
+#' lsm = lesymap(filenames, behavior, method = 'sccan',
+#' sparseness=0.045, optimizeSparseness=FALSE)
 #' plot(template, lsm$stat.img, window.overlay = range(lsm$stat.img))
 #' save.lesymap(lsm, saveDir='/home/dp/Desktop/SCCANresults')
 #' }
@@ -256,9 +260,13 @@
 #' @export
 #' @useDynLib LESYMAP
 #' @importFrom Rcpp sourceCpp
-#' @import ANTsRCore
 #' @import ANTsR
-
+#' @import ANTsRCore
+#' @importFrom stats chisq.test cor dt lm optimize
+#' @importFrom stats p.adjust p.adjust.methods pt qchisq qnorm
+#' @importFrom stats quantile residuals runif t.test
+#' @importFrom utils find getSrcDirectory installed.packages
+#' @importFrom utils packageVersion read.table
 
 
 

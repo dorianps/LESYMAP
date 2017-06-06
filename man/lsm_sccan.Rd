@@ -80,4 +80,3 @@ To understand SCCAN arguments, see \code{\link[ANTsR]{sparseDecom2}}.
 \author{
 Dorian Pustina
 }
-
