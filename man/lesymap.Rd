@@ -245,11 +245,14 @@ some examples:
    See Mirman 2017 for this approach.
 }
 \examples{
-onefile = system.file(file.path('extdata','lesions'), 'Subject_001.nii.gz', package='LESYMAP')
+onefile = system.file(file.path('extdata','lesions'),
+'Subject_001.nii.gz', package='LESYMAP')
 niftifolder = dirname(onefile)
 filenames = Sys.glob( file.path(niftifolder, 'Subject*.nii.gz'))
-behavior = system.file(file.path('extdata','behavior'), 'behavior.txt', package='LESYMAP')
-template = antsImageRead(system.file(file.path('extdata','template'), 'ch2.nii.gz', package='LESYMAP'))
+behavior = system.file(file.path('extdata','behavior'),
+'behavior.txt', package='LESYMAP')
+template = antsImageRead(system.file(file.path('extdata',
+'template'), 'ch2.nii.gz', package='LESYMAP'))
 lsm = lesymap(filenames, behavior, method = 'BMfast')
 plot(template, lsm$stat.img, window.overlay = range(lsm$stat.img))
 

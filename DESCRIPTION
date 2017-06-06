@@ -9,8 +9,6 @@ Description: LESYMAP maps the specific brain areas responsible for
     regression) and multivariate (sparse canonical corelations) tests are
     available. LESYMAP is built to run both real and simulated
     lesion-to-symptom mapping analyses.
-Depends:
-    ANTsR
 License: Apache License 2.0
 Encoding: UTF-8
 LazyData: true
