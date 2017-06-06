@@ -48,4 +48,3 @@ Function to save the output of lesymap.
 \author{
 Dorian Pustina
 }
-

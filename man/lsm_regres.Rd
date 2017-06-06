@@ -27,4 +27,3 @@ lesmat matrix.
 \author{
 Dorian Pustina
 }
-

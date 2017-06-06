@@ -25,4 +25,3 @@ the user cannot specify a predefined number of permutations.
 \author{
 Dorian Pustina
 }
-

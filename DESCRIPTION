@@ -1,6 +1,6 @@
 Package: LESYMAP
 Title: Leions to Symptom Mapping in R
-Version: 0.0.0.9001
+Version: 0.0.0.9002
 Date: 2017-05-31
 Authors@R: person("Dorian", "Pustina", email='dorian.pustina@uphs.upenn.edu', role = c("aut", "cre"))
 Description: LESYMAP maps the specific brain areas responsible for
@@ -10,23 +10,20 @@ Description: LESYMAP maps the specific brain areas responsible for
     available. LESYMAP is built to run both real and simulated
     lesion-to-symptom mapping analyses.
 Depends:
-    R (>= 3.0)
+    ANTsR
 License: Apache License 2.0
 Encoding: UTF-8
 LazyData: true
-Depends:
-    ANTsR
 Imports:
-    ANTsR,
+    stats,
+    ANTsRCore,
     Rcpp,
-    RcppArmadillo
-Suggests:
-    lmPerm,
-    nparcomp
+    RcppArmadillo,
+    nparcomp,
+    lmPerm
 Remotes:
     stnava/ANTsR,
-    stnava/ANTsRCore,
-    stnava/ITKR
+    stnava/ANTsRCore
 LinkingTo: Rcpp, RcppArmadillo
 NeedsCompilation: yes
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1

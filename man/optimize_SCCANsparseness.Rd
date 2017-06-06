@@ -73,4 +73,3 @@ return a cross validated correlation from entire sample
 
 end of optimfun
 }
-

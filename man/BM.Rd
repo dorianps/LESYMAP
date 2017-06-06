@@ -22,4 +22,3 @@ This function is not compiled and is slow.
 \author{
 Dorian Pustina
 }
-

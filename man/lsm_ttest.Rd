@@ -42,4 +42,3 @@ var.equal=TRUE the Welch test is performed instead.
 \author{
 Dorian Pustina
 }
-

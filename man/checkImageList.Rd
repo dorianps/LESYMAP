@@ -46,4 +46,3 @@ checkImageList(myimagelist) # error on image 4
 \author{
 Dorian Pustina
 }
-

@@ -255,7 +255,8 @@ plot(template, lsm$stat.img, window.overlay = range(lsm$stat.img))
 
 \dontrun{
 # Same analysis with SCCAN
-lsm = lesymap(filenames, behavior, method = 'sccan', sparseness=0.045, optimizeSparseness=F)
+lsm = lesymap(filenames, behavior, method = 'sccan',
+sparseness=0.045, optimizeSparseness=FALSE)
 plot(template, lsm$stat.img, window.overlay = range(lsm$stat.img))
 save.lesymap(lsm, saveDir='/home/dp/Desktop/SCCANresults')
 }
@@ -264,4 +265,3 @@ save.lesymap(lsm, saveDir='/home/dp/Desktop/SCCANresults')
 \author{
 Dorian Pustina
 }
-

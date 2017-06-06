@@ -30,7 +30,9 @@
 #' @author Dorian Pustina
 #'
 #' @export
-lsm_BM <- function(lesmat, behavior, permuteNthreshold=9, nperm=10000, alternative='greater', showInfo=T, ...) {
+#' @importFrom nparcomp npar.t.test
+lsm_BM <- function(lesmat, behavior, permuteNthreshold=9, nperm=10000,
+                   alternative='greater', showInfo=TRUE, ...) {
 
   statistic = pvalue = rep(NA, ncol(lesmat))
 
@@ -41,7 +43,9 @@ lsm_BM <- function(lesmat, behavior, permuteNthreshold=9, nperm=10000, alternati
 
   # run standard non permuted Brunner Munzel
   # need to run on all voxels to get degrees of freedom for zscoring
-  temp = BM(lesmat, behavior, alternative=alternative)
+  # temp = BM(lesmat, behavior, alternative=alternative)
+
+  temp = BM(lesmat, behavior)
   statistic[!permindx] = temp$statistic[!permindx]
   dof = temp$dof
 
@@ -65,7 +69,9 @@ lsm_BM <- function(lesmat, behavior, permuteNthreshold=9, nperm=10000, alternati
   if (sum(permindx) > 0) { # run only if any voxel needs permutated brunner-munzel
 
     if (showInfo) cat(paste0('\n        running permutation on ', sum(permindx),' voxels below permuteNthreshold' ))
-    if (! 'nparcomp' %in% rownames(installed.packages())) stop('Permutation not possible without the nparcomp package. Try installing with install.packages("nparcomp")')
+    if (! 'nparcomp' %in% rownames(installed.packages())) {
+      stop('Permutation not possible without the nparcomp package. Try installing with install.packages("nparcomp")')
+    }
 
     output = apply(lesmat[,permindx], 2, function(x) {
       temp = nparcomp::npar.t.test(behavior~group, alternative=alternative,

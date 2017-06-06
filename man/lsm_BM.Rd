@@ -5,7 +5,7 @@
 \title{lsm_BM}
 \usage{
 lsm_BM(lesmat, behavior, permuteNthreshold = 9, nperm = 10000,
-  alternative = "greater", showInfo = T, ...)
+  alternative = "greater", showInfo = TRUE, ...)
 }
 \arguments{
 \item{lesmat}{binary matrix (0/1) of voxels (columns)
@@ -45,4 +45,3 @@ groups.
 \author{
 Dorian Pustina
 }
-

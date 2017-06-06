@@ -24,4 +24,3 @@ orientation, size, and origin.
 \author{
 Dorian Pustina
 }
-

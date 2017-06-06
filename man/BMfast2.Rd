@@ -29,4 +29,3 @@ with a similar approach as the nparcomp package.
 \author{
 Dorian Pustina
 }
-

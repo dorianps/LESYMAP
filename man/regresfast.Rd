@@ -34,4 +34,3 @@ factors.
 \author{
 Dorian Pustina
 }
-

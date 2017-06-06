@@ -4,8 +4,8 @@
 \alias{lsm_chisq}
 \title{lsm_chisq}
 \usage{
-lsm_chisq(lesmat, behavior, YatesCorrect = T, runPermutations = F,
-  nperm = 2000, showInfo = T, ...)
+lsm_chisq(lesmat, behavior, YatesCorrect = TRUE, runPermutations = F,
+  nperm = 2000, showInfo = TRUE, ...)
 }
 \arguments{
 \item{lesmat}{binary matrix (0/1) of voxels (columns)
@@ -44,4 +44,3 @@ based estimatins.
 \author{
 Dorian Pustina
 }
-

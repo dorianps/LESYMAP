@@ -246,7 +246,8 @@
 #'
 #' \dontrun{
 #' # Same analysis with SCCAN
-#' lsm = lesymap(filenames, behavior, method = 'sccan', sparseness=0.045, optimizeSparseness=F)
+#' lsm = lesymap(filenames, behavior, method = 'sccan',
+#' sparseness=0.045, optimizeSparseness=FALSE)
 #' plot(template, lsm$stat.img, window.overlay = range(lsm$stat.img))
 #' save.lesymap(lsm, saveDir='/home/dp/Desktop/SCCANresults')
 #' }
@@ -256,8 +257,13 @@
 #' @export
 #' @useDynLib LESYMAP
 #' @importFrom Rcpp sourceCpp
-
-
+#' @import ANTsR
+#' @import ANTsRCore
+#' @importFrom stats chisq.test cor dt lm optimize
+#' @importFrom stats p.adjust p.adjust.methods pt qchisq qnorm
+#' @importFrom stats quantile residuals runif t.test
+#' @importFrom utils find getSrcDirectory installed.packages
+#' @importFrom utils packageVersion read.table
 lesymap <- function(lesions.list, behavior,
                     mask=NA,
                     patchinfo=NA,

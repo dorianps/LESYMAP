@@ -34,4 +34,3 @@ max = Hausdorff distance
 \author{
 Dorian Pustina
 }
-

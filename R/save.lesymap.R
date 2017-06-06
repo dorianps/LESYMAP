@@ -68,9 +68,12 @@ save.lesymap <- function(lsm, saveDir, infoFile='Info.txt', template=NA, saveTem
 
     if (thisname == 'stat.img' & hastemplate) {
       outname = file.path(saveDir, paste0(thisname, '.png') )
-      plot.antsImage(template, lsm[[indx]], alpha=plot.alpha, axis=plot.axis,
-                     window.overlay=range(lsm[[indx]]), useAbsoluteScale=F,
-                     outname=outname, quality=plot.quality, ...)
+      # plot.antsImage(template, lsm[[indx]], alpha=plot.alpha, axis=plot.axis,
+      #                window.overlay=range(lsm[[indx]]), useAbsoluteScale=F,
+      #                outname=outname, quality=plot.quality, ...)
+      plot(template, lsm[[indx]], alpha=plot.alpha, axis=plot.axis,
+                     window.overlay=range(lsm[[indx]]), useAbsoluteScale=FALSE,
+                     outname = outname, quality=plot.quality, ...)
     }
   }
   if (hastemplate & saveTemplate) antsImageWrite(template, filename = file.path(saveDir, 'template.nii.gz'))

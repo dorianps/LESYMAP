@@ -29,15 +29,15 @@
 #' @author Dorian Pustina
 #'
 #' @export
-lsm_chisq <- function(lesmat, behavior, YatesCorrect=T,
+lsm_chisq <- function(lesmat, behavior, YatesCorrect=TRUE,
                       runPermutations = F, nperm=2000,
-                      showInfo=T, ...) {
+                      showInfo=TRUE, ...) {
 
-  behavOn = sum(behavior==1)
+  behavOn = sum(behavior == 1)
   behavOff = length(behavior) - behavOn
   lesVox = colSums(lesmat)
   lesOnBehavOn = colSums(apply(lesmat, 2, function(x) x*behavior))
-  lesOnBehavOff = lesVox - lesOn
+  lesOnBehavOff = lesVox - lesOnBehavOn
   lesOffBehavOn = behavOn - lesOnBehavOn
   lesOffBehavOff = behavOff - lesOnBehavOff
   chimatrix = rbind( lesOnBehavOff, lesOnBehavOn, lesOffBehavOff, lesOffBehavOn)

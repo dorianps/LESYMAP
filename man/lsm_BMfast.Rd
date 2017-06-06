@@ -65,4 +65,3 @@ fast processing.
 \author{
 Dorian Pustina
 }
-
