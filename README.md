@@ -19,7 +19,7 @@ install.packages('devtools') # if you don't have it yet.
 devtools::install_github('dorianps/LESYMAP', dependencies = c("Depends", "Imports", "LinkingTo", "Suggests"))
 ```
 This will install all the dependencies, including ANTsR (may take one hour).  
-If this doesn't work, check out the more detailed [Installation Wiki](https://github.com/dorianps/LESYMAP/wiki/Installation).
+If this doesn't work, check out the more detailed [Installation Wiki](https://github.com/dorianps/LESYMAP/wiki/Lesymap-Installation).
   
 *****
 ## Use
