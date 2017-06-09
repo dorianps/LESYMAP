@@ -3,7 +3,7 @@ Lesion to Symptom Mapping (R toolbox)
 
 *****  
 #### Package details  
-Version:  0.0.0.9002  
+Version:  0.0.0.9003  
 Systems:  Linux, Mac or [Windows Linux Subsystem](https://github.com/stnava/ANTsR/wiki/Installing-ANTsR-in-Windows-10-(along-with-FSL,-Rstudio,-Freesurfer,-etc).)  
 Language: R (version 3.0 or above)  
 License:  Apache License 2.0  
