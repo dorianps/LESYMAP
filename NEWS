@@ -1,7 +1,7 @@
 LESYMAP v0.0.0.9003 (Release date: 2017-06-07)
 ==============
 
-  Fixed correct zscore sign coputation.
+  Fixed correct zscore sign computation.
   Verified zscores of BM and ttest match MRIcron results (N=131).
   Documentation and example enhancements.
 
