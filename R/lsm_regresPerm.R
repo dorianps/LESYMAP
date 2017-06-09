@@ -26,7 +26,7 @@ lsm_regresPerm <- function(lesmat, behavior) {
   temp = ANTsRCore::bigLMStats(temp)
   statistic = temp$beta.t
   pvalue = temp$beta.pval
-  zscore=qnorm(pvalue)
+  zscore = qnorm(pvalue, lower.tail = FALSE)
 
   return(list(
     statistic=statistic,

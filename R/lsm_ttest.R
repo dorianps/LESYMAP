@@ -27,6 +27,14 @@
 #' \item\code{zscore} - vector of zscores
 #' }
 #'
+#' @examples{
+#' set.seed(123)
+#' lesmat = matrix(rbinom(200,1,0.5), ncol=2)
+#' set.seed(123)
+#' behavior = rnorm(100)
+#' result = lsm_ttest(lesmat, behavior)
+#' }
+#'
 #' @author Dorian Pustina
 #'
 #' @export
@@ -43,7 +51,16 @@ lsm_ttest <- function(lesmat, behavior, var.equal = T, alternative='greater', ..
   temp = unlist(output)
   statistic = temp[seq(1,length(temp),by=2)]
   pvalue = temp[seq(2,length(temp),by=2)]
-  zscore = qnorm(pvalue)
+
+  if ((alternative == "less") | (alternative == "l")) {
+    zscore = qnorm(pvalue, lower.tail=TRUE)
+  }
+  else if ((alternative == "greater") | (alternative == "g")) {
+    zscore = qnorm(pvalue, lower.tail=FALSE)
+  }
+  else {
+    zscore = qnorm(pvalue, lower.tail=FALSE)
+  }
 
   # divide pvalues in half to get single-tailed threshold (careful on the assumption)
 

@@ -31,9 +31,9 @@ data follow an inverted relationship choose "less" or
 \value{
 List of objects returned:
 \itemize{
-\item\code{statistic} - vector of statistical values
-\item\code{pvalue} - vector of pvalues
-\item\code{zscore} - vector of zscores
+ \item\code{statistic} - vector of statistical values
+ \item\code{pvalue} - vector of pvalues
+ \item\code{zscore} - vector of zscores
 }
 }
 \description{
@@ -41,6 +41,16 @@ Lesion to symptom mapping performed on a prepared matrix.
 Brunner-Munzel tests are performed using each column
 of the matrix to split the behavioral scores in two
 groups.
+}
+\examples{
+{
+set.seed(123)
+lesmat = matrix(rbinom(200,1,0.5), ncol=2)
+set.seed(123)
+behavior = rnorm(100)
+result = lsm_BM(lesmat, behavior)
+}
+
 }
 \author{
 Dorian Pustina

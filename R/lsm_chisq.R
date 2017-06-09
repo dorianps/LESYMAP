@@ -26,6 +26,14 @@
 #' \item\code{zscore} - vector of zscores
 #' }
 #'
+#' @examples{
+#' set.seed(123)
+#' lesmat = matrix(rbinom(200,1,0.5), ncol=2)
+#' set.seed(1234)
+#' behavior = rbinom(100,1,0.5)
+#' result = lsm_chisq(lesmat, behavior)
+#' }
+#'
 #' @author Dorian Pustina
 #'
 #' @export
@@ -67,14 +75,15 @@ lsm_chisq <- function(lesmat, behavior, YatesCorrect=TRUE,
                 )
 
   temp = unlist(output)
-  statistic = temp[seq(1,length(temp),by=2)]
-  pvalue = temp[seq(2,length(temp),by=2)]
-  zscore = qchisq(pvalue, df=1)
-  zscore[is.infinite(zscore)] = 0 # fixing infinite values for p=1
+  statistic = unname( temp[seq(1,length(temp),by=2)] )
+  pvalue = unname( temp[seq(2,length(temp),by=2)] )
+  # zscore = qchisq(pvalue, df=1)
+  # zscore = qnorm(pvalue, lower.tail=TRUE)
+  # zscore[is.infinite(zscore)] = 0 # fixing infinite values for p=1
 
   return(list(
     statistic=statistic,
-    pvalue=pvalue,
-    zscore=zscore
+    pvalue=pvalue
+    #zscore=zscore
     ))
 }

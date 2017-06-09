@@ -22,9 +22,17 @@
 #' @return
 #' List of objects returned:
 #' \itemize{
-#' \item\code{statistic} - vector of statistical values
-#' \item\code{pvalue} - vector of pvalues
-#' \item\code{zscore} - vector of zscores
+#'  \item\code{statistic} - vector of statistical values
+#'  \item\code{pvalue} - vector of pvalues
+#'  \item\code{zscore} - vector of zscores
+#' }
+#'
+#' @examples{
+#' set.seed(123)
+#' lesmat = matrix(rbinom(200,1,0.5), ncol=2)
+#' set.seed(123)
+#' behavior = rnorm(100)
+#' result = lsm_BM(lesmat, behavior)
 #' }
 #'
 #' @author Dorian Pustina
@@ -54,14 +62,17 @@ lsm_BM <- function(lesmat, behavior, permuteNthreshold=9, nperm=10000,
 
 
   if ((alternative == "less") | (alternative == "l")) {
-    pvalue = pt(statistic, dof)
+    pvalue = pt(statistic, dof, lower.tail=TRUE)
+    zscore = qnorm(pvalue, lower.tail=TRUE)
   }
   else if ((alternative == "greater") | (alternative == "g")) {
-    pvalue = pt(statistic, dof, lower.tail=F)
+    pvalue = pt(statistic, dof, lower.tail=FALSE)
+    zscore = qnorm(pvalue, lower.tail=FALSE)
   }
   else {
     alternative = "two.sided"
-    pvalue = 2 * pt(abs(statistic), dof, lower.tail=F)
+    pvalue = 2 * pt(abs(statistic), dof, lower.tail=FALSE)
+    zscore = qnorm(pvalue, lower.tail=FALSE)
   }
 
 
@@ -92,16 +103,10 @@ lsm_BM <- function(lesmat, behavior, permuteNthreshold=9, nperm=10000,
     if (showInfo) cat(paste0('\n        No permutation needed, all voxels above permuteNthreshold.' ))
   }
 
-
-
-
-
-
-
-
-
+  # useless commands/comments
   # compute zscores
-  zscore = qnorm(pvalue)
+  # zscore = qnorm(pvalue)
+  # zscore = qt(pvalue, dof)
   # use below if you get values -Inf in zscores from p-values
   # which happens because of precision limitations
   # zscore = qnorm(dt(statistic,dof))

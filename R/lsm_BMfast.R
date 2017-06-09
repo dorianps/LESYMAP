@@ -1,5 +1,6 @@
 #' lsm_BMfast
 #'
+#'
 #' Lesion to symptom mapping performed on a prepared matrix.
 #' Brunner-Munzel tests are performed using each column
 #' of the matrix to split the behavioral scores in two
@@ -37,14 +38,17 @@
 #' \item\code{perm.FWERthresh} - (optional) permutation threshold established
 #' from the distribution of \code{perm.vector}
 #' }
-#'
-#' List with vectors of statistic, pvalue, zscore.
-#' If FWER is selected, perm.vector and perm.FWERthresh
-#' will also be returned.
+#' @export
+#' @examples{
+#' set.seed(123)
+#' lesmat = matrix(rbinom(200,1,0.5), ncol=2)
+#' set.seed(123)
+#' behavior = rnorm(100)
+#' result = lsm_BMfast(lesmat, behavior)
+#' }
 #'
 #' @author Dorian Pustina
 #'
-#' @export
 lsm_BMfast <- function(lesmat, behavior, permuteNthreshold=9, alternative="greater",
                        statOnly = F, nperm=1000,
                        FWERperm=F, v=1, pThreshold=0.05,
@@ -72,24 +76,34 @@ lsm_BMfast <- function(lesmat, behavior, permuteNthreshold=9, alternative="great
 
 
 
-  p.value = rep(1, length(statistic))
+  pvalue = rep(1, length(statistic))
   zscore =  rep(0, length(statistic))
 
   if (!statOnly) {
     if ((alternative == "less") | (alternative == "l")) {
-      p.value = pt(statistic, dof)
+      pvalue = pt(statistic, dof, lower.tail=TRUE)
+      zscore = qnorm(pvalue, lower.tail=TRUE)
+      #zscore = qt(pvalue, dof, , lower.tail=TRUE)
     }
     else if ((alternative == "greater") | (alternative == "g")) {
-      p.value = pt(statistic, dof, lower.tail=F)
+      pvalue = pt(statistic, dof, lower.tail=FALSE)
+      zscore = qnorm(pvalue, lower.tail=FALSE)
+      #zscore = qt(pvalue, dof, lower.tail=FALSE)
     }
     else {
       alternative = "two.sided"
-      p.value = 2 * pt(abs(statistic), dof, lower.tail=F)
-        # apply( rbind(   pt(statistic, dof, lower.tail=F)  , pt(statistic, dof, lower.tail=T) ), 2, min)
+      pvalue = 2 * pt(abs(statistic), dof, lower.tail=FALSE)
+      zscore = qnorm(pvalue, lower.tail=FALSE)
+      #zscore = qt(pvalue, dof, , lower.tail=FALSE)
     }
 
-    # compute zscores
-    zscore = qnorm(dt(statistic,dof))
+    #' Note on zscores
+    #' qnorm gives same values as MRIcron
+    #' and relies on the normal distribution.
+    #' however, we are computing t-scores, and
+    #' should have relied on that distribution,
+    #' which is the t-score itself.
+
   }
 
   if (FWERperm) {
@@ -115,7 +129,7 @@ lsm_BMfast <- function(lesmat, behavior, permuteNthreshold=9, alternative="great
 
     if (alternative == 'greater') statistic[statistic < FWEthresh] = 0
     if (alternative == 'less') statistic[statistic > FWEthresh] = 0
-    if (alternative == 'less') statistic[abs(statistic) > FWEthresh] = 0
+    if (alternative == 'two.sided') statistic[abs(statistic) > FWEthresh] = 0
   }
 
 
@@ -123,7 +137,7 @@ lsm_BMfast <- function(lesmat, behavior, permuteNthreshold=9, alternative="great
   # return outcome
   output = list(statistic=statistic)
   if (!statOnly) {
-    output$pvalue = p.value
+    output$pvalue = pvalue
     output$zscore = zscore
   }
 

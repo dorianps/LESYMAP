@@ -1,7 +1,7 @@
 Package: LESYMAP
 Title: Leions to Symptom Mapping in R
-Version: 0.0.0.9002
-Date: 2017-05-31
+Version: 0.0.0.9003
+Date: 2017-06-07
 Authors@R: person("Dorian", "Pustina", email='dorian.pustina@uphs.upenn.edu', role = c("aut", "cre"))
 Description: LESYMAP maps the specific brain areas responsible for
     cognitive deficits by taking a series of lesion maps and a vector

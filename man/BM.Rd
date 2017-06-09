@@ -12,12 +12,24 @@ BM(lesmat, behavior)
 \item{behavior}{vector of behavior}
 }
 \value{
-list of statistic and degrees of freedom
+Returned list with:
+\itemize{
+\item\code{statistic} statistical values
+\item\code{dof} degrees of freedom
+}
 }
 \description{
-Takes a binary matrix of voxels and a vector of behavior 
+Takes a binary matrix of voxels and a vector of behavior
 and runs Brunner-Munzel tests on each voxel.
 This function is not compiled and is slow.
+}
+\examples{
+set.seed(123)
+lesmat = matrix(rbinom(200,1,0.5), ncol=2)
+set.seed(123)
+behavior = rnorm(100)
+result = BM(lesmat, behavior)
+
 }
 \author{
 Dorian Pustina

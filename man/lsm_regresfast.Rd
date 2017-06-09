@@ -62,6 +62,16 @@ Lesion to symptom mapping performed on a prepared matrix.
 Regressions are performed between behavior and each column
 of the lesmat matrix. Fast function based on compiled code.
 }
+\examples{
+{
+set.seed(123)
+lesmat = matrix(rbinom(200,1,0.5), ncol=2)
+set.seed(123)
+behavior = rnorm(100)
+result = lsm_regresfast(lesmat, behavior)
+}
+
+}
 \author{
 Dorian Pustina
 }

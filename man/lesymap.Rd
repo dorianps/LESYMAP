@@ -246,7 +246,7 @@ some examples:
 }
 \examples{
 lesydata = file.path(find.package('LESYMAP'),'extdata')
-filenames = Sys.glob(file.path(lesydata, 'lesions', '*.nii.gz'))
+filenames = Sys.glob(file.path(lesydata, 'lesions', 'Subject*.nii.gz'))
 behavior = Sys.glob(file.path(lesydata, 'behavior', 'behavior.txt'))
 template = antsImageRead(
  Sys.glob(file.path(lesydata, 'template', 'ch2.nii.gz')))

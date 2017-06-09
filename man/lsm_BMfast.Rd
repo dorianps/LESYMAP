@@ -50,10 +50,6 @@ List of objects returned:
 \item\code{perm.FWERthresh} - (optional) permutation threshold established
 from the distribution of \code{perm.vector}
 }
-
-List with vectors of statistic, pvalue, zscore.
-If FWER is selected, perm.vector and perm.FWERthresh
-will also be returned.
 }
 \description{
 Lesion to symptom mapping performed on a prepared matrix.
@@ -62,6 +58,23 @@ of the matrix to split the behavioral scores in two
 groups. This function relies on a compiled version for
 fast processing.
 }
+\examples{
+{
+set.seed(123)
+lesmat = matrix(rbinom(200,1,0.5), ncol=2)
+set.seed(123)
+behavior = rnorm(100)
+result = lsm_BMfast(lesmat, behavior)
+}
+
+}
 \author{
 Dorian Pustina
+
+Note on zscores
+qnorm gives same values as MRIcron
+and relies on the normal distribution.
+however, we are computing t-scores, and
+should have relied on that distribution,
+which is the t-score itself.
 }

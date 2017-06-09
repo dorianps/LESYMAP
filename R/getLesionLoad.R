@@ -2,25 +2,39 @@
 #'
 #' Computes lesion loads from a series of images. A parcellation
 #' image (or simple mask) is required to define the regions from
-#' thish to compute the lesion load.
+#' which to compute the lesion load.
 #'
 #' @param lesions.list list of antsImages or filenames.
-#'  Must be binary (0 and 1 values)
-#' @param parcellation parcellation volume as antsImage or filename.
-#' @param label You can select the specific label number to compute
-#' the lesion load from. Default is all labels.
-#' @param mask If a mask is specified (antsImage or filename)
-#'  lesioned voxels outside the mask are ignored.
-#' @param binaryCheck check lesion files are binary (0 and 1). Will
-#' output an error if lesion files are not binary.
-#' @param keepAllLabels - by default we remove unaffected and 0
-#' labels. Set this to True to keep all labels.
-#' @param minSubjectPerLabel - minimum number of subjects a parcel
-#' must be lesioned to be kept among returned parcels
+#'  Must be binary (0 and 1 values).
+#' @param parcellation ansImage or filename of the parcellated volumes. A
+#' parcellation is an image brain regions showned as with integer values
+#' (i.e. ,1,2,3,...).
+#' @param label (default=NA) you can ask to get output for a specific label
+#' in the parcellation volume (i.e., label=122).
+#' @param mask (default=NA) if this mask is specified (antsImage or filename)
+#' lesioned voxels outside the mask are ignored. This is not a
+#' good choice, but in case you need it its there.
+#' @param binaryCheck (default=FALSE) check whether lesion maps are binary (0/1).
+#' Will output an error if lesion files are not binary.
+#' @param keepAllLabels (default=FALSE) by default labels are removed if affected
+#' in just few subjects. Setting this to TRUE will keep all labels.
+#' @param minSubjectPerLabel minimum number of subjects a parcel
+#' must be lesioned to keep and return it.
 #'
-#' @return Matrix of lesion loads (0 to 1). Each column is a single
-#' parcel and each row a single subject. Parcel numbers are placed
-#' as column names. 1 means 100% lesioned.
+#' @return
+#' \itemize{
+#'  \item{output}{Matrix of lesion loads between 0 and 1. 1 means 100\% lesioned.
+#'  Each column is a single parcel and each row a single subject. Parcel
+#'  numbers are placed as column names.}
+#'  }
+#'
+#' @examples
+#' lesydata = file.path(find.package('LESYMAP'),'extdata')
+#' filenames = Sys.glob(file.path(lesydata, 'lesions', '*.nii.gz'))
+#' lesions = imageFileNames2ImageList(filenames[1:10])
+#' parcellation = antsImageRead(
+#' file.path(lesydata,'template', 'Parcellation_403areas.nii.gz'))
+#' lesload = getLesionLoad(lesions, parcellation)
 #'
 #' @author Dorian Pustina
 #'

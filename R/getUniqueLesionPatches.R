@@ -2,21 +2,20 @@
 #'
 #' Compute uniqe patches of voxels with the same
 #' pattern of lesions in all subjects. Useful to understand
-#' the amount of unique information in a lesion dataset.
-#' I.e., your dataset can have 1000 subjects but still have
-#' little spatial discrimination because all lesions are
-#' similar
+#' the number of patterns that will be analyzed in a lesion dataset.
+#' A patch is a group of voxels, not necessarily close to each
+#' other, which have the same identical lesion pattern.
 #'
 #' @param lesions.list list of antsImages (faster) or filenames (slower)
-#' @param mask a mask image to restrict the search for patches. Will be
-#' automatically calculated if not provided (voxels > 0 in at
-#' least one subject)
-#' @param returnPatchMatrix logical, should the matrix of patches
-#' be returned
-#' @param thresholdPercent voxels with lesions in less than X percent of
-#'  subjects will not be considered (default 10\%)
-#' @param binaryCheck logical, if True images will be verified that are binary
-#' @param showInfo logical indicating whether to display information (default=T)
+#' @param mask (default=NA) a mask image to restrict the search for patches. Will be
+#' automatically calculated if not provided. Normally the mask restricts
+#' the search only to voxels lesioned in >10\% of subejcts.
+#' @param returnPatchMatrix (default=FALSE) logical, should the matrix of patches
+#' be returned. This is used in \code{\link{lesymap}} to run the analyses.
+#' @param thresholdPercent (default=0.1) voxels with lesions in less than
+#' this proportion of subjects will not be considered. I.e., 0.1 = 10\%.
+#' @param binaryCheck (default=FALSE) set this to TRUE to verify that maps are binary.
+#' @param showInfo (default=TRUE) logical indicating whether to display information.
 #'
 #' @return
 #'  List of objects named as follows:
@@ -39,16 +38,13 @@
 #'
 #'
 #' @examples
-#' \dontrun{
-#' onefile = system.file(file.path('extdata','lesions'), 'Subject_001.nii.gz', package='LESYMAP')
-#' niftifolder = dirname(onefile)
+#' lesydata = file.path(find.package('LESYMAP'),'extdata')
 #'
-#' filenames = Sys.glob( file.path(niftifolder, 'Subject*.nii.gz'))
-#' patches = getUniqueLesionPatches(filenames) # slower
+#' filenames = Sys.glob(file.path(lesydata, 'lesions', '*.nii.gz'))
+#' patchinfo = getUniqueLesionPatches(filenames[1:10]) # slower
 #'
-#' lesions = imageFileNames2ImageList(filenames)
-#' patches = getUniqueLesionPatches(lesions) # faster
-#' }
+#' lesions = imageFileNames2ImageList(filenames[1:10])
+#' patchinfo = getUniqueLesionPatches(lesions) # faster
 #'
 #' @author Dorian Pustina
 #'

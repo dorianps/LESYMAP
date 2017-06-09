@@ -47,8 +47,19 @@
 #' \item\code{CVcorrelation.pval} - (optional) p-value of the above correlation
 #' }
 #'
-#' List with vectors of \code{statistic}, \code{pvalue}, \code{optimalSparseness},
-#' \code{CVcorrelation.stat}, \code{CVcorrelation.pval}
+#' @examples{
+#'  \dontrun{
+#'   lesydata = file.path(find.package('LESYMAP'),'extdata')
+#'   filenames = Sys.glob(file.path(lesydata, 'lesions', '*.nii.gz'))
+#'   behavior = Sys.glob(file.path(lesydata, 'behavior', 'behavior.txt'))
+#'   behavior = read.table(behavior,header=FALSE)[,1]
+#'   avg = antsAverageImages(filenames)
+#'   mask = thresholdImage(avg, 0.1, Inf)
+#'   lesmat = imagesToMatrix(filenames,mask)
+#'   result = lsm_sccan(lesmat, behavior,
+#'        optimizeSparseness=F, sparseness=0.8, mask = mask)
+#'  }
+#' }
 #'
 #' @author Dorian Pustina
 #'

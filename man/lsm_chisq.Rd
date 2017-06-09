@@ -41,6 +41,16 @@ if you need to disable it. The behavior must
 be a binary vector. Exact p-values can be obtained with permutation
 based estimatins.
 }
+\examples{
+{
+set.seed(123)
+lesmat = matrix(rbinom(200,1,0.5), ncol=2)
+set.seed(1234)
+behavior = rbinom(100,1,0.5)
+result = lsm_chisq(lesmat, behavior)
+}
+
+}
 \author{
 Dorian Pustina
 }

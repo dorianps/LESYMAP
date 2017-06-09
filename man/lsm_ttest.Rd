@@ -39,6 +39,16 @@ T-tests are performed using each column of the
 matrix to split the behavioral scores in two groups. If
 var.equal=TRUE the Welch test is performed instead.
 }
+\examples{
+{
+set.seed(123)
+lesmat = matrix(rbinom(200,1,0.5), ncol=2)
+set.seed(123)
+behavior = rnorm(100)
+result = lsm_ttest(lesmat, behavior)
+}
+
+}
 \author{
 Dorian Pustina
 }

@@ -38,6 +38,14 @@
 #'
 #' }
 #'
+#' @examples{
+#' set.seed(123)
+#' lesmat = matrix(rbinom(200,1,0.5), ncol=2)
+#' set.seed(123)
+#' behavior = rnorm(100)
+#' result = lsm_regresfast(lesmat, behavior)
+#' }
+#'
 #' @author Dorian Pustina
 #'
 #' @export
@@ -61,8 +69,10 @@ lsm_regresfast <- function(lesmat, behavior, covariates=NA,
     if (class(covariates) != 'matrix') covariates=as.matrix(covariates)
     if (nrow(covariates) != nrow(lesmat)) stop('Mismatch rows in covariates and lesion matrix.')
     hascovariate = T
+    ncovariates = ncol(covariates)
   } else {
     covariates = as.matrix(rep(0, nrow(lesmat)))
+    ncovariates = 0
   }
 
 
@@ -70,7 +80,6 @@ lsm_regresfast <- function(lesmat, behavior, covariates=NA,
   temp = regresfast(lesmat, behavior, covariates, hascovariate)
   statistic = temp$statistic
   pvalue = pt( abs(statistic) * -1, temp$n - temp$kxmat, lower.tail = T, log.p = F) * 2
-  zscore = qnorm(pvalue)
 
 
   # user has requested permutation thresholding
@@ -140,7 +149,6 @@ lsm_regresfast <- function(lesmat, behavior, covariates=NA,
       FWEthresh = quantile(maxvec, probs = (1-pThreshold))
       statistic[abs(statistic) < FWEthresh] = 0
       pvalue = pt( abs(statistic) * -1, temp$n - temp$kxmat, lower.tail = T, log.p = F) * 2
-      zscore = qnorm(pvalue)
 
     } else if (clusterPerm) {
 
@@ -157,14 +165,14 @@ lsm_regresfast <- function(lesmat, behavior, covariates=NA,
       #       realstat = realstat*clustmask
       #       statistic = imageListToMatrix(list(realstat), samplemask)[1,]
       pvalue = pt( abs(statistic) * -1, temp$n - temp$kxmat, lower.tail = T, log.p = F) * 2
-      zscore = qnorm(pvalue) # compute zscore
 
     }
 
 
   }
 
-
+  zscore = qnorm(pvalue, lower.tail = FALSE)
+  # zscore = qt(pvalue, length(behavior) - 2 - ncovariates)
 
   # return outcome
   output = list(statistic=statistic,
