@@ -56,12 +56,12 @@ lsm_regresfast <- function(lesmat, behavior, covariates=NA,
                            clusterPerm = F, mask = NA, voxindx = NA, samplemask= NA, clusterPermThreshold=0.05,
                            showInfo=T, ...) {
 
-  if (!usePkg('Rcpp') | !usePkg('RcppArmadillo'))
-    stop('Packages Rcpp and RcppArmadillo must be installed to use BMfast.')
-  # below source still doesn't work in R CMD call
-  if (length(find('regresfast', mode='function')) == 0) {
-    Rcpp::sourceCpp(file.path( getSrcDirectory(lsm_BMfast) , 'regresfast.cpp'))
-  }
+#   if (!usePkg('Rcpp') | !usePkg('RcppArmadillo'))
+#     stop('Packages Rcpp and RcppArmadillo must be installed to use BMfast.')
+#   # below source still doesn't work in R CMD call
+#   if (length(find('regresfast', mode='function')) == 0) {
+#     Rcpp::sourceCpp(file.path( getSrcDirectory(lsm_BMfast) , 'regresfast.cpp'))
+#   }
 
   # check covariates are ok
   hascovariate = F
