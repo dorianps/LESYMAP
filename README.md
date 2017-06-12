@@ -14,7 +14,7 @@ License:  Apache License 2.0
   
 *****
 ## What does it do  
-Takes lesion maps (in template space) from patients with stroke together with patients' performance in cognitive tests, and maps the specific brain areas responsible for the cognitive deficit.  
+Takes lesion maps (in template space) from patients with stroke together with patients' performance scores in cognitive assessment batteries, and maps the specific brain areas responsible for the cognitive deficit.  
 
   
 *****
