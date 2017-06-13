@@ -6,8 +6,8 @@
 #' of filenames
 #' @param mask antsImage of mask to check
 #'
-#' @return Nothing returned, funciton stops with error if
-#' mask is not in same space as images in lesions.list
+#' @return Nothing is returned, function stops with error if
+#' mask is not in the same space as images in lesions.list
 #'
 #' @author Dorian Pustina
 #'

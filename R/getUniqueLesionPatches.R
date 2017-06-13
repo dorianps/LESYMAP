@@ -9,7 +9,8 @@
 #' @param lesions.list list of antsImages (faster) or filenames (slower)
 #' @param mask (default=NA) a mask image to restrict the search for patches. Will be
 #' automatically calculated if not provided. Normally the mask restricts
-#' the search only to voxels lesioned in >10\% of subejcts.
+#' the search only to voxels lesioned in >10\% of subejcts. To set this proportion
+#' use \code{thresholdPercent}.
 #' @param returnPatchMatrix (default=FALSE) logical, should the matrix of patches
 #' be returned. This is used in \code{\link{lesymap}} to run the analyses.
 #' @param thresholdPercent (default=0.1) voxels with lesions in less than

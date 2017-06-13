@@ -13,8 +13,8 @@ of filenames}
 \item{mask}{antsImage of mask to check}
 }
 \value{
-Nothing returned, funciton stops with error if
-mask is not in same space as images in lesions.list
+Nothing is returned, function stops with error if
+mask is not in the same space as images in lesions.list
 }
 \description{
 Function to check if mask is in the same space as inputs

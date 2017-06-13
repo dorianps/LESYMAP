@@ -8,9 +8,9 @@ lesyload_mricron(valfile, imageFolder = NA, returnFilenames = F,
   checkHeaders = T, showInfo = T)
 }
 \arguments{
-\item{valfile}{mricron filename with extention .val. The function
+\item{valfile}{mricron filename with extention *.val. The function
 will search for images in the same folder where valfile
-is located, unless you specify explicity imageFolder.
+is located, unless you specify \code{imageFolder}.
 If any of the files listed in the .val file are not
 found in the folder, an error will be displayed.}
 

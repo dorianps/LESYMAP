@@ -36,49 +36,49 @@ avoid the computation of patches each time.}
          (see \href{https://www.ncbi.nlm.nih.gov/pubmed/17583985}{Rorden (2007)}).
 
        \code{\link[=lsm_BMfast]{BMfast}} - ultrafast Brunner-Munzel with compiled code.
-         Requires Rcpp and RcppArmadillo packages. BMfast can be
+         BMfast can be
          combined with \code{multipleComparison='FWERperm'}
          to perform permutation based thresholding in a short time.
 
        \code{\link[=lsm_ttest]{ttest}} - Regular single tailed t-test. Variances of groups
          are assumed to be equal. This is the test used in the voxbo
-         software. Relies on t.test function in R. It is assumed
+         software. Relies on \code{t.test} function in R. It is assumed
          that 0 voxels are healthy, i.e., higher behavioral scores.
-         See the "alternative" parameter for inverted cases.
+         See the \code{alternative} parameter for inverted cases.
          (see \href{https://www.ncbi.nlm.nih.gov/pubmed/12704393}{Bates (2003)}).
 
        \code{\link[=lsm_ttest]{welch}} - t-test that assumes unequal variance between
-         groups. Relies on t.test function in R.
+         groups. Relies on \code{t.test} function in R.
 
        \code{\link[=lsm_regres]{regres}} - linear model between voxel values and behavior.
-         Uses the lm function in R. This is equivalent to a
-         t-test, but is useful when voxels are continuous, or
-         when you want to know the direction of relationship
-         without making assumtions. No covariates are allowed, but
-         see below.
+         Uses the \code{lm} function in R. This is equivalent to a
+         t-test, but is useful when voxel values are continuous. To model
+         the effect of covariates use the \code{"regresfast"} method
 
        \code{\link[=lsm_regresfast]{regresfast}} - ultrafast linear regressions with compiled code.
-         Requires Rcpp and RcppArmadillo packages. You can set covariates.
-         The effect of each voxel will be estimated with the formula:\cr
+         This method allows setting covariates. If covariates are specified
+         the effect of each voxel will be estimated with the formula:\cr
          \code{behavior ~ voxel + covar1 + covar2 + ...}\cr
-         This method allows permutation based thresholding with
-         \code{FWERperm} and \code{clusterPerm}. If covariates are used,
-         permutations are performed with the Freedman-Lane method
+         This method allows multiple comparison correction with permutation based methods
+         \code{"FWERperm"} and \code{"clusterPerm"}. If these corrections are required
+         and covariates are specified, the effect of each voxel is established with
+         the Freedman-Lane method
          (see \href{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4010955/}{Winkler (2014)}).
 
        \code{\link[=lsm_regresPerm]{regresPerm}} - linear model between voxel values and behavior.
-         P-values are computed through permutatons with the
-         lmp function in lmPerm package.
+         The p-value of each individual voxel us established by permuting voxel values. The
+         lmPerm package is used for this purpose. Note, these permutations do not correct for
+         multiple comparisons, they only establish voxel-wise p-values.
 
        \code{\link[=lsm_chisq]{chisq}} - chi-square test between voxel values and behavior.
-         The method is used when your behavior data are binary. Relies on the
-         \code{\link[stats]{chisq.test}}
-         R function and corrects individual voxel p-values with the Yates method (similar
-         to the voxbo software).
+         The method is used when behavioral scores are binary (i.e. presence of absence
+         of deficit). Relies on the \code{\link[stats]{chisq.test}}
+         R function. By default this method corrects individual voxel p-values with the
+         Yates method (the same approach offered in the Voxbo software).
 
-       \code{\link[=lsm_chisq]{chisqPerm}} - chi-square test between voxel values and behavior.
-         The method is used when your behavior data are binary. P-values are established
-         through permutation tests. Relies on the \code{\link[stats]{chisq.test}} R function.
+       \code{\link[=lsm_chisq]{chisqPerm}} - chi-square tests. P-values are established
+         through permutation tests instead of regular statistics.
+         Relies on the \code{\link[stats]{chisq.test}} R function.
 
        \code{\link[=lsm_sccan]{sccan}} - sparse canonical correlations (NEW). Multivariate
          method that considers all voxels at once. By default,
@@ -86,14 +86,15 @@ avoid the computation of patches each time.}
          sparseness value (how extensive the results should be). You
          can set \code{optimizeSparseness=FALSE} if you want to skip this
          optimization. The search for optimal sparsness provides
-         a cross-validated correlation measure that shows how well
-         SCCAN can predict new patients. If this correlation has
-         \code{p > pThreshold}, the entire solution will be ignored and a
+         a cross-validated correlation measure that shows how well the
+         sparseness value can predict new patients. If this predicive correlation
+         is below significance (i.e., below pThreshold), the entire solution will be ignored and a
          NULL result will be returned. Lesymap returns normalized (0-1)
          voxel weights converted to positive; you can use \code{rawStat=TRUE}
-         to retain the original voxel weights. Note that lesymap
-         scales and centers both lesion and behavior data pror to
-         processing (hardcoded in \link{lsm_sccan}).}
+         to retain the original voxel weights. Note that both lesion and behavior
+         data are scale and centered before running SCCAN (hardcoded in \link{lsm_sccan}).
+         You must apply the same scaling if you were to predict behavioral scores with
+         the obtained voxel weights.}
 
 \item{correctByLesSize}{whether to correct for lesion size in the analysis.
 Options are "none", "voxel", "behavior":
@@ -152,7 +153,7 @@ or exact number of subjects (10).}
 
 \item{noPatch}{logical (default=FALSE), if True avoids using patch information and
 will analyze all voxels. It will take longer and results will be
-worse due to more multuple comparison corrections. This argument
+worse due to more multiple comparison corrections. This argument
 is ignored when performing SCCAN analyses.}
 
 \item{showInfo}{logical (default=TRUE), display time-stamped info messages}
@@ -206,7 +207,7 @@ is performed using an optimized version of sparse canonical
 correlations (SCCAN).
 }
 \details{
-Several other parameters ccan be specified to lesymap()
+Several other parameters can be specified to lesymap()
 which will be passed to other called fuctions. Here are
 some examples:
 
@@ -215,14 +216,14 @@ some examples:
    of subjects will undergo permutation-based
    p-value estimation. Useful because the BM test
    is not valid when comparing groups with N < 9.
-   Note, permuted BM tests require the package
+   Note, permuted BM tests currently require the package
    'nparcomp'.
 
 \code{clusterPermThreshold} - threshold used to find the optimal cluster size when
    using 'clusterPerm' multiple comparison correction.
 
 \code{alternative} - (default='greater') for two sample tests (ttests and BM).
-   LESYMAP computes single tailed p-values, assuming
+   By default LESYMAP computes single tailed p-values assuming
    that non-lesioned 0 voxels have higher behavioral scores.
    You can specify the opposite relationship with alternative='less'
    or compute two tailed p-values with alternative='two.sided'.
@@ -238,7 +239,7 @@ some examples:
    each voxel (see Winkler 2014, Freedman 1983)
 
 \code{template} - antsImage or filename used for plotting the results if a saving
-   directory is specified (see saveDir)
+   directory is specified (see \code{saveDir})
 
 \code{v} - (default=1) which voxel to record for permutation based thresholding.
    Normally the peak voxel is used (1), but other voxels can be recorded.

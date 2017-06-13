@@ -15,7 +15,7 @@ or don't show the error and return the check
 status (FALSE). The returned values when
 showError=F are T=passed or F=Failed.}
 
-\item{binaryCheck}{boolean, check if images re binary (0/1 values).
+\item{binaryCheck}{boolean, check if images are binary (0/1 values).
 Useful when checking masks or lesions.
 This check slows the output of the function.}
 }
