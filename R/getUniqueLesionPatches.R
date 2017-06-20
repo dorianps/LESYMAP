@@ -25,8 +25,8 @@
 #'  \item\code{patchimg.samples} - antsImage mask of one representative voxel
 #'  for each patch. Can be used to extract the patchmatrix.
 #'  \item\code{patchimg.size} - antsImage with the patch size at every voxel
-#'  \item\code{patchimg.mask} - antsImage of full mask with all voxels. Can
-#'  be used to put back results in combination with \code{patchindx}.
+#'  \item\code{patchimg.mask} - antsImage of the mask used to extract patches. Can
+#'  be used to put back results when combined with \code{patchindx}.
 #'  \item\code{patchindx} - vector of patch membership for each voxel. Can
 #'  be used to put back results in an image.
 #'  \item\code{npatches} - number of unique patches in the image

@@ -136,8 +136,8 @@ lsm_BMfast <- function(lesmat, behavior, permuteNthreshold=9, alternative="great
 
   # return outcome
   output = list(statistic=statistic)
+  output$pvalue = pvalue
   if (!statOnly) {
-    output$pvalue = pvalue
     output$zscore = zscore
   }
 
