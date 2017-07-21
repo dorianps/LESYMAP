@@ -25,7 +25,7 @@ The quickest way to install is:
 install.packages('devtools') # if you don't have it yet.
 devtools::install_github('dorianps/LESYMAP', dependencies = c("Depends", "Imports", "LinkingTo", "Suggests"))
 ```
-This will install all the dependencies, including ANTsR (may take one hour on some computers). Here is an example [video](https://youtu.be/HSK2txFvbMU){:target="_blank"} of this installation.  
+This will install all the dependencies, including ANTsR (may take one hour on some computers). Here is an example [video](https://youtu.be/HSK2txFvbMU) of this installation.  
 If this doesn't work, check out the more detailed [installation instructions](https://github.com/dorianps/LESYMAP/wiki/Lesymap-Installation).
   
 *****
@@ -54,7 +54,8 @@ example(lesymap)
 18:36:05 Done! 1.5 mins   
 Hit <Return> to see next plot: 
 ```
-
+Checkout how this example looks on [the screen](https://youtu.be/0WQXEgip_zk).  
+For more detailed documentation check out the [Wiki page](https://github.com/dorianps/LESYMAP/wiki).
 *****    
 ### Note
 Package is under development, the behavior of some functions may change.
