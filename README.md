@@ -65,4 +65,4 @@ For more detailed documentation check out the [Wiki page](https://github.com/dor
 [Known limitations](https://github.com/dorianps/LESYMAP/wiki/Known-Limitations)  
 *****    
 ### Note
-Package is under development, the behavior of some functions may change.
+Package under development, the behavior of some functions may change.
