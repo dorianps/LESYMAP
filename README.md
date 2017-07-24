@@ -22,7 +22,7 @@ Takes lesion maps and cognitive performance scores from patients with stroke, an
 
 The quickest way to install is:
 ```
-install.packages('devtools') # if you don't have it yet.
+if (! 'devtools' %in% installed.packages()) install.packages('devtools')
 devtools::install_github('dorianps/LESYMAP')
 ```
 This will install all the dependencies, including ANTsR (may take one hour on some computers). Here is the video [video](https://youtu.be/HSK2txFvbMU) of the installation process.  
