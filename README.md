@@ -62,6 +62,7 @@ For more detailed documentation check out the [Wiki page](https://github.com/dor
 [Installing LESYMAP](https://github.com/dorianps/LESYMAP/wiki/Lesymap-Installation)  
 [Provided data](https://github.com/dorianps/LESYMAP/wiki/Data)  
 [Understanding permutations](https://github.com/dorianps/LESYMAP/wiki/Understanding-permutations)  
+[Known limitations](https://github.com/dorianps/LESYMAP/wiki/Known-Limitations)  
 *****    
 ### Note
 Package is under development, the behavior of some functions may change.
