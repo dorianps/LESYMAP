@@ -55,7 +55,7 @@ example(lesymap)
 Hit <Return> to see next plot: 
 ```
 Checkout how this example looks on [the screen](https://youtu.be/0WQXEgip_zk).  
-For more detailed documentation check out the [Wiki page](https://github.com/dorianps/LESYMAP/wiki).
+  
 *****    
 ## Documentation
 [Videos](https://github.com/dorianps/LESYMAP/wiki/Videos)  
@@ -63,6 +63,7 @@ For more detailed documentation check out the [Wiki page](https://github.com/dor
 [Provided data](https://github.com/dorianps/LESYMAP/wiki/Data)  
 [Understanding permutations](https://github.com/dorianps/LESYMAP/wiki/Understanding-permutations)  
 [Known limitations](https://github.com/dorianps/LESYMAP/wiki/Known-Limitations)  
+
 *****    
 ### Note
 Package under development, the behavior of some functions may change.
