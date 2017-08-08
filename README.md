@@ -58,7 +58,8 @@ Checkout how this example looks on [the screen](https://youtu.be/0WQXEgip_zk).
 *****    
 ## Documentation
 [What is lesion to symptom mapping](https://github.com/dorianps/LESYMAP/wiki/What-is-lesion-to-symptom-mapping)  
-[Videos](https://github.com/dorianps/LESYMAP/wiki/Videos)  
+[Fast lesion drawing in ITKsnap](https://www.youtube.com/watch?v=ZVmINdWk5R4)  
+[All Videos](https://github.com/dorianps/LESYMAP/wiki/Videos)  
 [Installing LESYMAP](https://github.com/dorianps/LESYMAP/wiki/Lesymap-Installation)  
 [Provided data](https://github.com/dorianps/LESYMAP/wiki/Data)  
 [Understanding permutations](https://github.com/dorianps/LESYMAP/wiki/Understanding-permutations)  
