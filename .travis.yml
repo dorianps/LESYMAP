@@ -7,9 +7,9 @@ compiler:
   - gcc
   #- clang
 
- matrix:
-   allow_failures:
-     - os: linux
+matrix:
+  allow_failures:
+    - os: linux
 
 dist: precise
 
