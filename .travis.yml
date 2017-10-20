@@ -11,7 +11,7 @@ matrix:
   allow_failures:
     - os: linux
 
-dist: precise
+dist: xenial
 
 language: r
 
