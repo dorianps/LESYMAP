@@ -294,6 +294,10 @@ lesymap <- function(lesions.list, behavior,
   if (multipleComparison %in% c('FWERperm', 'clusterPerm') & ! method %in% FWERenabled)
     stop(paste0('FWERperm enabled only with ', paste(FWERenabled, collapse=', '),
                 '. Please change your selection.'))
+  
+  # make sure multiple comparison is among accepted methods
+  if (! multipleComparison %in% p.adjust.methods & ! multipleComparison %in% c('FWERperm', 'clusterPerm'))
+    stop(paste0('Unknown multiple comparison correction: ', multipleComparison))
 
   # load behavior if filename
   if (checkAntsInput(behavior) == 'antsFiles') {
@@ -506,7 +510,7 @@ lesymap <- function(lesions.list, behavior,
   } else { haszscore=F }
 
   # multiple comparison correction
-  if (multipleComparison %in% p.adjust.methods[p.adjust.methods!='none'] ) {
+  if (multipleComparison %in% p.adjust.methods ) {
     if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Correcting p-values:',multipleComparison,'...\n'))
     pvalue.adj = p.adjust(pvalue, method = multipleComparison)
     statistic[pvalue.adj>=pThreshold] = 0
