@@ -4,8 +4,8 @@ os:
   - linux
   - osx
 compiler:
-  - gcc
-  #- clang
+  #- gcc
+  - clang
 
 # matrix:
   # allow_failures:
