@@ -7,9 +7,9 @@ compiler:
   #- gcc
   - clang
 
-# matrix:
-  # allow_failures:
-    # - os: osx
+ matrix:
+   allow_failures:
+     - os: linux
 
 dist: precise
 
@@ -21,11 +21,11 @@ r:
   - release
 
 before_install:
-  - export itkrrel=0.0.1
+  - export itkrrel=0.4.12
   - export gh_user=stnava
-  - export ANTsRCorerel=0.2
+  - export ANTsRCorerel=0.4.2.1
   - export reldir=latest
-  - export antsrrel=0.5.4
+  - export antsrrel=0.6.1
   - wget -O antsr_travis.sh http://bit.ly/antsr_travis_sh
   - chmod +x antsr_travis.sh
   - . ./antsr_travis.sh
