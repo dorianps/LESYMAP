@@ -1,4 +1,4 @@
-sudo: false
+sudo: true
 latex: false
 os:
   - linux
@@ -15,7 +15,7 @@ dist: xenial
 
 language: r
 
-cache: packages
+#cache: packages
 
 r:
   - release
