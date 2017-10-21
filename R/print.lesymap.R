@@ -14,7 +14,6 @@ print.lesymap <- function(x, ...) {
   cat("  Subjects            :", x$callinfo$Subjects, "\n")
   cat("  Method              :", x$callinfo$method, "\n")
   cat("  Voxels in mask      :", sum(x$mask.img), "\n")
-  cat("  Method              :", x$callinfo$method, "\n")
   cat("  Multiple comparison :", x$callinfo$multipleComparison, "\n")
   cat("  P-threshold         :", x$callinfo$pThreshold, "\n")
   cat("  Statistic range     :", paste(round(range(x$stat.img),1), collapse=" "), "\n")
