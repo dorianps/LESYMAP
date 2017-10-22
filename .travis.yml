@@ -26,6 +26,7 @@ before_install:
   - export ANTsRCorerel=0.4.2.1
   - export reldir=latest
   - export antsrrel=0.6.1
+  - sudo apt-get install libiomp5
   - wget -O antsr_travis.sh http://bit.ly/antsr_travis_sh
   - chmod +x antsr_travis.sh
   - . ./antsr_travis.sh
