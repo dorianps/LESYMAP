@@ -26,7 +26,7 @@ before_install:
   - export ANTsRCorerel=0.4.2.1
   - export reldir=latest
   - export antsrrel=0.6.1
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then sudo apt-get install libiomp5 ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install libiomp5 ; fi
   - wget -O antsr_travis.sh http://bit.ly/antsr_travis_sh
   - chmod +x antsr_travis.sh
   - . ./antsr_travis.sh
