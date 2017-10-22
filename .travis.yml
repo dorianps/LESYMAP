@@ -26,6 +26,7 @@ before_install:
   - export ANTsRCorerel=0.4.2.1
   - export reldir=latest
   - export antsrrel=0.6.1
+  - Rscript -e 'install.packages("RcppArmadillo")'
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -y install libiomp5 ; fi
   - wget -O antsr_travis.sh http://bit.ly/antsr_travis_sh
   - chmod +x antsr_travis.sh
