@@ -18,7 +18,7 @@ checkMask <- function(lesions.list, mask) {
   inputtype.mask = checkAntsInput(mask)
 
   if (inputtype.mask == 'antsFiles' & inputtype == 'antsFiles') { # MASK AND LESIONS ARE FILES
-    if (! checkFilenameHeaders(c(mask,lesions.list), showError = F) ) stop('Mask and images are in different space')
+    if (! checkFilenameHeaders(c(mask,lesions.list), showError = F) ) stop('Mask and image(s) are in different space')
 #     checkAntsInput(c(mask,lesions.list), checkHeaders = T)
   } else if (inputtype.mask == 'antsImage' & inputtype == 'antsImageList') { # MASK IS IMAGE, LESIONS ARE LIST
     if (!checkImageList(c(mask,lesions.list), showError = F) ) stop('Mask and images are in different space')
