@@ -8,7 +8,7 @@ using namespace Rcpp;
 
 // BMfast2
 List BMfast2(const arma::mat& X, const arma::colvec& y, bool computeDOF);
-RcppExport SEXP LESYMAP_BMfast2(SEXP XSEXP, SEXP ySEXP, SEXP computeDOFSEXP) {
+RcppExport SEXP _LESYMAP_BMfast2(SEXP XSEXP, SEXP ySEXP, SEXP computeDOFSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -21,7 +21,7 @@ END_RCPP
 }
 // BMfast
 List BMfast(const arma::mat& X, const arma::colvec& y);
-RcppExport SEXP LESYMAP_BMfast(SEXP XSEXP, SEXP ySEXP) {
+RcppExport SEXP _LESYMAP_BMfast(SEXP XSEXP, SEXP ySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -33,7 +33,7 @@ END_RCPP
 }
 // regresfast
 List regresfast(const arma::mat& X, const arma::colvec& y, const arma::mat& covariates, bool hascovar);
-RcppExport SEXP LESYMAP_regresfast(SEXP XSEXP, SEXP ySEXP, SEXP covariatesSEXP, SEXP hascovarSEXP) {
+RcppExport SEXP _LESYMAP_regresfast(SEXP XSEXP, SEXP ySEXP, SEXP covariatesSEXP, SEXP hascovarSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -47,9 +47,9 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"LESYMAP_BMfast2", (DL_FUNC) &LESYMAP_BMfast2, 3},
-    {"LESYMAP_BMfast", (DL_FUNC) &LESYMAP_BMfast, 2},
-    {"LESYMAP_regresfast", (DL_FUNC) &LESYMAP_regresfast, 4},
+    {"_LESYMAP_BMfast2", (DL_FUNC) &_LESYMAP_BMfast2, 3},
+    {"_LESYMAP_BMfast", (DL_FUNC) &_LESYMAP_BMfast, 2},
+    {"_LESYMAP_regresfast", (DL_FUNC) &_LESYMAP_regresfast, 4},
     {NULL, NULL, 0}
 };
 

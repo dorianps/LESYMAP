@@ -23,7 +23,7 @@
 #'
 #' @export
 BMfast2 <- function(X, y, computeDOF = TRUE) {
-    .Call('LESYMAP_BMfast2', PACKAGE = 'LESYMAP', X, y, computeDOF)
+    .Call('_LESYMAP_BMfast2', PACKAGE = 'LESYMAP', X, y, computeDOF)
 }
 
 #' @title Fast Brunner-Munzel tests (v1)
@@ -47,7 +47,7 @@ BMfast2 <- function(X, y, computeDOF = TRUE) {
 #'
 #' @export
 BMfast <- function(X, y) {
-    .Call('LESYMAP_BMfast', PACKAGE = 'LESYMAP', X, y)
+    .Call('_LESYMAP_BMfast', PACKAGE = 'LESYMAP', X, y)
 }
 
 #' @title Fast linear regressions
@@ -76,6 +76,6 @@ BMfast <- function(X, y) {
 #'
 #' @export
 regresfast <- function(X, y, covariates, hascovar = FALSE) {
-    .Call('LESYMAP_regresfast', PACKAGE = 'LESYMAP', X, y, covariates, hascovar)
+    .Call('_LESYMAP_regresfast', PACKAGE = 'LESYMAP', X, y, covariates, hascovar)
 }
 

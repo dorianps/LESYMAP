@@ -1,3 +1,10 @@
+LESYMAP v0.0.0.9004 (Release date: 2017-10-23)
+==============
+
+  New tool to bring lesions in template space.
+  Added MNI152_ICBM2009c in templates.
+  Minor bug fix with multipleComparison='none'
+
 LESYMAP v0.0.0.9003 (Release date: 2017-06-07)
 ==============
 
