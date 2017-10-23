@@ -133,15 +133,15 @@ registerLesionToTemplate <- function(subImg, subLesion,
   subImg = subImg %>% iMath('PeronaMalik', 10, 0.4)
 
 
-  #' here is the rationale
-  #' after skull stripping we take the mask and dilate it a bit
-  #' then we remove the lesion from it.
-  #' At the registration we use the brain-only image coupled with the
-  #' mask that is slightly larger. The reason for it is because we want
-  #' edge information (brain-air boundary) to improve the registration.
-  #' The approach is based on Nick Tustison's advice, see ANTsR issue:
-  #' https://github.com/ANTsX/ANTs/issues/483
-  #'
+  # here is the rationale
+  # after skull stripping we take the mask and dilate it a bit
+  # then we remove the lesion from it.
+  # At the registration we use the brain-only image coupled with the
+  # mask that is slightly larger. The reason for it is because we want
+  # edge information (brain-air boundary) to improve the registration.
+  # The approach is based on Nick Tustison's advice, see ANTsR issue:
+  # https://github.com/ANTsX/ANTs/issues/483
+  #
   if (skullStrip) {
     if (showInfo)
       cat(paste(format(Sys.time(), tstamp) , 'SKull-stripping subject\'s image...\n'))
