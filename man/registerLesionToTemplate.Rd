@@ -38,7 +38,8 @@ For faster registration you can try \code{SyN}.}
 
 \item{outprefix}{character of the prefix where to save the output. If
 this is set, most of images and transformations will be
-saved at the specified path/prefix. It is passed to
+saved at the specified path/prefix. The folder must exist or you
+will get an error. It is passed without modification to
 \code{antsRegistration}.}
 
 \item{tstamp}{format of the timestamp when displaying info messages.}
