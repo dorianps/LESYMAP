@@ -66,7 +66,7 @@
 #'  \item\code{subImgTemplate} - subject\'s image in template space
 #'  \item\code{subLesionTemplate} - subject\'s lesion in template space
 #'  \item\code{registration$inverse_subject2template} - transformation matrices subject to template
-#'  \item\code{registration$forward_template2subject} - transformation matrices tempalte to subject
+#'  \item\code{registration$forward_template2subject} - transformation matrices template to subject
 #' }
 #'
 #' @author Dorian Pustina
