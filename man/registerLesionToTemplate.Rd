@@ -5,8 +5,9 @@
 \title{registerLesionToTemplate}
 \usage{
 registerLesionToTemplate(subImg, subLesion, templateImg = NA,
-  templateBrainMask = NA, skullStrip = T, typeofTransform = "SyNCC",
-  outprefix = "", tstamp = "\%H:\%M:\%S", showInfo = T, ...)
+  templateBrainMask = NA, templateRegMask = NA, skullStrip = T,
+  typeofTransform = "SyNCC", outprefix = "", tstamp = "\%H:\%M:\%S",
+  showInfo = T, ...)
 }
 \arguments{
 \item{subImg}{antsImage or character filename of the anatomical
@@ -27,6 +28,10 @@ image. This image should be with skull included.}
 
 \item{templateBrainMask}{antsImage or filename of the template brain
 mask. This mask is needed for skull-stripped registrations.}
+
+\item{templateRegMask}{antsImage or filename of the template mask that includes
+the skull but no face. Useful for improving the skull 
+stripping process.}
 
 \item{skullStrip}{logical whether to remove the skull and perform
 brain-on-brain registration.}
