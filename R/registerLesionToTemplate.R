@@ -125,6 +125,13 @@ registerLesionToTemplate <- function(subImg, subLesion,
     templateRegMask = antsImageRead(templateRegMask)
   }
 
+  if ( is.na(templateBrainMask) & skullStrip) {
+    if (showInfo) cat(paste(format(Sys.time(), tstamp) ,
+                            'templateBrainMask not specified. No skull stripping will be performed...\n'))
+    skullStrip = FALSE
+  }
+
+
 
   # binarize mask inputs to be always 0-1
   subLesion = thresholdImage(subLesion, 0.1, Inf)
