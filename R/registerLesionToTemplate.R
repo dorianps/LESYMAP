@@ -164,7 +164,7 @@ registerLesionToTemplate <- function(subImg, subLesion,
   #
   if (skullStrip) {
     if (showInfo)
-      cat(paste(format(Sys.time(), tstamp) , 'SKull-stripping subject\'s image...\n'))
+      cat(paste(format(Sys.time(), tstamp) , 'Skull-stripping subject\'s image...\n'))
     temp = abpBrainExtraction(img = subImg, tem = templateImg,
                               temmask = templateBrainMask,
                               temregmask = templateRegMask,
