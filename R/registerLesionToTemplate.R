@@ -34,9 +34,9 @@
 #'
 #' @param templateBrainMask antsImage or filename of the template brain
 #'               mask. This mask is needed for skull-stripped registrations.
-#'               
+#'
 #' @param templateRegMask antsImage or filename of the template mask that includes
-#'               the skull but no face. Useful for improving the skull 
+#'               the skull but no face. Useful for improving the skull
 #'               stripping process.
 #'
 #' @param skullStrip logical whether to remove the skull and perform
@@ -62,7 +62,7 @@
 #' @param ... other arguments to pass to \code{antsRegistration}
 #'
 #' @export
-#' 
+#'
 #' @return
 #' List of objects returned:
 #' \itemize{
@@ -76,11 +76,11 @@
 #'
 #' @author Dorian Pustina
 #'
-#' 
+#'
 #'
 
 registerLesionToTemplate <- function(subImg, subLesion,
-                                     templateImg = NA, 
+                                     templateImg = NA,
                                      templateBrainMask = NA,
                                      templateRegMask = NA,
                                      skullStrip=T,
@@ -90,7 +90,7 @@ registerLesionToTemplate <- function(subImg, subLesion,
                                      showInfo = T,
                                       ...) {
 
-  
+
   # load provided MNI template if user did not specify
   if (is.na(templateImg)) {
     if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Template undefined, using provided MNI152_2009c\n'))
@@ -101,8 +101,8 @@ registerLesionToTemplate <- function(subImg, subLesion,
     templateRegMask = antsImageRead(file.path(mnipath,'mni_icbm152_t1_tal_nlin_sym_09c_mask_skullnoface.nii.gz'))
     checkMask(templateImg, templateBrainMask)
   }
-  
-  
+
+
   # load images if filenames are passed
   if ( checkAntsInput(subImg) == 'antsFiles') {
     if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Loading subject\'s anatomical...\n'))
@@ -128,7 +128,8 @@ registerLesionToTemplate <- function(subImg, subLesion,
 
   # binarize mask inputs to be always 0-1
   subLesion = thresholdImage(subLesion, 0.1, Inf)
-  templateBrainMask = thresholdImage(templateBrainMask, 0.1, Inf)
+  if ( !is.na(templateBrainMask) ) templateBrainMask = thresholdImage(templateBrainMask, 0.1, Inf)
+  if ( !is.na(templateRegMask) ) templateRegMask = thresholdImage(templateRegMask, 0.1, Inf)
 
   # make sure lesion and anatomical are in the same space
   if (showInfo)
@@ -157,7 +158,7 @@ registerLesionToTemplate <- function(subImg, subLesion,
   if (skullStrip) {
     if (showInfo)
       cat(paste(format(Sys.time(), tstamp) , 'SKull-stripping subject\'s image...\n'))
-    temp = abpBrainExtraction(img = subImg, tem = templateImg, 
+    temp = abpBrainExtraction(img = subImg, tem = templateImg,
                               temmask = templateBrainMask,
                               temregmask = templateRegMask,
                               regtype = 'SyNabp')
