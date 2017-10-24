@@ -116,11 +116,11 @@ registerLesionToTemplate <- function(subImg, subLesion,
     if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Loading template anatomical...\n'))
     templateImg = antsImageRead(templateImg)
   }
-  if ( !is.na(templateBrainMask) & checkAntsInput(templateBrainMask) == 'antsFiles') {
+  if ( !is.na(templateBrainMask) && checkAntsInput(templateBrainMask) == 'antsFiles') {
     if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Loading template brain mask...\n'))
     templateBrainMask = antsImageRead(templateBrainMask)
   }
-  if ( !is.na(templateRegMask) & checkAntsInput(templateRegMask) == 'antsFiles') {
+  if ( !is.na(templateRegMask) && checkAntsInput(templateRegMask) == 'antsFiles') {
     if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Loading template registration mask...\n'))
     templateRegMask = antsImageRead(templateRegMask)
   }
