@@ -93,8 +93,9 @@ registerLesionToTemplate <- function(subImg, subLesion,
   
   # load provided MNI template if user did not specify
   if (is.na(templateImg)) {
-    if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Template undefined, using provided MNI152_2009c...\n'))
+    if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Template undefined, using provided MNI152_2009c\n'))
     mnipath = file.path(find.package('LESYMAP'), 'extdata', 'template','other_templates', 'MNI152_2009c')
+    if (showInfo) cat(paste0('     ', mnipath,'\n') )
     templateImg = antsImageRead(file.path(mnipath,'mni_icbm152_t1_tal_nlin_sym_09c.nii.gz'))
     templateBrainMask = antsImageRead(file.path(mnipath,'mni_icbm152_t1_tal_nlin_sym_09c_mask.nii.gz'))
     templateRegMask = antsImageRead(file.path(mnipath,'mni_icbm152_t1_tal_nlin_sym_09c_mask_skullnoface.nii.gz'))
@@ -210,6 +211,9 @@ registerLesionToTemplate <- function(subImg, subLesion,
   output$subLesion = subLesion
   output$subImgTemplate = reg$warpedfixout
   output$subLesionTemplate = subLesionTemplate
+  output$templateImg = templateImg
+  output$templateBrainMask = templateBrainMask
+  output$templateRegMask = templateBrainMask
   output$registration = list()
   output$registration$inverse_subject2template = reg$invtransforms
   output$registration$forward_template2subject = reg$fwdtransforms
