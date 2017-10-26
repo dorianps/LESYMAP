@@ -1,26 +1,24 @@
-LESYMAP v0.0.0.9004 (Release date: 2017-10-23)
 ==============
+LESYMAP v0.0.0.9004 (Release date: 2017-10-23)
 
   New tool to bring lesions in template space.
   Added MNI152_ICBM2009c in templates.
   Minor bug fix with multipleComparison='none'
 
-LESYMAP v0.0.0.9003 (Release date: 2017-06-07)
 ==============
+LESYMAP v0.0.0.9003 (Release date: 2017-06-07)
 
   Fixed correct zscore sign computation.
   Verified zscores of BM and ttest match MRIcron results (N=131).
   Documentation and example enhancements.
 
-
-LESYMAP v0.0.0.9002 (Release date: 2017-06-05) John Muschelli
 ==============
+LESYMAP v0.0.0.9002 (Release date: 2017-06-05) John Muschelli
 
   Prepended naked calls with package name.
   Fixed travis requirements.
 
-
-LESYMAP v0.0.0.9001 (Release date: 2017-05-31)
 ==============
+LESYMAP v0.0.0.9001 (Release date: 2017-05-31)
 
   First commit.
