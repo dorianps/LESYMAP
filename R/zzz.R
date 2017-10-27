@@ -24,7 +24,7 @@
 
   # display message
   if (newversion == 1) {
-    packageStartupMessage(paste0('New LESYMAP version available: ', gitversion, ' (current ', installversion,')'))
-    packageStartupMessage('See version history at https://git.io/vFf6g')
+    packageStartupMessage(paste0('New LESYMAP available: ', gitversion, ' (installed ', installversion,')'))
+    packageStartupMessage('See changes at https://git.io/vFf6g')
   }
 }
