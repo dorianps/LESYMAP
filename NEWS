@@ -1,4 +1,9 @@
 ==============
+LESYMAP v0.0.0.9005 (Release date: 2017-10-23)
+
+  Added automatic new version check.
+
+==============
 LESYMAP v0.0.0.9004 (Release date: 2017-10-23)
 
   New tool to bring lesions in template space: registerLesionToTemplate
