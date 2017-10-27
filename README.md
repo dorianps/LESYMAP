@@ -61,7 +61,7 @@ Checkout how this example looks on [the screen](https://youtu.be/0WQXEgip_zk).
 [Fast lesion drawing in ITKsnap](https://www.youtube.com/watch?v=ZVmINdWk5R4)  
 [All Videos](https://github.com/dorianps/LESYMAP/wiki/Videos)  
 [Installing LESYMAP](https://github.com/dorianps/LESYMAP/wiki/Lesymap-Installation)  
-[Registering lesions in template space](https://github.com/dorianps/LESYMAP/wiki/Registering-lesions-in-template-space) [![New](http://adarshcredit.in/wp-content/uploads/2017/09/new-icon-1.gif)]  
+![New](http://adarshcredit.in/wp-content/uploads/2017/09/new-icon-1.gif)[Registering lesions in template space](https://github.com/dorianps/LESYMAP/wiki/Registering-lesions-in-template-space)  
 [Provided data](https://github.com/dorianps/LESYMAP/wiki/Data)  
 [Understanding permutations](https://github.com/dorianps/LESYMAP/wiki/Understanding-permutations)  
 [Known limitations](https://github.com/dorianps/LESYMAP/wiki/Known-Limitations)
