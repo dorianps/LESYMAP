@@ -18,6 +18,7 @@
 
   # Extract version info
   verline = grep('^Version: ', description.lines)
+  if (length(verline) == 0) return(NULL) # did not find any version line
   gitversion = gsub('^Version: ', '', description.lines[verline[1]])
   installversion = as.character(packageVersion('LESYMAP'))
   newversion = utils::compareVersion(gitversion,installversion)
