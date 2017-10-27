@@ -171,6 +171,7 @@ registerLesionToTemplate <- function(subImg, subLesion,
                               regtype = 'SyNabp')
     subImg = temp$brain
     subBrainMask = temp$bmask
+    subBrainMask = thresholdImage(subBrainMask + subLesion, 0.5, Inf)
     subBrainMask = subBrainMask %>% iMath('MD', 2)
     subRegMask = subBrainMask - subLesion
     templateImg = templateImg * templateBrainMask
