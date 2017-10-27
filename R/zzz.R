@@ -20,7 +20,7 @@
   verline = grep('^Version: ', description.lines)
   gitversion = gsub('^Version: ', '', description.lines[verline[1]])
   installversion = as.character(packageVersion('LESYMAP'))
-  newversion = compareVersion(gitversion,installversion)
+  newversion = utils::compareVersion(gitversion,installversion)
 
   # display message
   if (newversion == 1) {
