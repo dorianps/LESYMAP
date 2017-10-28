@@ -70,6 +70,9 @@
 #'  \item\code{subLesion} - subject\'s lesion map in native space
 #'  \item\code{subImgTemplate} - subject\'s image in template space
 #'  \item\code{subLesionTemplate} - subject\'s lesion in template space
+#'  \item\code{templateImg} - the template used to register the subject
+#'  \item\code{templateBrainMask} - the brain mask of the template image
+#'  \item\code{subLesionTemplate} - the template mask with skull and no face
 #'  \item\code{registration$inverse_subject2template} - transformation matrices subject to template
 #'  \item\code{registration$forward_template2subject} - transformation matrices template to subject
 #' }
@@ -222,7 +225,7 @@ registerLesionToTemplate <- function(subImg, subLesion,
   output$subLesionTemplate = subLesionTemplate
   output$templateImg = templateImg
   output$templateBrainMask = templateBrainMask
-  output$templateRegMask = templateBrainMask
+  output$templateRegMask = templateRegMask
   output$registration = list()
   output$registration$inverse_subject2template = reg$invtransforms
   output$registration$forward_template2subject = reg$fwdtransforms
