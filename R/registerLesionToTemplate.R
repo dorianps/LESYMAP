@@ -77,6 +77,7 @@
 #'  \item\code{registration$forward_template2subject} - transformation matrices template to subject
 #' }
 #'
+#' @examples
 #' \dontrun{
 #' anatomical = '/mnt/c/User/dp/Desktop/Subject1_anat.nii.gz'
 #' lesion = '/mnt/c/User/dp/Desktop/Subject1_les.nii.gz'
