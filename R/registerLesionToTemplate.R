@@ -81,7 +81,8 @@
 #' \dontrun{
 #' anatomical = '/mnt/c/User/dp/Desktop/Subject1_anat.nii.gz'
 #' lesion = '/mnt/c/User/dp/Desktop/Subject1_les.nii.gz'
-#' newles = registerLesionToTemplate(anatomical, lesion, outprefix = '/mnt/c/User/dp/Desktop/Subj1onTemplate_')sparseness=0.045, optimizeSparseness=FALSE)
+#' newles = registerLesionToTemplate(anatomical, lesion, 
+#'         outprefix = '/mnt/c/User/dp/Desktop/Subj1onTemplate_')
 #' }
 #' 
 #' @author Dorian Pustina
