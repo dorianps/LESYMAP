@@ -30,7 +30,7 @@ image. This image should be with skull included.}
 mask. This mask is needed for skull-stripped registrations.}
 
 \item{templateRegMask}{antsImage or filename of the template mask that includes
-the skull but no face. Useful for improving the skull 
+the skull but no face. Useful for improving the skull
 stripping process.}
 
 \item{skullStrip}{logical whether to remove the skull and perform
@@ -62,6 +62,9 @@ List of objects returned:
  \item\code{subLesion} - subject\'s lesion map in native space
  \item\code{subImgTemplate} - subject\'s image in template space
  \item\code{subLesionTemplate} - subject\'s lesion in template space
+ \item\code{templateImg} - the template used to register the subject
+ \item\code{templateBrainMask} - the brain mask of the template image
+ \item\code{subLesionTemplate} - the template mask with skull and no face
  \item\code{registration$inverse_subject2template} - transformation matrices subject to template
  \item\code{registration$forward_template2subject} - transformation matrices template to subject
 }
@@ -82,6 +85,14 @@ does not produce an inverse affine transformation explicitly, both
 forward and inverse affine transforms are identical. You can use ANTs
 to compute the inverse, or tell ANTsR if you need to invert an affine
 matrix applying the transformations (see \code{whichtoinvert}).
+}
+\examples{
+\dontrun{
+anatomical = '/mnt/c/User/dp/Desktop/Subject1_anat.nii.gz'
+lesion = '/mnt/c/User/dp/Desktop/Subject1_les.nii.gz'
+newles = registerLesionToTemplate(anatomical, lesion, outprefix = '/mnt/c/User/dp/Desktop/Subj1onTemplate_')sparseness=0.045, optimizeSparseness=FALSE)
+}
+
 }
 \author{
 Dorian Pustina
