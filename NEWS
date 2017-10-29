@@ -1,4 +1,10 @@
 ==============
+LESYMAP v0.0.0.9006 (Release date: 2017-10-29)
+
+  Fixes for BM zmap.val
+  Putting 1 instead of 0 for pval.img background
+  
+==============
 LESYMAP v0.0.0.9005 (Release date: 2017-10-23)
 
   Added automatic new version check.

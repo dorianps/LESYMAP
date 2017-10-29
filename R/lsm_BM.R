@@ -63,18 +63,13 @@ lsm_BM <- function(lesmat, behavior, permuteNthreshold=9, nperm=10000,
 
   if ((alternative == "less") | (alternative == "l")) {
     pvalue = pt(statistic, dof, lower.tail=TRUE)
-    zscore = qnorm(pvalue, lower.tail=TRUE)
-  }
-  else if ((alternative == "greater") | (alternative == "g")) {
+  } else if ((alternative == "greater") | (alternative == "g")) {
     pvalue = pt(statistic, dof, lower.tail=FALSE)
-    zscore = qnorm(pvalue, lower.tail=FALSE)
-  }
-  else {
+  } else {
     alternative = "two.sided"
     pvalue = 2 * pt(abs(statistic), dof, lower.tail=FALSE)
-    zscore = qnorm(pvalue, lower.tail=FALSE)
   }
-
+  
 
   # run permutation test on selected voxels
   if (sum(permindx) > 0) { # run only if any voxel needs permutated brunner-munzel
@@ -98,9 +93,28 @@ lsm_BM <- function(lesmat, behavior, permuteNthreshold=9, nperm=10000,
     temp = unlist(output)
     statistic[permindx] = temp[seq(1,length(temp),by=2)]
     pvalue[permindx] = temp[seq(2,length(temp),by=2)]
+    
+    # fixing pvalue == 0, must be a problem in nparcomp
+    pvalue[pvalue == 0] = 1/(nperm+1)
+    
     rm(temp, output)
   } else {
     if (showInfo) cat(paste0('\n        No permutation needed, all voxels above permuteNthreshold.' ))
+  }
+
+  
+  # compute zscores after permutation has updated pvalues
+  if ((alternative == "less") | (alternative == "l")) {
+    zscore = qnorm(pvalue, lower.tail=TRUE)
+  }
+  else if ((alternative == "greater") | (alternative == "g")) {
+    zscore = qnorm(pvalue, lower.tail=FALSE)
+  } else { 
+    neg = statistic<0
+    pos = statistic>0
+    zscore = statistic*0
+    zscore[neg] = qnorm(pvalue[neg], lower.tail=TRUE) 
+    zscore[pos] = qnorm(pvalue[pos], lower.tail=FALSE) 
   }
 
   # useless commands/comments
@@ -110,6 +124,13 @@ lsm_BM <- function(lesmat, behavior, permuteNthreshold=9, nperm=10000,
   # use below if you get values -Inf in zscores from p-values
   # which happens because of precision limitations
   # zscore = qnorm(dt(statistic,dof))
+  
+  # trying to avoid infitive values
+  zscore[is.nan(zscore)] = .Machine$double.xmax
+  zscore[is.na(zscore)] = .Machine$double.xmax
+  zscore[zscore==Inf] = .Machine$double.xmax
+  zscore[zscore==-Inf] = -.Machine$double.xmax
+  
 
   return(list(
     statistic=statistic,

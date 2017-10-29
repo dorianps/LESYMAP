@@ -531,6 +531,7 @@ lesymap <- function(lesions.list, behavior,
   if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Preparing images...\n'))
   vlsm.stat = makeImage(mask, voxval=statistic[voxindx])
   vlsm.pval = makeImage(mask, voxval=pvalue.adj[voxindx])
+  vlsm.pval[mask==0] = 1
   if (haszscore) {
     vlsm.zmap = makeImage(mask, voxval=zscore[voxindx])
   }
