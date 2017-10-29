@@ -129,7 +129,7 @@ lsm_BMfast <- function(lesmat, behavior, permuteNthreshold=9, alternative="great
 
     if (alternative == 'greater') statistic[statistic < FWEthresh] = 0
     if (alternative == 'less') statistic[statistic > FWEthresh] = 0
-    if (alternative == 'two.sided') statistic[abs(statistic) > FWEthresh] = 0
+    if (alternative == 'two.sided') statistic[abs(statistic) < FWEthresh] = 0
   }
 
 
