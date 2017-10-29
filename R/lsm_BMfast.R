@@ -117,19 +117,30 @@ lsm_BMfast <- function(lesmat, behavior, permuteNthreshold=9, alternative="great
     for (p in 1:nperm) {
       tempperm = BMfast2(lesmat, sample(behavior), computeDOF=FALSE)
       tempperm = sort(tempperm$statistic, decreasing = TRUE, method='quick')
+      # if we expect greater, get max value
       if (alternative == 'greater') maxvec[p] = tempperm[v]
+      # if we expect less, get min value
       if (alternative == 'less') maxvec[p] = tempperm[ length(tempperm) - v + 1 ]
-      if (alternative == 'two.sided') maxvec[p] = abs(tempperm)[v]
+      # if we expect twosided, get most extreme value
+      if (alternative == 'two.sided') {
+        thismax = tempperm[v]
+        thismin = tempperm[ length(tempperm) - v + 1 ]
+        maxvec[p] = ifelse(abs(thismin) > abs(thismax), thismin, thismax)
+      }
     }
 
+    if (alternative == 'greater') FWEquantile = (1-pThreshold)
+    if (alternative == 'less') FWEquantile = (pThreshold)
+    if (alternative == 'two.sided') FWEquantile = c(pThreshold/2,(1-pThreshold/2))
+        
     # threshold statistic, abs() needed to consider when peak statistic is negative
-    if (alternative == 'greater') FWEthresh = quantile(maxvec, probs = (1-pThreshold))
-    if (alternative == 'less') FWEthresh = quantile(maxvec, probs = (pThreshold))
-    if (alternative == 'two.sided') FWEthresh = quantile(maxvec, probs = (1-pThreshold)) # no need to take half pThreshold because we recorded the absolute, all top values are in the high side anyway
+    if (alternative == 'greater') FWEthresh = quantile(maxvec, probs = FWEquantile)
+    if (alternative == 'less') FWEthresh = quantile(maxvec, probs = FWEquantile)
+    if (alternative == 'two.sided') FWEthresh = quantile(maxvec, probs = FWEquantile)
 
     if (alternative == 'greater') statistic[statistic < FWEthresh] = 0
     if (alternative == 'less') statistic[statistic > FWEthresh] = 0
-    if (alternative == 'two.sided') statistic[abs(statistic) > FWEthresh] = 0
+    if (alternative == 'two.sided') statistic[statistic > FWEthresh[1] & statistic < FWEthresh[2] ] = 0
   }
 
 
@@ -141,8 +152,10 @@ lsm_BMfast <- function(lesmat, behavior, permuteNthreshold=9, alternative="great
     output$zscore = zscore
   }
 
-  if (FWERperm) output$perm.FWEthresh = FWEthresh
+  if (FWERperm) output$perm.FWEquantile = paste(FWEquantile, collapse=' | ')
+  if (FWERperm) output$perm.FWEthresh = paste(FWEthresh, collapse=' | ')
   if (FWERperm) output$perm.vector = maxvec
+  
 
   return(output)
 }
