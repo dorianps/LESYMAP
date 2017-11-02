@@ -73,6 +73,13 @@ List BMperm(const arma::mat& X, const arma::colvec& y,
 
       vec thisvox = X.col(vox);
 
+      // permute the voxel
+      if (perm < npermBM) {
+        while (all(X.col(vox) == thisvox)) {
+          thisvox = shuffle(X.col(vox));
+        }
+      }
+
       uvec indx0 = find(thisvox == 0);
       uvec indx1 = find(thisvox != 0);
 
@@ -113,24 +120,42 @@ List BMperm(const arma::mat& X, const arma::colvec& y,
 
       double s = N/( (n1+0.0) * (n2+0.0))*(S1/ (n2+0.0) + S2/ (n1+0.0));
 
-      statistic[vox] =  -(p-0.5)*sqrt( (N+0.0) / s ); // notice the inversion '-', to assume smaller behavior for more lesion
-
-
-      if (computeDOF) {
-        double m1 = mean(r.elem(indx0));
-        double m2 = mean(r.elem(indx1));
-        double v1 = sum(square(r.elem(indx0) - r1 - m1 + (n1 + 1)/2.0))/(n1 - 1.0);
-        double v2 = sum(square(r.elem(indx1) - r2 - m2 + (n2 + 1)/2.0))/(n2 - 1.0);
-        dfbm[vox] = (pow(n1 * v1 + n2 * v2, 2))/((pow(n1 * v1, 2))/(n1 - 1.0) + (pow(n2 * v2, 2))/(n2 - 1.0));
+      // if last loop, its the original order, save it to statistic
+      // otherwise is one of the permutations
+      if (perm == npermBM) {
+        statistic[vox] =  -(p-0.5)*sqrt( (N+0.0) / s ); // notice the inversion '-', to assume smaller behavior for more lesion
+      } else {
+        permvec[perm] = -(p-0.5)*sqrt( (N+0.0) / s );
       }
+
+      // // enable this if needed
+      // if (computeDOF) {
+      //   double m1 = mean(r.elem(indx0));
+      //   double m2 = mean(r.elem(indx1));
+      //   double v1 = sum(square(r.elem(indx0) - r1 - m1 + (n1 + 1)/2.0))/(n1 - 1.0);
+      //   double v2 = sum(square(r.elem(indx1) - r2 - m2 + (n2 + 1)/2.0))/(n2 - 1.0);
+      //   dfbm[vox] = (pow(n1 * v1 + n2 * v2, 2))/((pow(n1 * v1, 2))/(n1 - 1.0) + (pow(n2 * v2, 2))/(n2 - 1.0));
+      // }
 
 
     } // end perm loop
+
+    // now we have all permutation values, compute pvalue
+    // if positive calculate higher, if negative calculate lower
+    double excess = 0.0;
+    if (statistic[vox] > 0) {
+      excess = sum(permvec >= statistic[vox]);
+    } else {
+      excess = sum(permvec <= statistic[vox]);
+    }
+
+    pvalue[vox] = (excess + 1.0) / (npermBM + 1.0);
 
   } // end voxel loop
 
   // Return output list
   return List::create( Named("statistic") = statistic,
-                       Named("dfbm") = dfbm);
+                       Named("dfbm") = dfbm,
+                       Named("pvalue") = pvalue);
 
 }
