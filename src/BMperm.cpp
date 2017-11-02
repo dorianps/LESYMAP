@@ -20,8 +20,12 @@ using namespace arma;
 //' @param X binary matrix ov voxlels (columns) for all
 //' subjects (rows)
 //' @param y vector of behavioral scores.
-//' @param computeDOF (true) chooses whether to compute degrees
-//' of freedom. Set to false to save time during permutations.
+//' @param computeDOF (default true) chooses whether to compute
+//' degrees of freedom. Set to false to save time during permutations.
+//' @param nperm (default 20000) number of permutations to run at each
+//' voxel
+//' @param alternative (default 1) integer to select the tail of
+//' pvalues. 1-greater, 2-less, 3-two.sided
 //'
 //' @return List with these objects:
 //' - statistic - BM values
@@ -30,10 +34,11 @@ using namespace arma;
 //'
 //' @author Dorian Pustina
 //'
-//' /@export
+//' @export
 // [[Rcpp::export]]
 List BMperm(const arma::mat& X, const arma::colvec& y,
-                     int npermBM = 20000, bool computeDOF = true) {
+                    bool computeDOF = true,
+                    int npermBM = 20000, int alternative = 1) {
   // initialize output vectors
   int k = X.n_cols;
   int N = X.n_rows;
@@ -128,14 +133,14 @@ List BMperm(const arma::mat& X, const arma::colvec& y,
         permvec[perm] = -(p-0.5)*sqrt( (N+0.0) / s );
       }
 
-      // // enable this if needed
-      // if (computeDOF) {
-      //   double m1 = mean(r.elem(indx0));
-      //   double m2 = mean(r.elem(indx1));
-      //   double v1 = sum(square(r.elem(indx0) - r1 - m1 + (n1 + 1)/2.0))/(n1 - 1.0);
-      //   double v2 = sum(square(r.elem(indx1) - r2 - m2 + (n2 + 1)/2.0))/(n2 - 1.0);
-      //   dfbm[vox] = (pow(n1 * v1 + n2 * v2, 2))/((pow(n1 * v1, 2))/(n1 - 1.0) + (pow(n2 * v2, 2))/(n2 - 1.0));
-      // }
+      // enable this if needed
+      if (computeDOF && perm == npermBM) {
+        double m1 = mean(r.elem(indx0));
+        double m2 = mean(r.elem(indx1));
+        double v1 = sum(square(r.elem(indx0) - r1 - m1 + (n1 + 1)/2.0))/(n1 - 1.0);
+        double v2 = sum(square(r.elem(indx1) - r2 - m2 + (n2 + 1)/2.0))/(n2 - 1.0);
+        dfbm[vox] = (pow(n1 * v1 + n2 * v2, 2))/((pow(n1 * v1, 2))/(n1 - 1.0) + (pow(n2 * v2, 2))/(n2 - 1.0));
+      }
 
 
     } // end perm loop
@@ -143,10 +148,16 @@ List BMperm(const arma::mat& X, const arma::colvec& y,
     // now we have all permutation values, compute pvalue
     // if positive calculate higher, if negative calculate lower
     double excess = 0.0;
-    if (statistic[vox] > 0) {
+    // alternative == 1, greater
+    // alternative == 2, less
+    // alternative == 3 etc, two-sided
+    if (alternative == 1) {
       excess = sum(permvec >= statistic[vox]);
-    } else {
+    } else if (alternative == 2) {
       excess = sum(permvec <= statistic[vox]);
+    } else {
+      excess = sum(permvec <= -std::abs(statistic[vox]));
+      excess = excess + sum(permvec > std::abs(statistic[vox]));
     }
 
     pvalue[vox] = (excess + 1.0) / (npermBM + 1.0);

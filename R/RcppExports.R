@@ -65,8 +65,12 @@ BMfast <- function(X, y) {
 #' @param X binary matrix ov voxlels (columns) for all
 #' subjects (rows)
 #' @param y vector of behavioral scores.
-#' @param computeDOF (true) chooses whether to compute degrees
-#' of freedom. Set to false to save time during permutations.
+#' @param computeDOF (default true) chooses whether to compute
+#' degrees of freedom. Set to false to save time during permutations.
+#' @param nperm (default 20000) number of permutations to run at each
+#' voxel
+#' @param alternative (default 1) integer to select the tail of
+#' pvalues. 1-greater, 2-less, 3-two.sided
 #'
 #' @return List with these objects:
 #' - statistic - BM values
@@ -75,9 +79,9 @@ BMfast <- function(X, y) {
 #'
 #' @author Dorian Pustina
 #'
-#' /@export
-BMperm <- function(X, y, npermBM = 20000L, computeDOF = TRUE) {
-    .Call('_LESYMAP_BMperm', PACKAGE = 'LESYMAP', X, y, npermBM, computeDOF)
+#' @export
+BMperm <- function(X, y, computeDOF = TRUE, npermBM = 20000L, alternative = 1L) {
+    .Call('_LESYMAP_BMperm', PACKAGE = 'LESYMAP', X, y, computeDOF, npermBM, alternative)
 }
 
 #' @title Fast linear regressions

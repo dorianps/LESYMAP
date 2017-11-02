@@ -32,16 +32,17 @@ BEGIN_RCPP
 END_RCPP
 }
 // BMperm
-List BMperm(const arma::mat& X, const arma::colvec& y, int npermBM, bool computeDOF);
-RcppExport SEXP _LESYMAP_BMperm(SEXP XSEXP, SEXP ySEXP, SEXP npermBMSEXP, SEXP computeDOFSEXP) {
+List BMperm(const arma::mat& X, const arma::colvec& y, bool computeDOF, int npermBM, int alternative);
+RcppExport SEXP _LESYMAP_BMperm(SEXP XSEXP, SEXP ySEXP, SEXP computeDOFSEXP, SEXP npermBMSEXP, SEXP alternativeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const arma::mat& >::type X(XSEXP);
     Rcpp::traits::input_parameter< const arma::colvec& >::type y(ySEXP);
-    Rcpp::traits::input_parameter< int >::type npermBM(npermBMSEXP);
     Rcpp::traits::input_parameter< bool >::type computeDOF(computeDOFSEXP);
-    rcpp_result_gen = Rcpp::wrap(BMperm(X, y, npermBM, computeDOF));
+    Rcpp::traits::input_parameter< int >::type npermBM(npermBMSEXP);
+    Rcpp::traits::input_parameter< int >::type alternative(alternativeSEXP);
+    rcpp_result_gen = Rcpp::wrap(BMperm(X, y, computeDOF, npermBM, alternative));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -63,7 +64,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_LESYMAP_BMfast2", (DL_FUNC) &_LESYMAP_BMfast2, 3},
     {"_LESYMAP_BMfast", (DL_FUNC) &_LESYMAP_BMfast, 2},
-    {"_LESYMAP_BMperm", (DL_FUNC) &_LESYMAP_BMperm, 4},
+    {"_LESYMAP_BMperm", (DL_FUNC) &_LESYMAP_BMperm, 5},
     {"_LESYMAP_regresfast", (DL_FUNC) &_LESYMAP_regresfast, 4},
     {NULL, NULL, 0}
 };
