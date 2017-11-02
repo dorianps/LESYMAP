@@ -50,6 +50,36 @@ BMfast <- function(X, y) {
     .Call('_LESYMAP_BMfast', PACKAGE = 'LESYMAP', X, y)
 }
 
+#' @title Fast Brunner-Munzel tests (v2) with permutations
+#'
+#' @description
+#' Takes a binary matrix of voxels and a vector of behavior
+#' and runs Brunner-Munzel tests on each voxel.
+#' This is a fast function that corrects for infinite values
+#' with a similar approach as the nparcomp package.
+#' It calculates p-values by running permutations of each
+#' voxel and using the ratio of times the real BM score
+#' exceeds the permuted BM score.
+#'
+#'
+#' @param X binary matrix ov voxlels (columns) for all
+#' subjects (rows)
+#' @param y vector of behavioral scores.
+#' @param computeDOF (true) chooses whether to compute degrees
+#' of freedom. Set to false to save time during permutations.
+#'
+#' @return List with these objects:
+#' - statistic - BM values
+#' - dfbm - degrees of freedom
+#' - pvalue - permutation-based probability value
+#'
+#' @author Dorian Pustina
+#'
+#' /@export
+BMperm <- function(X, y, npermBM = 20000L, computeDOF = TRUE) {
+    .Call('_LESYMAP_BMperm', PACKAGE = 'LESYMAP', X, y, npermBM, computeDOF)
+}
+
 #' @title Fast linear regressions
 #'
 #' @description
