@@ -65,8 +65,8 @@ getUniqueLesionPatches <- function(lesions.list, mask=NA, returnPatchMatrix=F,
     else avgles = antsAverageImages(lesions.list)
 
     if (max(avgles) > 1) stop('Average lesion map exceeds 1. This is not possible.')
-    # compute mask
-    mask = thresholdImage(avgles, thresholdPercent, Inf)
+    # compute mask, no too few or too many subjects lesioned
+    mask = thresholdImage(avgles, thresholdPercent, 1 - thresholdPercent)
     if (thresholdPercent == 0) mask[avgles==0] = 0 # remove 0 voxels from mask
   }
 

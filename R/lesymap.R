@@ -294,7 +294,7 @@ lesymap <- function(lesions.list, behavior,
   if (multipleComparison %in% c('FWERperm', 'clusterPerm') & ! method %in% FWERenabled)
     stop(paste0('FWERperm enabled only with ', paste(FWERenabled, collapse=', '),
                 '. Please change your selection.'))
-  
+
   # make sure multiple comparison is among accepted methods
   if (! multipleComparison %in% p.adjust.methods & ! multipleComparison %in% c('FWERperm', 'clusterPerm'))
     stop(paste0('Unknown multiple comparison correction: ', multipleComparison))
@@ -388,7 +388,8 @@ lesymap <- function(lesions.list, behavior,
     if (input4D) avgles = getAverageOfTimeSeries(lesions.list)
     else avgles = antsAverageImages(lesions.list)
 
-    mask = thresholdImage(avgles, thresholdPercent, Inf)
+    # we remove voxels with too few, or too many, subjects
+    mask = thresholdImage(avgles, thresholdPercent, 1 - thresholdPercent)
     # in case user set minSubjectPerVoxel=0
     if (thresholdPercent == 0) mask[avgles==0] = 0
     writeavgles = T
