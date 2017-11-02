@@ -24,8 +24,21 @@ using namespace arma;
 //' @param hascovar logical to tell whether covariates
 //' should be used.
 //'
-//' @return List with (1) statistic, (2) n = number of
-//' subjects, (3) kxfm = degrees of freedom.
+//' @return List with:
+//' \itemize{
+//' \item\code{statistic} - regression t-score
+//' \item\code{n} - number of subjects
+//' \item\code{kxfm} - degrees of freedom.
+//' }
+//'
+//' @examples
+//' set.seed(1234)
+//' lesmat = matrix(rbinom(40,1,0.2), ncol=2)
+//' set.seed(1234)
+//' behavior = rnorm(20)
+//' test = LESYMAP::regresfast(lesmat, behavior, as.matrix(behavior), hascovar=FALSE)
+//' test$statistic[,1] # 0.6915683 1.1434760
+//' test$kxmat # 2
 //'
 //' @author Dorian Pustina
 //'

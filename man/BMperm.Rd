@@ -15,17 +15,19 @@ subjects (rows)}
 \item{computeDOF}{(default true) chooses whether to compute
 degrees of freedom. Set to false to save time during permutations.}
 
+\item{npermBM}{(default 20000) number of permutations to run at each
+voxel}
+
 \item{alternative}{(default 1) integer to select the tail of
 pvalues. 1-greater, 2-less, 3-two.sided}
-
-\item{nperm}{(default 20000) number of permutations to run at each
-voxel}
 }
 \value{
 List with these objects:
-- statistic - BM values
-- dfbm - degrees of freedom
-- pvalue - permutation-based probability value
+\itemize{
+\item\code{statistic} - BM values
+\item\code{dfbm} - degrees of freedom
+\item\code{pvalue} - permutation-based probability value
+}
 }
 \description{
 Takes a binary matrix of voxels and a vector of behavior
@@ -35,6 +37,17 @@ with a similar approach as the nparcomp package.
 It calculates p-values by running permutations of each
 voxel and using the ratio of times the real BM score
 exceeds the permuted BM score.
+}
+\examples{
+set.seed(1234)
+lesmat = matrix(rbinom(40,1,0.2), ncol=2)
+set.seed(1234)
+behavior = rnorm(20)
+test = LESYMAP::BMperm(lesmat, behavior, alternative=3)
+test$statistic[,1] # -2.0571825 -0.8259754
+test$dfbm[,1] # 16.927348  7.563432
+test$pvalue[,1] # 0.1427929 0.4102795
+
 }
 \author{
 Dorian Pustina

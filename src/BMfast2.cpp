@@ -20,8 +20,19 @@ using namespace arma;
 //' of freedom. Set to false to save time during permutations.
 //'
 //' @return List with two vectors:
-//' - statistic - BM values
-//' - dfbm - degrees of freedom
+//' \itemize{
+//' \item\code{statistic} - BM values
+//' \item\code{dfbm} - degrees of freedom
+//' }
+//'
+//' @examples
+//' set.seed(1234)
+//' lesmat = matrix(rbinom(40,1,0.2), ncol=2)
+//' set.seed(1234)
+//' behavior = rnorm(20)
+//' test = LESYMAP::BMfast2(lesmat, behavior)
+//' test$statistic[,1] # -2.0571825 -0.8259754
+//' test$dfbm[,1] # 16.927348  7.563432
 //'
 //' @author Dorian Pustina
 //'

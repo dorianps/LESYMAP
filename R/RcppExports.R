@@ -16,8 +16,19 @@
 #' of freedom. Set to false to save time during permutations.
 #'
 #' @return List with two vectors:
-#' - statistic - BM values
-#' - dfbm - degrees of freedom
+#' \itemize{
+#' \item\code{statistic} - BM values
+#' \item\code{dfbm} - degrees of freedom
+#' }
+#'
+#' @examples
+#' set.seed(1234)
+#' lesmat = matrix(rbinom(40,1,0.2), ncol=2)
+#' set.seed(1234)
+#' behavior = rnorm(20)
+#' test = LESYMAP::BMfast2(lesmat, behavior)
+#' test$statistic[,1] # -2.0571825 -0.8259754
+#' test$dfbm[,1] # 16.927348  7.563432
 #'
 #' @author Dorian Pustina
 #'
@@ -45,7 +56,7 @@ BMfast2 <- function(X, y, computeDOF = TRUE) {
 #'
 #' @author Dorian Pustina
 #'
-#' @export
+#' /@export
 BMfast <- function(X, y) {
     .Call('_LESYMAP_BMfast', PACKAGE = 'LESYMAP', X, y)
 }
@@ -67,15 +78,27 @@ BMfast <- function(X, y) {
 #' @param y vector of behavioral scores.
 #' @param computeDOF (default true) chooses whether to compute
 #' degrees of freedom. Set to false to save time during permutations.
-#' @param nperm (default 20000) number of permutations to run at each
+#' @param npermBM (default 20000) number of permutations to run at each
 #' voxel
 #' @param alternative (default 1) integer to select the tail of
 #' pvalues. 1-greater, 2-less, 3-two.sided
 #'
 #' @return List with these objects:
-#' - statistic - BM values
-#' - dfbm - degrees of freedom
-#' - pvalue - permutation-based probability value
+#' \itemize{
+#' \item\code{statistic} - BM values
+#' \item\code{dfbm} - degrees of freedom
+#' \item\code{pvalue} - permutation-based probability value
+#' }
+#'
+#' @examples
+#' set.seed(1234)
+#' lesmat = matrix(rbinom(40,1,0.2), ncol=2)
+#' set.seed(1234)
+#' behavior = rnorm(20)
+#' test = LESYMAP::BMperm(lesmat, behavior, alternative=3)
+#' test$statistic[,1] # -2.0571825 -0.8259754
+#' test$dfbm[,1] # 16.927348  7.563432
+#' test$pvalue[,1] # 0.1427929 0.4102795
 #'
 #' @author Dorian Pustina
 #'
@@ -103,8 +126,21 @@ BMperm <- function(X, y, computeDOF = TRUE, npermBM = 20000L, alternative = 1L) 
 #' @param hascovar logical to tell whether covariates
 #' should be used.
 #'
-#' @return List with (1) statistic, (2) n = number of
-#' subjects, (3) kxfm = degrees of freedom.
+#' @return List with:
+#' \itemize{
+#' \item\code{statistic} - regression t-score
+#' \item\code{n} - number of subjects
+#' \item\code{kxfm} - degrees of freedom.
+#' }
+#'
+#' @examples
+#' set.seed(1234)
+#' lesmat = matrix(rbinom(40,1,0.2), ncol=2)
+#' set.seed(1234)
+#' behavior = rnorm(20)
+#' test = LESYMAP::regresfast(lesmat, behavior, as.matrix(behavior), hascovar=FALSE)
+#' test$statistic[,1] # 0.6915683 1.1434760
+#' test$kxmat # 2
 #'
 #' @author Dorian Pustina
 #'

@@ -24,7 +24,7 @@ using namespace arma;
 //'
 //' @author Dorian Pustina
 //'
-//' @export
+//' /@export
 // [[Rcpp::export]]
 List BMfast(const arma::mat& X, const arma::colvec& y) {
   // initialize output vectors

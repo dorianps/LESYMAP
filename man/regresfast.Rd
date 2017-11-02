@@ -21,8 +21,12 @@ if covariates should be used or not.}
 should be used.}
 }
 \value{
-List with (1) statistic, (2) n = number of
-subjects, (3) kxfm = degrees of freedom.
+List with:
+\itemize{
+\item\code{statistic} - regression t-score
+\item\code{n} - number of subjects
+\item\code{kxfm} - degrees of freedom.
+}
 }
 \description{
 Takes a matrix of voxels and a vector of behavior
@@ -30,6 +34,16 @@ and runs fast regressions for each voxel. Covariates
 can be defined (i.e. age) to find the effect of each
 voxel on behavior within the context of other predictive
 factors.
+}
+\examples{
+set.seed(1234)
+lesmat = matrix(rbinom(40,1,0.2), ncol=2)
+set.seed(1234)
+behavior = rnorm(20)
+test = LESYMAP::regresfast(lesmat, behavior, as.matrix(behavior), hascovar=FALSE)
+test$statistic[,1] # 0.6915683 1.1434760
+test$kxmat # 2
+
 }
 \author{
 Dorian Pustina

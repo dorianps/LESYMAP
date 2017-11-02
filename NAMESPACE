@@ -2,7 +2,6 @@
 
 S3method(print,lesymap)
 export(BM)
-export(BMfast)
 export(BMfast2)
 export(BMperm)
 export(checkAntsInput)
