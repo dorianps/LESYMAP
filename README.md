@@ -53,7 +53,7 @@ example(lesymap)
 18:36:05 Done! 1.5 mins   
 Hit <Return> to see next plot: 
 ```
-Checkout how this example looks on [the screen](https://youtu.be/0WQXEgip_zk).  
+Check out how this example looks on [the screen](https://youtu.be/0WQXEgip_zk).  
   
 *****    
 ## Documentation
