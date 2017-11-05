@@ -13,17 +13,31 @@
 #' @param permuteNthreshold (default=9) Voxels lesioned in less than
 #' this number will undergo permutation based thresholding.
 #' See Medina et al 2010.
-#' @param nperm (default=1000) Number of permutations to perform when needed.
+#' @param permuteAllVoxelsBM (default=FALSE) whether to force the
+#' permutation-based p-value calulation for all voxels, instead of
+#' applying only to voxels below \code{permuteNthrehsold}. Setting this
+#' option to TRUE will force all voxels  undergo permutation-based
+#' p-value calculation.
+#' @param npermBM (default=20000) Number of permutations to perform
+#' at every single voxel below \code{permuteNthrehsold}. Note, this
+#' argument is different from \code{nperm}, which controls volume-based
+#' permutations to perform multiple comparison corrections with FWERperm.
+#' @param nperm (default=1000) Number of permutations to perform on
+#' entire volumes when needed for multiple comparisons corrections
+#' (i.e., in FWERperm).
 #' @param alternative (default="greater") It is assumed that
 #' healthy voxels (0) have greater behavioral scores. If your
 #' data follow an inverted relationship choose "less" or
 #' "two.sided".
 #' @param statOnly logical (default=FALSE), skips some computations,
-#' don't use unless you know it's effects
+#' mostly for internal use to speed up some things.
 #' @param FWERperm logical (default=FALSE) whether to perform permutation
 #' based FWER thresholding.
-#' @param v (default=1) which voxel to record at each permutation, first
-#' or other voxels (i.e., v=10 for 10 highest voxel)
+#' @param v (default=1) which voxel to record at each permutation with
+#' FWERperm. All software use the peak voxel (v=1), but you can choose
+#' a voxel further down the list to relax the threshold (i.e., v=10
+#' for 10 highest voxel)
+#' (see \href{https://www.ncbi.nlm.nih.gov/pubmed/12704393}{Mirman (2017)}).
 #' @param pThreshold (default=0.05) what threshold to use for FWER
 #' @param showInfo display info messagges when running the function.
 #' @param ... other arguments received from \code{\link{lesymap}}.
@@ -50,9 +64,10 @@
 #' @author Dorian Pustina
 #'
 lsm_BMfast <- function(lesmat, behavior, permuteNthreshold=9, alternative="greater",
-                       statOnly = F, nperm=1000,
-                       FWERperm=F, v=1, pThreshold=0.05,
-                       showInfo=F,...) {
+                       statOnly = FALSE, nperm=1000, npermBM=20000,
+                       FWERperm=FALSE, v=1, pThreshold=0.05,
+                       permuteAllVoxelsBM=FALSE,
+                       showInfo=FALSE, ...) {
 
 
   # check the assumption of min subjects in BM is not violated
@@ -60,14 +75,19 @@ lsm_BMfast <- function(lesmat, behavior, permuteNthreshold=9, alternative="great
   lesmat.colsums = colSums(lesmat)
   permindx = (lesmat.colsums)<=permuteNthreshold
   permindx = (nrow(lesmat) - lesmat.colsums)<=permuteNthreshold | permindx
-  if (sum(permindx) > 0 & !FWERperm) stop(paste(sum(permindx), 'voxels need BM permutation. This is not possible in BMfast, please choose regular BM.'))
+
+  # if all voxels to be permuted, turn on permuteAllVoxelsBM
+  if (all(permindx)) permuteAllVoxelsBM = TRUE
+
+  # if needed, force permutation on all voxels
+  if (permuteAllVoxelsBM) permindx[!permindx] = TRUE
 
   if (FWERperm) statOnly = T
 
   # main BM run
-  tic = Sys.time()
+  if (FWERperm) tic = Sys.time()
   temp = BMfast2(lesmat, behavior, computeDOF = !FWERperm)
-  onerun = as.double(difftime(Sys.time(),tic, units = 'sec'))
+  if (FWERperm) onerun = as.double(difftime(Sys.time(),tic, units = 'sec'))
   statistic = temp$statistic
   dof = temp$dfbm
 
@@ -82,19 +102,32 @@ lsm_BMfast <- function(lesmat, behavior, permuteNthreshold=9, alternative="great
   if (!statOnly) {
     if ((alternative == "less") | (alternative == "l")) {
       pvalue = pt(statistic, dof, lower.tail=TRUE)
-      zscore = qnorm(pvalue, lower.tail=TRUE)
-      #zscore = qt(pvalue, dof, , lower.tail=TRUE)
-    }
-    else if ((alternative == "greater") | (alternative == "g")) {
+    } else if ((alternative == "greater") | (alternative == "g")) {
       pvalue = pt(statistic, dof, lower.tail=FALSE)
-      zscore = qnorm(pvalue, lower.tail=FALSE)
-      #zscore = qt(pvalue, dof, lower.tail=FALSE)
-    }
-    else {
+    } else {
       alternative = "two.sided"
       pvalue = 2 * pt(abs(statistic), dof, lower.tail=FALSE)
-      zscore = qnorm(pvalue, lower.tail=FALSE)
-      #zscore = qt(pvalue, dof, , lower.tail=FALSE)
+    }
+
+    # run voxel-wise BM permutations when needed
+    if (any(permindx)) {
+      if (showInfo) cat(paste0('\n        running ',npermBM,' permutations on ', sum(permindx),' voxels below permuteNthreshold' ))
+
+      if ((alternative == "greater") | (alternative == "g")) {
+        BMpermalternative = 1
+      } else if ((alternative == "less") | (alternative == "l")) {
+        BMpermalternative = 2
+      } else if (alternative == "two.sided") {
+        BMpermalternative = 3
+      } else {
+        stop(paste('BMperm alternative not recognized:', alternative))
+      }
+
+      if (npermBM < 20000) warning('Number of permutations too small, consider increasing it.')
+
+      temp = BMperm(lesmat[,permindx], behavior, computeDOF = FALSE,
+                    alternative = BMpermalternative, npermBM = npermBM)
+      pvalue[permindx] = temp$pvalue
     }
 
     #' Note on zscores
@@ -103,7 +136,17 @@ lsm_BMfast <- function(lesmat, behavior, permuteNthreshold=9, alternative="great
     #' however, we are computing t-scores, and
     #' should have relied on that distribution,
     #' which is the t-score itself.
-
+    if ((alternative == "less") | (alternative == "l")) {
+      zscore = qnorm(pvalue, lower.tail=TRUE)
+      #zscore = qt(pvalue, dof, , lower.tail=TRUE)
+    } else if ((alternative == "greater") | (alternative == "g")) {
+      zscore = qnorm(pvalue, lower.tail=FALSE)
+      #zscore = qt(pvalue, dof, lower.tail=FALSE)
+    } else {
+      # alternative = "two.sided"
+      zscore = qnorm(pvalue, lower.tail=FALSE)
+      #zscore = qt(pvalue, dof, , lower.tail=FALSE)
+    }
   }
 
   if (FWERperm) {
@@ -129,15 +172,17 @@ lsm_BMfast <- function(lesmat, behavior, permuteNthreshold=9, alternative="great
       }
     }
 
+    # use pThreshold to establish quantile point
     if (alternative == 'greater') FWEquantile = (1-pThreshold)
     if (alternative == 'less') FWEquantile = (pThreshold)
     if (alternative == 'two.sided') FWEquantile = c(pThreshold/2,(1-pThreshold/2))
-        
-    # threshold statistic, abs() needed to consider when peak statistic is negative
+
+    # compute FWER threshold from distribution
     if (alternative == 'greater') FWEthresh = quantile(maxvec, probs = FWEquantile)
     if (alternative == 'less') FWEthresh = quantile(maxvec, probs = FWEquantile)
     if (alternative == 'two.sided') FWEthresh = quantile(maxvec, probs = FWEquantile)
 
+    # threshold statistics
     if (alternative == 'greater') statistic[statistic < FWEthresh] = 0
     if (alternative == 'less') statistic[statistic > FWEthresh] = 0
     if (alternative == 'two.sided') statistic[statistic > FWEthresh[1] & statistic < FWEthresh[2] ] = 0
@@ -156,7 +201,7 @@ lsm_BMfast <- function(lesmat, behavior, permuteNthreshold=9, alternative="great
   if (FWERperm) output$perm.FWEquantile = paste(FWEquantile, collapse=' | ')
   if (FWERperm) output$perm.FWEthresh = paste(FWEthresh, collapse=' | ')
   if (FWERperm) output$perm.vector = maxvec
-  
+
 
   return(output)
 }

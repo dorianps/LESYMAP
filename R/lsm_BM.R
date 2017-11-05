@@ -38,10 +38,11 @@
 #' @author Dorian Pustina
 #'
 #' @export
-#' @importFrom nparcomp npar.t.test
+# @importFrom nparcomp npar.t.test
 lsm_BM <- function(lesmat, behavior, permuteNthreshold=9, nperm=10000,
                    alternative='greater', showInfo=TRUE, ...) {
 
+  if (showInfo) warning('The BM method is deprecated and will be removed from future LESMAP versions. Please use method=\'BMfast\'.')
   statistic = pvalue = rep(NA, ncol(lesmat))
 
   # find voxels that need permutation
@@ -69,12 +70,13 @@ lsm_BM <- function(lesmat, behavior, permuteNthreshold=9, nperm=10000,
     alternative = "two.sided"
     pvalue = 2 * pt(abs(statistic), dof, lower.tail=FALSE)
   }
-  
+
 
   # run permutation test on selected voxels
   if (sum(permindx) > 0) { # run only if any voxel needs permutated brunner-munzel
 
-    if (showInfo) cat(paste0('\n        running permutation on ', sum(permindx),' voxels below permuteNthreshold' ))
+    if (showInfo) cat(paste0('\n        running ', nperm, ' permutations on ', sum(permindx),' voxels below permuteNthreshold' ))
+    if (nperm < 20000) warning('Number of permutations too small, consider increasing it.')
     if (! 'nparcomp' %in% rownames(installed.packages())) {
       stop('Permutation not possible without the nparcomp package. Try installing with install.packages("nparcomp")')
     }
@@ -93,28 +95,28 @@ lsm_BM <- function(lesmat, behavior, permuteNthreshold=9, nperm=10000,
     temp = unlist(output)
     statistic[permindx] = temp[seq(1,length(temp),by=2)]
     pvalue[permindx] = temp[seq(2,length(temp),by=2)]
-    
+
     # fixing pvalue == 0, must be a problem in nparcomp
     pvalue[pvalue == 0] = 1/(nperm+1)
-    
+
     rm(temp, output)
   } else {
     if (showInfo) cat(paste0('\n        No permutation needed, all voxels above permuteNthreshold.' ))
   }
 
-  
+
   # compute zscores after permutation has updated pvalues
   if ((alternative == "less") | (alternative == "l")) {
     zscore = qnorm(pvalue, lower.tail=TRUE)
   }
   else if ((alternative == "greater") | (alternative == "g")) {
     zscore = qnorm(pvalue, lower.tail=FALSE)
-  } else { 
+  } else {
     neg = statistic<0
     pos = statistic>0
     zscore = statistic*0
-    zscore[neg] = qnorm(pvalue[neg], lower.tail=TRUE) 
-    zscore[pos] = qnorm(pvalue[pos], lower.tail=FALSE) 
+    zscore[neg] = qnorm(pvalue[neg], lower.tail=TRUE)
+    zscore[pos] = qnorm(pvalue[pos], lower.tail=FALSE)
   }
 
   # useless commands/comments
@@ -124,13 +126,13 @@ lsm_BM <- function(lesmat, behavior, permuteNthreshold=9, nperm=10000,
   # use below if you get values -Inf in zscores from p-values
   # which happens because of precision limitations
   # zscore = qnorm(dt(statistic,dof))
-  
+
   # trying to avoid infitive values
   zscore[is.nan(zscore)] = .Machine$double.xmax
   zscore[is.na(zscore)] = .Machine$double.xmax
   zscore[zscore==Inf] = .Machine$double.xmax
   zscore[zscore==-Inf] = -.Machine$double.xmax
-  
+
 
   return(list(
     statistic=statistic,

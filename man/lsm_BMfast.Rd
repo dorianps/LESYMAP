@@ -5,8 +5,9 @@
 \title{lsm_BMfast}
 \usage{
 lsm_BMfast(lesmat, behavior, permuteNthreshold = 9, alternative = "greater",
-  statOnly = F, nperm = 1000, FWERperm = F, v = 1, pThreshold = 0.05,
-  showInfo = F, ...)
+  statOnly = FALSE, nperm = 1000, npermBM = 20000, FWERperm = FALSE,
+  v = 1, pThreshold = 0.05, permuteAllVoxelsBM = FALSE,
+  showInfo = FALSE, ...)
 }
 \arguments{
 \item{lesmat}{binary matrix (0/1) of voxels (columns)
@@ -24,17 +25,33 @@ data follow an inverted relationship choose "less" or
 "two.sided".}
 
 \item{statOnly}{logical (default=FALSE), skips some computations,
-don't use unless you know it's effects}
+mostly for internal use to speed up some things.}
 
-\item{nperm}{(default=1000) Number of permutations to perform when needed.}
+\item{nperm}{(default=1000) Number of permutations to perform on
+entire volumes when needed for multiple comparisons corrections
+(i.e., in FWERperm).}
+
+\item{npermBM}{(default=20000) Number of permutations to perform
+at every single voxel below \code{permuteNthrehsold}. Note, this
+argument is different from \code{nperm}, which controls volume-based
+permutations to perform multiple comparison corrections with FWERperm.}
 
 \item{FWERperm}{logical (default=FALSE) whether to perform permutation
 based FWER thresholding.}
 
-\item{v}{(default=1) which voxel to record at each permutation, first
-or other voxels (i.e., v=10 for 10 highest voxel)}
+\item{v}{(default=1) which voxel to record at each permutation with
+FWERperm. All software use the peak voxel (v=1), but you can choose
+a voxel further down the list to relax the threshold (i.e., v=10
+for 10 highest voxel)
+(see \href{https://www.ncbi.nlm.nih.gov/pubmed/12704393}{Mirman (2017)}).}
 
 \item{pThreshold}{(default=0.05) what threshold to use for FWER}
+
+\item{permuteAllVoxelsBM}{(default=FALSE) whether to force the
+permutation-based p-value calulation for all voxels, instead of
+applying only to voxels below \code{permuteNthrehsold}. Setting this
+option to TRUE will force all voxels  undergo permutation-based
+p-value calculation.}
 
 \item{showInfo}{display info messagges when running the function.}
 
