@@ -143,9 +143,11 @@ lsm_BMfast <- function(lesmat, behavior, permuteNthreshold=9, alternative="great
       zscore = qnorm(pvalue, lower.tail=FALSE)
       #zscore = qt(pvalue, dof, lower.tail=FALSE)
     } else {
-      # alternative = "two.sided"
-      zscore = qnorm(pvalue, lower.tail=FALSE)
-      #zscore = qt(pvalue, dof, , lower.tail=FALSE)
+      neg = statistic<0
+      pos = statistic>0
+      zscore = statistic*0
+      zscore[neg] = qnorm(pvalue[neg], lower.tail=TRUE)
+      zscore[pos] = qnorm(pvalue[pos], lower.tail=FALSE)
     }
   }
 
