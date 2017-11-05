@@ -527,6 +527,18 @@ lesymap <- function(lesions.list, behavior,
     if (haszscore) zscore = -(zscore)
   }
 
+  # a final check to make sure there are no
+  # infinite, na, or nan values
+  if (any(is.nan(statistic))) warning('NaN values detected in statistic.')
+  if (any(is.na(statistic))) warning('NA values detected in statistic.')
+  if (any(is.infinite(statistic))) warning('Infinite values detected in statistic.')
+  if (any(is.nan(pvalue.adj))) warning('NaN values detected in pvalues.')
+  if (any(is.na(pvalue.adj))) warning('NA values detected in pvalues.')
+  if (any(is.infinite(pvalue.adj))) warning('Infinite values detected in pvalues.')
+  if (haszscore && any(is.nan(zscore))) warning('NaN values detected in zscore')
+  if (haszscore && any(is.na(zscore))) warning('NA values detected in zscore')
+  if (haszscore && any(is.infinite(zscore))) warning('Infinite values detected in zscore')
+
 
   # put results in images
   if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Preparing images...\n'))
