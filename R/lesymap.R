@@ -328,6 +328,16 @@ lesymap <- function(lesions.list, behavior,
     input4D = T
   }
 
+  # image list might be from MRIcron, convert to binary
+  if (inputtype == 'antsImageList') {
+    maxval = max(lesions.list[[1]])
+    # perform binarization if needed
+    if (max(lesions.list[[1]]) > 1) {
+      if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Detected lesions values above 1. Rebinarizing 0/1...\n'))
+      for (i in 1:length(lesions.list)) lesions.list[[i]] = thresholdImage(lesions.list[[i]], 0.1, Inf)
+    }
+  }
+
   # check lesions and behavior have same length
   behavlen = length(behavior)
   imagelen = 0
