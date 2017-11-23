@@ -62,6 +62,7 @@ List of objects returned:
  \item\code{subLesion} - subject\'s lesion map in native space
  \item\code{subImgTemplate} - subject\'s image in template space
  \item\code{subLesionTemplate} - subject\'s lesion in template space
+ \item\code{subRegMask} - registration mask in native space
  \item\code{templateImg} - the template used to register the subject
  \item\code{templateBrainMask} - the brain mask of the template image
  \item\code{subLesionTemplate} - the template mask with skull and no face
@@ -90,7 +91,7 @@ matrix applying the transformations (see \code{whichtoinvert}).
 \dontrun{
 anatomical = '/mnt/c/User/dp/Desktop/Subject1_anat.nii.gz'
 lesion = '/mnt/c/User/dp/Desktop/Subject1_les.nii.gz'
-newles = registerLesionToTemplate(anatomical, lesion, 
+newles = registerLesionToTemplate(anatomical, lesion,
         outprefix = '/mnt/c/User/dp/Desktop/Subj1onTemplate_')
 }
 

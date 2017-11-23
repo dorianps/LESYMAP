@@ -70,6 +70,7 @@
 #'  \item\code{subLesion} - subject\'s lesion map in native space
 #'  \item\code{subImgTemplate} - subject\'s image in template space
 #'  \item\code{subLesionTemplate} - subject\'s lesion in template space
+#'  \item\code{subRegMask} - registration mask in native space
 #'  \item\code{templateImg} - the template used to register the subject
 #'  \item\code{templateBrainMask} - the brain mask of the template image
 #'  \item\code{subLesionTemplate} - the template mask with skull and no face
@@ -81,10 +82,10 @@
 #' \dontrun{
 #' anatomical = '/mnt/c/User/dp/Desktop/Subject1_anat.nii.gz'
 #' lesion = '/mnt/c/User/dp/Desktop/Subject1_les.nii.gz'
-#' newles = registerLesionToTemplate(anatomical, lesion, 
+#' newles = registerLesionToTemplate(anatomical, lesion,
 #'         outprefix = '/mnt/c/User/dp/Desktop/Subj1onTemplate_')
 #' }
-#' 
+#'
 #' @author Dorian Pustina
 #'
 
@@ -99,6 +100,8 @@ registerLesionToTemplate <- function(subImg, subLesion,
                                      showInfo = T,
                                       ...) {
 
+
+  toc = Sys.time()
 
   # load provided MNI template if user did not specify
   if (is.na(templateImg)) {
@@ -178,17 +181,27 @@ registerLesionToTemplate <- function(subImg, subLesion,
                               temmask = templateBrainMask,
                               temregmask = templateRegMask,
                               regtype = 'SyNabp')
-    subImg = temp$brain
+
     subBrainMask = temp$bmask
     subBrainMask = thresholdImage(subBrainMask + subLesion, 0.5, Inf)
-    subBrainMask = subBrainMask %>% iMath('MD', 2)
-    subRegMask = subBrainMask - subLesion
+    subBrainMaskMD = subBrainMask %>% iMath('MD', 2)
+    subRegMask = subBrainMaskMD - subLesion
+    subImg = subImg * subBrainMask
     templateImg = templateImg * templateBrainMask
-    rm(temp)
+
+    if (nchar(outprefix) > 0)
+      antsImageWrite(subBrainMask, filename = paste0(outprefix, '_subBrainMask.nii.gz'))
+    if (nchar(outprefix) > 0)
+      antsImageWrite(subImg, filename = paste0(outprefix, '_subBrainOnly.nii.gz'))
+
   } else {
     subRegMask = subImg * 0 + 1 - subLesion
   }
 
+
+  # save registration mask
+  if (nchar(outprefix) > 0)
+    antsImageWrite(subRegMask, filename = paste0(outprefix, '_subRegMask.nii.gz'))
 
 
   # run registration
@@ -229,6 +242,7 @@ registerLesionToTemplate <- function(subImg, subLesion,
   output$subLesion = subLesion
   output$subImgTemplate = reg$warpedfixout
   output$subLesionTemplate = subLesionTemplate
+  output$subRegMask = subRegMask
   output$templateImg = templateImg
   output$templateBrainMask = templateBrainMask
   output$templateRegMask = templateRegMask
@@ -236,6 +250,9 @@ registerLesionToTemplate <- function(subImg, subLesion,
   output$registration$inverse_subject2template = reg$invtransforms
   output$registration$forward_template2subject = reg$fwdtransforms
 
+  tic = Sys.time()
+  runtime = paste(round(as.double(difftime(tic,toc)),1), units(difftime(tic,toc)))
+  if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Done!',runtime,'\n'))
 
   return(output)
 
