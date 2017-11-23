@@ -242,6 +242,7 @@ registerLesionToTemplate <- function(subImg, subLesion,
   output$subLesion = subLesion
   output$subImgTemplate = reg$warpedfixout
   output$subLesionTemplate = subLesionTemplate
+  if (skullStrip) output$subBrainMask = subBrainMask
   output$subRegMask = subRegMask
   output$templateImg = templateImg
   output$templateBrainMask = templateBrainMask
