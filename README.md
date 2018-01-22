@@ -64,6 +64,7 @@ Check out how this example looks on [the screen](https://youtu.be/0WQXEgip_zk).
 ***[New]*** [Registering lesions in template space](https://github.com/dorianps/LESYMAP/wiki/Registering-lesions-in-template-space)  
 [Provided data](https://github.com/dorianps/LESYMAP/wiki/Data)  
 [Understanding permutations](https://github.com/dorianps/LESYMAP/wiki/Understanding-permutations)  
+[SCCAN questions](https://github.com/dorianps/LESYMAP/wiki/SCCAN-questions)  
 [Known limitations](https://github.com/dorianps/LESYMAP/wiki/Known-Limitations)
 
 *****    
