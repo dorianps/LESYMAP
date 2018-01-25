@@ -58,13 +58,13 @@ Check out how this example looks on [the screen](https://youtu.be/0WQXEgip_zk).
 *****    
 ## Documentation
 [What is lesion to symptom mapping](https://github.com/dorianps/LESYMAP/wiki/What-is-lesion-to-symptom-mapping)  
-[Fast lesion drawing in ITKsnap](https://www.youtube.com/watch?v=ZVmINdWk5R4)  
-[All Videos](https://github.com/dorianps/LESYMAP/wiki/Videos)  
 [Installing LESYMAP](https://github.com/dorianps/LESYMAP/wiki/Lesymap-Installation)  
-***[New]*** [Registering lesions in template space](https://github.com/dorianps/LESYMAP/wiki/Registering-lesions-in-template-space)  
+[Registering lesions in template space](https://github.com/dorianps/LESYMAP/wiki/Registering-lesions-in-template-space)  
 [Provided data](https://github.com/dorianps/LESYMAP/wiki/Data)  
 [Understanding permutations](https://github.com/dorianps/LESYMAP/wiki/Understanding-permutations)  
-[SCCAN questions](https://github.com/dorianps/LESYMAP/wiki/SCCAN-questions)  
+[Fast lesion drawing in ITKsnap](https://www.youtube.com/watch?v=ZVmINdWk5R4)  
+[All Videos](https://github.com/dorianps/LESYMAP/wiki/Videos)  
+***[New]*** [SCCAN questions](https://github.com/dorianps/LESYMAP/wiki/SCCAN-questions)  
 [Known limitations](https://github.com/dorianps/LESYMAP/wiki/Known-Limitations)
 
 *****    
