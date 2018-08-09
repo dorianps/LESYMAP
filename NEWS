@@ -3,7 +3,7 @@ LESYMAP v0.0.0.9008 (Release date: 2018-08-09)
 
   Fixed getLesionSize bug, now accepting filenames
   Removed direct 4D image operations, now converting to list
-  Improved binary lesion checks
+  More checks for filenames with 255 valued lesions
 
 ==============
 LESYMAP v0.0.0.9007 (Release date: 2017-11-05)

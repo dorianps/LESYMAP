@@ -335,12 +335,31 @@ lesymap <- function(lesions.list, behavior,
 
 
   ##############
+  # Few tests on images coming as filenames
+  # check proper binarization and 255 values, maybe preload
+  if (inputtype == 'antsFiles') {
+    if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Filenames as input, checking lesion values on 1st image...\n'))
+
+    temp = antsImageRead(lesions.list[1])
+    voxvals = unique(c(as.numeric(temp)))
+
+    if (length(voxvals) != 2) stop('Non binary image detected. Lesions should have only two values (0/1).')
+
+    if (any(! voxvals %in% c(0,1) )) {
+      if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Detected unusual lesion values, loading files into memory to fix...\n'))
+      lesions.list = imageFileNames2ImageList(lesions.list)
+      inputtype = 'antsImageList'
+    }
+  }
+
+
+  ##############
   # image list might be from MRIcron, convert to binary
   # if input='antsFiles', it needs a binary check later on lesmat
   if (inputtype == 'antsImageList') {
     rebinarize = FALSE
     for (i in 1:length(lesions.list)) {
-      if (max(lesions.list[[1]]) > 1) {
+      if (max(lesions.list[[i]]) > 1) {
         rebinarize = TRUE
         break
       }
@@ -355,7 +374,8 @@ lesymap <- function(lesions.list, behavior,
 
   #########
   # check antsImageList is binary
-  # for antsFiles, will check only lesmat later
+  # for antsFiles, we checked only 1st, and
+  # will check lesmat later
   if (binaryCheck & inputtype == 'antsImageList') {
     if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Verifying that lesions are binary 0/1...\n'))
     checkImageList(lesions.list, binaryCheck = T)
