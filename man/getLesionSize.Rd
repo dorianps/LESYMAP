@@ -4,14 +4,16 @@
 \alias{getLesionSize}
 \title{getLesionSize}
 \usage{
-getLesionSize(lesions.list)
+getLesionSize(lesions.list, showInfo = TRUE)
 }
 \arguments{
-\item{lesions.list}{List of antsImages. For proper
-measurement, images must be binary.}
+\item{lesions.list}{List of antsImages or vector of filenames.
+It is assumed that images are binary (0/1).}
+
+\item{showInfo}{logical show or not informations/warnings}
 }
 \value{
-vector of lesion sizes
+vector of lesion sizes in mm3
 }
 \description{
 Compute lesion sizes from a list of antsImages.

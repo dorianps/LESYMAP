@@ -310,52 +310,74 @@ lesymap <- function(lesions.list, behavior,
 
   # make sure input is a list or filenames
   if ( !(inputtype %in% c('antsImageList', 'antsFiles', 'antsImage')) ) {
-    stop('lesions.list must be a list of antsImages or a vector of filenames')
+    stop('Unrecognized input: lesions.list should be a 4D antsImage, a list of antsImages, or a vector of filenames')
   }
 
-  # for a single filename, load it, must be a 4D file
-  input4D = F
+  ##############
+  # single filename, check it's 4D, load it if filename, unpack it to list
   if (inputtype == 'antsFiles' & length(lesions.list) == 1) {
     temp = antsImageHeaderInfo(lesions.list[1])
     if (temp$nDimensions != 4) stop('File is not a 4D image. You must point to a 4D file when a single filename is defined.')
     if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Loading 4D image...'))
     lesions.list = antsImageRead(lesions.list[1])
     if (showInfo) cat(paste( dim(lesions.list)[4], 'images present.\n'))
-    inputtype = 'antsImage'
-    input4D = T
+    if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Converting 4D image into 3D image list...\n'))
+    lesions.list = splitNDImageToList(lesions.list)
+    invisible(gc()) # free some memory after conversion
+    inputtype = 'antsImageList'
   } else if (inputtype == 'antsImage') {
-    if (lesions.list@dimension != 4) stop('Input is an image but is not 4D.')
-    input4D = T
+    if (lesions.list@dimension != 4) stop('Input is a single image but is not 4D.')
+    if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Single 4D image passed, converting to 3D image list...\n'))
+    lesions.list = splitNDImageToList(lesions.list)
+    invisible(gc()) # free some memory after conversion
+    inputtype = 'antsImageList'
   }
 
+
+  ##############
   # image list might be from MRIcron, convert to binary
+  # if input='antsFiles', it needs a binary check later on lesmat
   if (inputtype == 'antsImageList') {
-    maxval = max(lesions.list[[1]])
+    rebinarize = FALSE
+    for (i in 1:length(lesions.list)) {
+      if (max(lesions.list[[1]]) > 1) {
+        rebinarize = TRUE
+        break
+      }
+    }
     # perform binarization if needed
-    if (max(lesions.list[[1]]) > 1) {
+    if (rebinarize) {
       if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Detected lesions values above 1. Rebinarizing 0/1...\n'))
       for (i in 1:length(lesions.list)) lesions.list[[i]] = thresholdImage(lesions.list[[i]], 0.1, Inf)
+      binaryCheck = FALSE # no need to check binarization anymore
     }
   }
 
+  #########
+  # check antsImageList is binary
+  # for antsFiles, will check only lesmat later
+  if (binaryCheck & inputtype == 'antsImageList') {
+    if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Verifying that lesions are binary 0/1...\n'))
+    checkImageList(lesions.list, binaryCheck = T)
+  }
+
+  #########
   # check lesions and behavior have same length
-  behavlen = length(behavior)
-  imagelen = 0
-  if (inputtype %in% c('antsImageList','antsFiles')) imagelen = length(lesions.list) # 3D inputs
-  else if (inputtype == 'antsImage') imagelen = dim(lesions.list)[4] # 4D input
+  if (length(lesions.list) != length(behavior)) stop('Different lengths between lesions and behavior vector.')
 
-  if (imagelen != behavlen) stop('Different lengths between lesions and behavior vector.')
-
+  ########
   # check behavior is binary if needed
   if (method %in% c('chisq', 'chisqPerm')) {
     if (length(unique(behavior)) != 2) stop(paste0('The method "', method, '" requries binary behavioral scores.'))
   }
 
+  ########
   # special case for SCCAN
   if (method %in% c('sccan', 'sccanRaw') ) {
-    if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'SCCAN method: ignoring patch and multiple comparison...\n'))
+    if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'SCCAN method: ignoring patch, nperm, and multiple comparison...\n'))
     multipleComparison = 'none'
     noPatch = T
+    nperm=0
   }
 
 
@@ -384,8 +406,7 @@ lesymap <- function(lesions.list, behavior,
     checkMask(lesions.list, mask)
 
   } else { # DEFINE THE MASK
-
-    if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Computing mask from average >=',minSubjectPerVoxel,'...\n'))
+    if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Analyzing only voxels lesioned >=',minSubjectPerVoxel,'subjects...\n'))
     # compute thresholdPercent based on minSubjectPerVoxel
     # it's used to remove voxels lesioned in few subjects
     if (!is.numeric(minSubjectPerVoxel) & is.character(minSubjectPerVoxel)) { # input is percentage
@@ -395,12 +416,11 @@ lesymap <- function(lesions.list, behavior,
     }
 
     # compute average map
-    if (input4D) avgles = getAverageOfTimeSeries(lesions.list)
-    else avgles = antsAverageImages(lesions.list)
+    avgles = antsAverageImages(lesions.list)
 
     # we remove voxels with too few, or too many, subjects
     mask = thresholdImage(avgles, thresholdPercent, 1 - thresholdPercent)
-    # in case user set minSubjectPerVoxel=0
+    # if user set minSubjectPerVoxel=0, mask is all 1, so fix it
     if (thresholdPercent == 0) mask[avgles==0] = 0
     writeavgles = T
 
@@ -410,6 +430,7 @@ lesymap <- function(lesions.list, behavior,
 
 
 
+  ##########
   # get patch information
   haslesmat = F
   if (noPatch) {
@@ -453,28 +474,30 @@ lesymap <- function(lesions.list, behavior,
     if (!haslesmat) lesmat = imageListToMatrix(lesions.list, voxmask)
   } else if (inputtype == 'antsFiles') { # vector of filenames
     if (!haslesmat) lesmat = imagesToMatrix(lesions.list, voxmask)
-  } else if (inputtype == 'antsImage') {
-    if (!haslesmat) lesmat = timeseries2matrix(lesions.list, voxmask)
   }
 
   if (showInfo) cat(paste0( paste(dim(lesmat), collapse='x'), '\n'))
 
 
-
+  ###########
   # check the matrix is binary
+  # at this point discrepancies come only from unchecked filenames
   if (binaryCheck) {
     if ( !all(lesmat %in% 0:1) )
-      stop('Lesion matrix is not binary, detected voxels other than 0/1.\n Check images with checkImageList(...,binaryCheck=T) to find the offending image.')
+      stop('Voxels other than 0/1 detected in lesion matrix.
+           To find offending image, try:
+           lesions=imageFileNames2ImageList(filenames)
+           checkImageList(lesions,binaryCheck=T).')
   }
 
 
   # residualize by lesion size eventually
   if (correctByLesSize == 'behavior') {
     if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Correcting for lesion size:',correctByLesSize,'...\n'))
-    behavior = residuals(lm(behavior ~ getLesionSize(lesions.list)))
+    behavior = residuals(lm(behavior ~ getLesionSize(lesions.list, showInfo)))
   } else if (correctByLesSize == 'voxel') {
     if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Correcting for lesion size:',correctByLesSize,'...\n'))
-    lesvals = 1/sqrt(getLesionSize(lesions.list))
+    lesvals = 1/sqrt(getLesionSize(lesions.list, showInfo))
     lesmat = apply(lesmat, 2, function(x) x*lesvals )
   }
 
