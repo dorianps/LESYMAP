@@ -426,7 +426,7 @@ lesymap <- function(lesions.list, behavior,
     checkMask(lesions.list, mask)
 
   } else { # DEFINE THE MASK
-    if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Analyzing only voxels lesioned >=',minSubjectPerVoxel,'subjects...\n'))
+    if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Searching voxels lesioned >=',minSubjectPerVoxel,'subjects...\n'))
     # compute thresholdPercent based on minSubjectPerVoxel
     # it's used to remove voxels lesioned in few subjects
     if (!is.numeric(minSubjectPerVoxel) & is.character(minSubjectPerVoxel)) { # input is percentage
