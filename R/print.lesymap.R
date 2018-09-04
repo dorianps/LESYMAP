@@ -11,6 +11,7 @@
 #' @export
 print.lesymap <- function(x, ...) {
   cat("Lesymap Summary:\n")
+  cat("  Version             :", x$callinfo$LesymapVersion, "\n")
   cat("  Subjects            :", x$callinfo$Subjects, "\n")
   cat("  Method              :", x$callinfo$method, "\n")
   cat("  Voxels in mask      :", sum(x$mask.img), "\n")
@@ -19,7 +20,6 @@ print.lesymap <- function(x, ...) {
   cat("  Statistic range     :", paste(round(range(x$stat.img),1), collapse=" "), "\n")
   cat("  Significant voxels  :", sum(x$stat.img!=0), "\n")
   cat("  Runtime             :", x$callinfo$Runtime, "\n")
-  cat("  Version             :", x$callinfo$LesymapVersion, "\n")
   cat("  ... save the output for more info ...\n")
   cat("\n")
 }

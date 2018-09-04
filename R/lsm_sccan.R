@@ -11,28 +11,49 @@
 #' @param lesmat matrix of voxels (columns) and subjects (rows).
 #' @param behavior vector of behavioral scores.
 #' @param mask antsImage binary mask to put back voxels in image.
-#' @param rawStat logical (default=FALSE) whether to skip
-#' the normalization of values and thresholding at 0.1.
-#' If TRUE, the raw voxel weights will be returned.
+#' @param rawStat logical (default=FALSE) whether to skip converting all
+#' weights to positive, normalizing 0-1, and removing weights < 0.1.
+#' If TRUE, the raw voxel weights will be returned as returned by
+#' \code{\link[ANTsR]{sparseDecom2}}.
 #' @param optimizeSparseness logical (default=TRUE) whether to
-#' run the sparseness optimization routine. If false, the defau
-#' sparseness value will be used. If sparseness is manually set
-#' this flag decides if the manual sparseness will be checked
-#' with cross validations.
+#' run the sparseness optimization routine. If false, the default
+#' sparseness value will be used. If sparseness is manually defined
+#' this flag decides if cross validated correlations will be
+#' computed for the defined sparseness.
 #' @param pThreshold (default=0.05) If cross validated
 #' correlations show significance below this value
 #' the results are considered null and an empty
 #' map is returned.
 #' @param showInfo logical (default-TRUE) display messages
 #' @param tstamp timestamp format used in LESYMAP
-#' @param sparseness (default=1) SCCAN parameter, see \code{\link[ANTsR]{sparseDecom2}}
+#' @param sparseness (default=1) SCCAN parameter. Setting this
+#' manually is not recommended. For more, see
+#' \code{\link[ANTsR]{sparseDecom2}}.
 #' @param mycoption (default=1) SCCAN parameter, see \code{\link[ANTsR]{sparseDecom2}}
 #' @param robust (ddefault=1) SCCAN parameter, see \code{\link[ANTsR]{sparseDecom2}}
-#' @param nvecs (default=1) SCCAN parameter, see \code{\link[ANTsR]{sparseDecom2}}
+#' @param nvecs (default=1) SCCAN parameter. Normally only
+#' one eigenvector of weights is obtained in LESYMAP. Multiple
+#' maps/eigenvectors can be retrieved for mapping full
+#' deficit profiles in the future. For more, see
+#' \code{\link[ANTsR]{sparseDecom2}}
 #' @param cthresh (default=150) SCCAN parameter, see \code{\link[ANTsR]{sparseDecom2}}
 #' @param its (default=20) SCCAN parameter, see \code{\link[ANTsR]{sparseDecom2}}
-#' @param smooth (default=0.4) SCCAN parameter, see \code{\link[ANTsR]{sparseDecom2}}
-#' @param npermsSCCAN (default=0) SCCAN permutations, see \code{\link[ANTsR]{sparseDecom2}}
+#' @param smooth (default=0.4) SCCAN parameter. Determines the
+#' amount of smoothing of weights in image space performed by
+#' \code{\link[ANTsR]{sparseDecom2}}. The current default value
+#' is somewhat arbitrary, it was not determined through
+#' systematic simulations.
+#' @param npermsSCCAN (default=0) SCCAN permutations. In theory can be
+#' used to determine if the cross-correlation between the two sides
+#' (behavior and lesions) is not random. However, LESYMAP uses
+#' k-fold validations, which are faster; this option has not been
+#' tested. For more,  see \code{\link[ANTsR]{sparseDecom2}}.
+#' @param maxBased (default=FALSE) SCCAN parameter. Simulates the
+#' 10% thresholding of voxel weights already in SCCAN iterations
+#' in ANTsR. As a result, calculations are faster while results
+#' are similar. Method is not tested thoroughly. Note, optimal
+#' sparseness will be different if \code{maxBased=TRUE} compared
+#' to the standard SCCAN run.
 #' @param ... other arguments received from \code{\link{lesymap}}.
 #'
 #' @return
@@ -74,6 +95,7 @@ lsm_sccan <- function(lesmat, behavior, mask, rawStat=F, showInfo=T, optimizeSpa
                       its=20,
                       npermsSCCAN=0,
                       smooth=0.4,
+                      maxBased=FALSE,
                       ...) {
 
   sparseness.behav = -0.99
@@ -100,6 +122,7 @@ lsm_sccan <- function(lesmat, behavior, mask, rawStat=F, showInfo=T, optimizeSpa
                                             nvecs=nvecs, its=its, npermsSCCAN=npermsSCCAN,
                                             smooth=smooth, sparseness.behav=sparseness.behav,
                                             showInfo=showInfo, tstamp=tstamp,
+                                            maxBased=maxBased,
                                             sparseness=sparseness[1], justValidate=justValidate, ...)
 
     sparseness = c(sparse.optim$minimum, sparseness.behav)
@@ -137,17 +160,19 @@ lsm_sccan <- function(lesmat, behavior, mask, rawStat=F, showInfo=T, optimizeSpa
     cat(paste('\n            Cluster threshold =', cthresh[1]))
     cat(paste('\n            Smooth sigma =', smooth))
     cat(paste('\n            Iterations =', its))
+    cat(paste('\n            maxBased =', maxBased))
     cat(paste('\n            Permutations =', npermsSCCAN))
   }
 
   sccan = sparseDecom2( inmats,inmask=sccan.masks, mycoption=mycoption,
                            robust=robust, sparseness=sparseness, nvecs=nvecs,
-                           cthresh=cthresh,its=its, perms=npermsSCCAN, smooth=smooth )
+                           cthresh=cthresh,its=its, perms=npermsSCCAN, smooth=smooth,
+                        maxBased=maxBased)
 
   if (!rawStat) {
     statistic = sccan$eig1 / max(abs(sccan$eig1))
     statistic = abs(statistic)
-    statistic[statistic < 0.1] = 0
+    if (!maxBased) statistic[statistic < 0.1] = 0 # remove <10% weights only is run without maxBased
     # eleminate small clusters
     temp = makeImage(mask,statistic)
     tempclust = labelClusters(temp, minClusterSize = cthresh, minThresh = .Machine$double.eps, Inf)

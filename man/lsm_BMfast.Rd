@@ -4,10 +4,10 @@
 \alias{lsm_BMfast}
 \title{lsm_BMfast}
 \usage{
-lsm_BMfast(lesmat, behavior, permuteNthreshold = 9, alternative = "greater",
-  statOnly = FALSE, nperm = 1000, npermBM = 20000, FWERperm = FALSE,
-  v = 1, pThreshold = 0.05, permuteAllVoxelsBM = FALSE,
-  showInfo = FALSE, ...)
+lsm_BMfast(lesmat, behavior, permuteNthreshold = 9,
+  alternative = "greater", statOnly = FALSE, nperm = 1000,
+  npermBM = 20000, FWERperm = FALSE, v = 1, pThreshold = 0.05,
+  permuteAllVoxelsBM = FALSE, showInfo = FALSE, ...)
 }
 \arguments{
 \item{lesmat}{binary matrix (0/1) of voxels (columns)

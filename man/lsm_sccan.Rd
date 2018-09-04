@@ -7,7 +7,8 @@
 lsm_sccan(lesmat, behavior, mask, rawStat = F, showInfo = T,
   optimizeSparseness = T, tstamp = "\%H:\%M:\%S", pThreshold = 0.05,
   mycoption = 1, robust = 1, sparseness = 0.045, nvecs = 1,
-  cthresh = 150, its = 20, npermsSCCAN = 0, smooth = 0.4, ...)
+  cthresh = 150, its = 20, npermsSCCAN = 0, smooth = 0.4,
+  maxBased = FALSE, ...)
 }
 \arguments{
 \item{lesmat}{matrix of voxels (columns) and subjects (rows).}
@@ -16,17 +17,18 @@ lsm_sccan(lesmat, behavior, mask, rawStat = F, showInfo = T,
 
 \item{mask}{antsImage binary mask to put back voxels in image.}
 
-\item{rawStat}{logical (default=FALSE) whether to skip
-the normalization of values and thresholding at 0.1.
-If TRUE, the raw voxel weights will be returned.}
+\item{rawStat}{logical (default=FALSE) whether to skip converting all
+weights to positive, normalizing 0-1, and removing weights < 0.1.
+If TRUE, the raw voxel weights will be returned as returned by
+\code{\link[ANTsR]{sparseDecom2}}.}
 
 \item{showInfo}{logical (default-TRUE) display messages}
 
 \item{optimizeSparseness}{logical (default=TRUE) whether to
-run the sparseness optimization routine. If false, the defau
-sparseness value will be used. If sparseness is manually set
-this flag decides if the manual sparseness will be checked
-with cross validations.}
+run the sparseness optimization routine. If false, the default
+sparseness value will be used. If sparseness is manually defined
+this flag decides if cross validated correlations will be
+computed for the defined sparseness.}
 
 \item{tstamp}{timestamp format used in LESYMAP}
 
@@ -39,17 +41,38 @@ map is returned.}
 
 \item{robust}{(ddefault=1) SCCAN parameter, see \code{\link[ANTsR]{sparseDecom2}}}
 
-\item{sparseness}{(default=1) SCCAN parameter, see \code{\link[ANTsR]{sparseDecom2}}}
+\item{sparseness}{(default=1) SCCAN parameter. Setting this
+manually is not recommended. For more, see
+\code{\link[ANTsR]{sparseDecom2}}.}
 
-\item{nvecs}{(default=1) SCCAN parameter, see \code{\link[ANTsR]{sparseDecom2}}}
+\item{nvecs}{(default=1) SCCAN parameter. Normally only
+one eigenvector of weights is obtained in LESYMAP. Multiple
+maps/eigenvectors can be retrieved for mapping full
+deficit profiles in the future. For more, see
+\code{\link[ANTsR]{sparseDecom2}}}
 
 \item{cthresh}{(default=150) SCCAN parameter, see \code{\link[ANTsR]{sparseDecom2}}}
 
 \item{its}{(default=20) SCCAN parameter, see \code{\link[ANTsR]{sparseDecom2}}}
 
-\item{npermsSCCAN}{(default=0) SCCAN permutations, see \code{\link[ANTsR]{sparseDecom2}}}
+\item{npermsSCCAN}{(default=0) SCCAN permutations. In theory can be
+used to determine if the cross-correlation between the two sides
+(behavior and lesions) is not random. However, LESYMAP uses
+k-fold validations, which are faster; this option has not been
+tested. For more,  see \code{\link[ANTsR]{sparseDecom2}}.}
 
-\item{smooth}{(default=0.4) SCCAN parameter, see \code{\link[ANTsR]{sparseDecom2}}}
+\item{smooth}{(default=0.4) SCCAN parameter. Determines the
+amount of smoothing of weights in image space performed by
+\code{\link[ANTsR]{sparseDecom2}}. The current default value
+is somewhat arbitrary, it was not determined through
+systematic simulations.}
+
+\item{maxBased}{(default=FALSE) SCCAN parameter. Simulates the
+10% thresholding of voxel weights already in SCCAN iterations
+in ANTsR. As a result, calculations are faster while results
+are similar. Method is not tested thoroughly. Note, optimal
+sparseness will be different if \code{maxBased=TRUE} compared
+to the standard SCCAN run.}
 
 \item{...}{other arguments received from \code{\link{lesymap}}.}
 }

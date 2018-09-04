@@ -4,7 +4,8 @@
 \alias{lsm_ttest}
 \title{lsm_ttest}
 \usage{
-lsm_ttest(lesmat, behavior, var.equal = T, alternative = "greater", ...)
+lsm_ttest(lesmat, behavior, var.equal = T, alternative = "greater",
+  ...)
 }
 \arguments{
 \item{lesmat}{binary matrix (0/1) of voxels (columns)

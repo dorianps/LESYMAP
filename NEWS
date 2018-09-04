@@ -1,4 +1,10 @@
 ==============
+LESYMAP v0.0.0.9009 (Release date: 2018-09-03)
+
+  Enabled faster SCCAN with the maxBased argument (2+ times faster)
+  Removed 'caret' requirement in optimize_SCCANsparseness
+
+==============
 LESYMAP v0.0.0.9008 (Release date: 2018-08-09)
 
   Fixed getLesionSize bug, now accepting filenames

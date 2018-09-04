@@ -279,8 +279,8 @@ lesymap <- function(lesions.list, behavior,
                     minSubjectPerVoxel = '10%',
                     nperm=1000,
                     saveDir=NA,
-                    binaryCheck=F,
-                    noPatch=F, showInfo=T,
+                    binaryCheck=FALSE,
+                    noPatch=FALSE, showInfo=TRUE,
                     ...) {
   ver = as.character(packageVersion('LESYMAP'))
   tstamp = "%H:%M:%S"
@@ -358,15 +358,17 @@ lesymap <- function(lesions.list, behavior,
   # if input='antsFiles', it needs a binary check later on lesmat
   if (inputtype == 'antsImageList') {
     rebinarize = FALSE
-    for (i in 1:length(lesions.list)) {
-      if (max(lesions.list[[i]]) > 1) {
-        rebinarize = TRUE
-        break
-      }
-    }
+    if (max(lesions.list[[1]]) > 1) rebinarize = TRUE # just check 1st, for is too long
+    # for (i in 1:length(lesions.list)) {
+    #   if (max(as.array(lesions.list[[i]])) > 1) {
+    #     rebinarize = TRUE
+    #     break
+    #   }
+    # }
+
     # perform binarization if needed
     if (rebinarize) {
-      if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Detected lesions values above 1. Rebinarizing 0/1...\n'))
+      if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Detected lesion value above 1. Rebinarizing 0/1...\n'))
       for (i in 1:length(lesions.list)) lesions.list[[i]] = thresholdImage(lesions.list[[i]], 0.1, Inf)
       binaryCheck = FALSE # no need to check binarization anymore
     }
@@ -426,7 +428,7 @@ lesymap <- function(lesions.list, behavior,
     checkMask(lesions.list, mask)
 
   } else { # DEFINE THE MASK
-    if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Searching voxels lesioned >=',minSubjectPerVoxel,'subjects...\n'))
+    if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Searching voxels lesioned >=',minSubjectPerVoxel,'subjects...'))
     # compute thresholdPercent based on minSubjectPerVoxel
     # it's used to remove voxels lesioned in few subjects
     if (!is.numeric(minSubjectPerVoxel) & is.character(minSubjectPerVoxel)) { # input is percentage
@@ -444,6 +446,7 @@ lesymap <- function(lesions.list, behavior,
     if (thresholdPercent == 0) mask[avgles==0] = 0
     writeavgles = T
 
+    if (showInfo) cat(paste(sum(mask), 'found\n')) # voxels in mask
     # check mask is not empty
     if (max(mask) == 0) stop('Mask is empty. No voxels to run VLSM on.')
   }

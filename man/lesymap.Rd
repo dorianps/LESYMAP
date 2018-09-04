@@ -4,11 +4,11 @@
 \alias{lesymap}
 \title{Lesion to Symptom Mapping}
 \usage{
-lesymap(lesions.list, behavior, mask = NA, patchinfo = NA, method = "BM",
-  correctByLesSize = "none", multipleComparison = "fdr",
-  pThreshold = 0.05, flipSign = F, minSubjectPerVoxel = "10\%",
-  nperm = 1000, saveDir = NA, binaryCheck = F, noPatch = F,
-  showInfo = T, ...)
+lesymap(lesions.list, behavior, mask = NA, patchinfo = NA,
+  method = "BM", correctByLesSize = "none",
+  multipleComparison = "fdr", pThreshold = 0.05, flipSign = F,
+  minSubjectPerVoxel = "10\%", nperm = 1000, saveDir = NA,
+  binaryCheck = FALSE, noPatch = FALSE, showInfo = TRUE, ...)
 }
 \arguments{
 \item{lesions.list}{list of antsImages, or a vector of

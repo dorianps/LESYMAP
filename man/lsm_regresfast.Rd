@@ -5,9 +5,9 @@
 \title{lsm_regresfast}
 \usage{
 lsm_regresfast(lesmat, behavior, covariates = NA, FWERperm = F,
-  nperm = 1000, v = 1, pThreshold = 0.05, clusterPerm = F, mask = NA,
-  voxindx = NA, samplemask = NA, clusterPermThreshold = 0.05,
-  showInfo = T, ...)
+  nperm = 1000, v = 1, pThreshold = 0.05, clusterPerm = F,
+  mask = NA, voxindx = NA, samplemask = NA,
+  clusterPermThreshold = 0.05, showInfo = T, ...)
 }
 \arguments{
 \item{lesmat}{matrix of voxels (columns) and subjects (rows).}

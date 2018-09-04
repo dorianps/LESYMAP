@@ -24,6 +24,7 @@
 #' @param npermsSCCAN SCCAN permutations
 #' @param smooth standard SCCAN parameter
 #' @param sparseness.behav what sparsness to use for behavior
+#' @param maxBased standard SCCAN parameter
 #' @param ... other arguments received from \code{\link{lesymap}}
 #' or \code{\link{lsm_sccan}}.
 #'
@@ -47,10 +48,11 @@ optimize_SCCANsparseness <- function(lesmat, behavior, mask, nfolds = 4, sparsen
                       npermsSCCAN=0,
                       smooth=0.4,
                       sparseness.behav = -0.99,
+                      maxBased=FALSE,
                       ...) {
 
   # REQUIRES CARET
-  if (! 'caret' %in% rownames(installed.packages())) stop('SCCAN optimization requires the caret package. Try installing with install.packages("caret")')
+  # if (! 'caret' %in% rownames(installed.packages())) stop('SCCAN optimization requires the caret package. Try installing with install.packages("caret")')
   myfolds = list()
   for (i in 1:cvRepetitions) {
     myfolds[[i]] = .createFolds(behavior, nfolds) # caret::createFolds(behavior, nfolds)
@@ -70,11 +72,13 @@ optimize_SCCANsparseness <- function(lesmat, behavior, mask, nfolds = 4, sparsen
   #' return a cross validated correlation from entire sample
   optimfun <- function(thissparse, lesmat=lesmat, behavior=behavior, sccan.masks=sccan.masks, cthresh=cthresh,
                        mycoption=mycoption, robust=robust, myfolds=myfolds, sparseness.behav=sparseness.behav,
+                       maxBased=maxBased,
                        showInfo=T, tstamp="%H:%M:%S", sparsenessPenalty=sparsenessPenalty) {
 
     if (showInfo) cat(paste0('\n', format(Sys.time(), tstamp), '            Checking sparseness ', round(thissparse,3),' ... '))
 
     CVcorr = rep(NA, length(myfolds))
+    rmse = rep(NA, length(myfolds))
     for (cvrep in 1:length(myfolds)) {
 
       sparseness = c( thissparse, sparseness.behav )
@@ -85,7 +89,8 @@ optimize_SCCANsparseness <- function(lesmat, behavior, mask, nfolds = 4, sparsen
         trainsccan = sparseDecom2( inmatrix = list(lesmat[ -fold,],as.matrix(behavior[-fold])),
                                    inmask=sccan.masks, mycoption=mycoption,
                               robust=robust, sparseness=sparseness, nvecs=nvecs,
-                              cthresh=cthresh,its=its, perms=npermsSCCAN, smooth=smooth )
+                              cthresh=cthresh,its=its, perms=npermsSCCAN, smooth=smooth,
+                              maxBased=maxBased)
 
         behavior.predicted[fold] = lesmat[fold,] %*% t(trainsccan$eig1) %*% trainsccan$eig2
         traincorr[i] = trainsccan$ccasummary[[1]]
@@ -94,15 +99,17 @@ optimize_SCCANsparseness <- function(lesmat, behavior, mask, nfolds = 4, sparsen
       } # and single CV loop
 
       CVcorr[cvrep] = cor(behavior,behavior.predicted)
+      rmse[cvrep] = sqrt(mean((behavior.predicted - behavior)^2))
     } # end repetition of CVs loop
 
     CVcorr = mean(CVcorr)
+    rmse = mean(rmse)
 
     output = 1 - ( CVcorr - (thissparse*sparsenessPenalty) )
 
-    if (showInfo) cat(paste0('cross-validated correlation ', format(CVcorr,digits=3,nsmall=3),
+    if (showInfo) cat(paste0('CV correlation ', format(CVcorr,digits=3,nsmall=3),
                              ' (', format(mean(traincorr, na.rm=T),digits=3,nsmall=3), ')',
-                             ' (cost=',format(output,digits=3,nsmall=3),')' ))
+                             ' (cost=',format(output,digits=3,nsmall=3), ' rmse=',format(rmse,digits=3,nsmall=3),  ')' ))
 
     return(output)
   }
@@ -114,34 +121,24 @@ optimize_SCCANsparseness <- function(lesmat, behavior, mask, nfolds = 4, sparsen
     temp = optimize(f=optimfun, lower=lower, upper=upper, maximum = F, tol = tol,
                     lesmat=lesmat, behavior=behavior, sccan.masks=sccan.masks, cthresh=cthresh,
                     mycoption=mycoption, robust=robust, myfolds=myfolds, sparseness.behav=sparseness.behav,
+                    maxBased=maxBased,
                     sparsenessPenalty=sparsenessPenalty,
                     showInfo=T, tstamp="%H:%M:%S"
                     )
     # recover true CV correlation, not just the returned function outcome
-    # temp$CVcorrelation.stat = 1 - temp$objective
     temp$CVcorrelation.stat = (1 - temp$objective) + (temp$minimum*sparsenessPenalty)
   } else { # JUST CHECK THE CV FOR USER DEFINED SPARSENESS
     objective = optimfun(thissparse=sparseness, lesmat=lesmat, behavior=behavior, sccan.masks=sccan.masks, cthresh=cthresh,
                          mycoption=mycoption, robust=robust, myfolds=myfolds, sparseness.behav=sparseness.behav,
+                         maxBased=maxBased,
                          sparsenessPenalty=sparsenessPenalty,
                          showInfo=T, tstamp="%H:%M:%S")
     temp=list()
     # recover recover true CV correlation, not just the returned function outcome
-    # temp$CVcorrelation.stat = 1 - objective
     temp$CVcorrelation.stat = (1 - objective) + (sparseness*sparsenessPenalty)
     temp$minimum = sparseness
   }
 
-#   temp = nlm(f=optimfun, p=0.1, fscale=-1, ndigit=3, gradtol=0.01, stepmax=0.2, steptol=0.01, iterlim=20,
-#                   lesmat=lesmat, behavior=behavior, sccan.masks=sccan.masks, cthresh=cthresh,
-#                   mycoption=mycoption, robust=robust, myfolds=myfolds, showInfo=T, tstamp="%H:%M:%S"
-#   )
-
-#   clist=list(eval.max=20, abs.tol=0.01, rel.tol=0.005, x.tol=0.005, step.min=0.01, step.max=0.2)
-#   temp = nlminb(start=0.04, objective=optimfun, lower=0.01, upper=0.8, control=clist,
-#              lesmat=lesmat, behavior=behavior, sccan.masks=sccan.masks, cthresh=cthresh,
-#              mycoption=mycoption, robust=robust, myfolds=myfolds, showInfo=T, tstamp="%H:%M:%S"
-#   )
 
   return(temp)
 
