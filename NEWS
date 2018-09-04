@@ -2,6 +2,7 @@
 LESYMAP v0.0.0.9009 (Release date: 2018-09-03)
 
   Enabled faster SCCAN with the maxBased argument (2+ times faster)
+  Added new output to SCCAN results: sccan.BehaviorWeight
   Removed 'caret' requirement in optimize_SCCANsparseness
 
 ==============
