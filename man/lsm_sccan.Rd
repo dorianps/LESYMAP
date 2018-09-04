@@ -67,12 +67,15 @@ amount of smoothing of weights in image space performed by
 is somewhat arbitrary, it was not determined through
 systematic simulations.}
 
-\item{maxBased}{(default=FALSE) SCCAN parameter. Simulates the
-10% thresholding of voxel weights already in SCCAN iterations
-in ANTsR. As a result, calculations are faster while results
-are similar. Method is not tested thoroughly. Note, optimal
-sparseness will be different if \code{maxBased=TRUE} compared
-to the standard SCCAN run.}
+\item{maxBased}{(default=FALSE) SCCAN parameter. Removes voxels with
+weights smaller than 10\% of the peak weight during internal SCCAN
+iterations. Although similar to what is done in LESYMAP with standard
+SCCAN results, this strategy follows a different route, and produces
+different weights. The overall final result is, however, quite similar.
+This method is faster then the standard SCCAN call in LESYMAP, but
+has not been tested thoroughly. Note that the optimal sparseness
+obtained with \code{maxBased=TRUE} is not optimal when switching to
+\code{maxBased=FALSE}.}
 
 \item{...}{other arguments received from \code{\link{lesymap}}.}
 }
@@ -81,6 +84,9 @@ List of objects returned:
 \itemize{
 \item\code{statistic} - vector of statistical values
 \item\code{pvalue} - vector of pvalues
+\item\code{sccan.BehaviorWeight} - corresponding SCCAN weight for behavior.
+Can be used in combination with \code{rawStat=TRUE} to investigate
+the direction of brain-behavior relationships reflected in voxel weights.
 \item\code{optimalSparseness} - (optional) optimal value found for sparseness
 \item\code{CVcorrelation.stat} - (optional) Correlation between
 true and predicted score with k-fold validation using
