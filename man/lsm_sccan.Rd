@@ -8,7 +8,7 @@ lsm_sccan(lesmat, behavior, mask, rawStat = F, showInfo = T,
   optimizeSparseness = T, tstamp = "\%H:\%M:\%S", pThreshold = 0.05,
   mycoption = 1, robust = 1, sparseness = 0.045, nvecs = 1,
   cthresh = 150, its = 20, npermsSCCAN = 0, smooth = 0.4,
-  maxBased = FALSE, ...)
+  maxBased = FALSE, directionalSCCAN = FALSE, ...)
 }
 \arguments{
 \item{lesmat}{matrix of voxels (columns) and subjects (rows).}
@@ -22,7 +22,7 @@ weights to positive, normalizing 0-1, and removing weights < 0.1.
 If TRUE, the raw voxel weights will be returned as returned by
 \code{\link[ANTsR]{sparseDecom2}}.}
 
-\item{showInfo}{logical (default-TRUE) display messages}
+\item{showInfo}{logical (default=TRUE) display messages}
 
 \item{optimizeSparseness}{logical (default=TRUE) whether to
 run the sparseness optimization routine. If false, the default
@@ -76,6 +76,11 @@ This method is faster then the standard SCCAN call in LESYMAP, but
 has not been tested thoroughly. Note that the optimal sparseness
 obtained with \code{maxBased=TRUE} is not optimal when switching to
 \code{maxBased=FALSE}.}
+
+\item{directionalSCCAN}{(default=FALSE) If TRUE, the upper and lower
+bounds of sparseness search will be negative. A negative sparseness
+permits positive and negative voxel weights, thus finding the
+direction of the relationship with behavior.}
 
 \item{...}{other arguments received from \code{\link{lesymap}}.}
 }

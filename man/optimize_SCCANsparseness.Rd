@@ -6,10 +6,11 @@
 \usage{
 optimize_SCCANsparseness(lesmat, behavior, mask, nfolds = 4,
   sparsenessPenalty = 0.03, lower = 0.005, upper = 0.9, tol = 0.03,
-  justValidate = F, cvRepetitions = 3, mycoption = 1, robust = 1,
-  sparseness = NA, nvecs = 1, cthresh = 150, its = 30,
-  npermsSCCAN = 0, smooth = 0.4, sparseness.behav = -0.99,
-  maxBased = FALSE, ...)
+  justValidate = FALSE, cvRepetitions = 3, showInfo = TRUE,
+  mycoption = 1, robust = 1, sparseness = NA, nvecs = 1,
+  cthresh = 150, its = 30, npermsSCCAN = 0, smooth = 0.4,
+  sparseness.behav = -0.99, maxBased = FALSE,
+  directionalSCCAN = FALSE, ...)
 }
 \arguments{
 \item{lesmat}{lesion matrix}
@@ -32,6 +33,8 @@ optimize_SCCANsparseness(lesmat, behavior, mask, nfolds = 4,
 
 \item{cvRepetitions}{number of cross-validations}
 
+\item{showInfo}{logical (default=TRUE) display messages}
+
 \item{mycoption}{standard SCCAN parameter}
 
 \item{robust}{standard SCCAN parameter}
@@ -51,6 +54,11 @@ optimize_SCCANsparseness(lesmat, behavior, mask, nfolds = 4,
 \item{sparseness.behav}{what sparsness to use for behavior}
 
 \item{maxBased}{standard SCCAN parameter}
+
+\item{directionalSCCAN}{(default=FALSE) If TRUE, the upper and lower
+bounds of sparseness search will be negative. A negative sparseness
+permits positive and negative voxel weights, thus finding the
+direction of the relationship with behavior.}
 
 \item{...}{other arguments received from \code{\link{lesymap}}
 or \code{\link{lsm_sccan}}.}

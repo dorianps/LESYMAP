@@ -24,7 +24,7 @@
 #' correlations show significance below this value
 #' the results are considered null and an empty
 #' map is returned.
-#' @param showInfo logical (default-TRUE) display messages
+#' @param showInfo logical (default=TRUE) display messages
 #' @param tstamp timestamp format used in LESYMAP
 #' @param sparseness (default=1) SCCAN parameter. Setting this
 #' manually is not recommended. For more, see
@@ -57,6 +57,10 @@
 #' has not been tested thoroughly. Note that the optimal sparseness
 #' obtained with \code{maxBased=TRUE} is not optimal when switching to
 #' \code{maxBased=FALSE}.
+#' @param directionalSCCAN (default=FALSE) If TRUE, the upper and lower
+#' bounds of sparseness search will be negative. A negative sparseness
+#' permits positive and negative voxel weights, thus finding the
+#' direction of the relationship with behavior.
 #' @param ... other arguments received from \code{\link{lesymap}}.
 #'
 #' @return
@@ -64,9 +68,9 @@
 #' \itemize{
 #' \item\code{statistic} - vector of statistical values
 #' \item\code{pvalue} - vector of pvalues
-#' \item\code{sccan.BehaviorWeight} - corresponding SCCAN weight for behavior.
-#' Can be used in combination with \code{rawStat=TRUE} to investigate
-#' the direction of brain-behavior relationships reflected in voxel weights.
+#' \item\code{eig2} - SCCAN weight for behavior column(s).
+#' \item\code{ccasummary} - SCCAN summary of projection correlations and
+#' pvalues (if permutations were used)
 #' \item\code{optimalSparseness} - (optional) optimal value found for sparseness
 #' \item\code{CVcorrelation.stat} - (optional) Correlation between
 #' true and predicted score with k-fold validation using
@@ -102,6 +106,7 @@ lsm_sccan <- function(lesmat, behavior, mask, rawStat=F, showInfo=T, optimizeSpa
                       npermsSCCAN=0,
                       smooth=0.4,
                       maxBased=FALSE,
+                      directionalSCCAN=FALSE,
                       ...) {
 
   sparseness.behav = -0.99
@@ -120,16 +125,14 @@ lsm_sccan <- function(lesmat, behavior, mask, rawStat=F, showInfo=T, optimizeSpa
   if ('sparseness' %in% names(match.call())) justValidate = T
 
   if (optimizeSparseness) {
-    if (showInfo & !justValidate) cat(paste('\n       Searching for optimal sparseness:'))
-    if (showInfo & justValidate) cat(paste('\n       Validating sparseness:'))
-
     sparse.optim = optimize_SCCANsparseness(lesmat = lesmat, behavior = behavior, mask=mask,
                                             cthresh=cthresh, mycoption=mycoption, robust=robust,
                                             nvecs=nvecs, its=its, npermsSCCAN=npermsSCCAN,
                                             smooth=smooth, sparseness.behav=sparseness.behav,
                                             showInfo=showInfo, tstamp=tstamp,
                                             maxBased=maxBased,
-                                            sparseness=sparseness[1], justValidate=justValidate, ...)
+                                            sparseness=sparseness[1], justValidate=justValidate,
+                                            directionalSCCAN=directionalSCCAN, ...)
 
     sparseness = c(sparse.optim$minimum, sparseness.behav)
     CVcorrelation.stat = sparse.optim$CVcorrelation.stat
@@ -167,6 +170,7 @@ lsm_sccan <- function(lesmat, behavior, mask, rawStat=F, showInfo=T, optimizeSpa
     cat(paste('\n            Smooth sigma =', smooth))
     cat(paste('\n            Iterations =', its))
     cat(paste('\n            maxBased =', maxBased))
+    cat(paste('\n            directionalSCCAN =', directionalSCCAN))
     cat(paste('\n            Permutations =', npermsSCCAN))
   }
 
@@ -176,21 +180,36 @@ lsm_sccan <- function(lesmat, behavior, mask, rawStat=F, showInfo=T, optimizeSpa
                         maxBased=maxBased)
 
   if (!rawStat) {
+    # normalize values to 1 or -1
     statistic = sccan$eig1 / max(abs(sccan$eig1))
-    statistic = abs(statistic)
-    if (!maxBased) statistic[statistic < 0.1] = 0 # remove <10% weights only is run without maxBased
+
+    # flip weights if necessary
+    if (directionalSCCAN) {
+      posbehav = ifelse(sccan$eig2[1,1] < 0, -1, 1)
+      poscor = ifelse(sccan$ccasummary$corrs[1] < 0, -1, 1)
+      flipval =  posbehav * poscor
+      statistic = statistic * flipval
+    } else {
+      statistic = abs(statistic)
+    }
+
+    # shave away weights < 0.1, not needed for maxBased because they are removed in sparseDecom2
+    if (!maxBased) statistic[statistic < 0.1 & statistic > -0.1] = 0
+
     # eleminate small clusters
     temp = makeImage(mask,statistic)
     tempclust = labelClusters(temp, minClusterSize = cthresh, minThresh = .Machine$double.eps, Inf)
     temp = temp * thresholdImage(tempclust, .Machine$double.eps, Inf)
     statistic = imageListToMatrix(list(temp), mask)[1,]
   } else {
+    # give back raw values without touching anything
     statistic = sccan$eig1
   }
   pvalue = statistic*0
 
   output = list(statistic=statistic, pvalue=pvalue)
-  output$sccan.BehaviorWeight = sccan$eig2
+  output$eig2 = sccan$eig2
+  output$ccasummary = sccan$ccasummary
 
 
   if (optimizeSparseness) {
