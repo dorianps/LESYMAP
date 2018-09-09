@@ -6,7 +6,8 @@
 \usage{
 save.lesymap(lsm, saveDir, infoFile = "Info.txt", template = NA,
   saveTemplate = F, savePatchImages = T, plot.alpha = 0.8,
-  plot.axis = 3, plot.quality = 8, ...)
+  plot.axis = 3, plot.quality = 8, outputLogFile = "outputLog.txt",
+  ...)
 }
 \arguments{
 \item{lsm}{object obtained with lesymap()}

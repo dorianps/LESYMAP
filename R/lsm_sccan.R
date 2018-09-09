@@ -219,7 +219,7 @@ lsm_sccan <- function(lesmat, behavior, mask, rawStat=FALSE, showInfo=TRUE,
   if (showInfo & sum(statistic!=0) == 0) cat('\n       WARNING: Post-sccan cluster thresholding removed all voxels.')
 
 
-  pvalue = statistic*0
+  pvalue = rep(1, length(statistic))
 
   output = list(statistic=statistic, pvalue=pvalue)
 

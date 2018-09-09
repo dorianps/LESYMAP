@@ -171,6 +171,7 @@ The following objects are typically found in the returned list:
 \item\code{average.img} - map of all lesions averaged. Map is
            produced only if no mask is defined.
 \item\code{callinfo} - list of details of how you called lesymap
+\item\code{printedOutput} - terminal output in a character variable
 \item\code{perm.vector} - the values obtained from each permutation
 \item\code{perm.clusterThreshold} - threshold computed for cluster thresholding
 \item\code{perm.FWERthresh} - threshold computed for FWERperm thresholding

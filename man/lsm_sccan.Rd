@@ -4,11 +4,12 @@
 \alias{lsm_sccan}
 \title{Sparse canonical correlations for symptom mapping.}
 \usage{
-lsm_sccan(lesmat, behavior, mask, rawStat = F, showInfo = T,
-  optimizeSparseness = T, tstamp = "\%H:\%M:\%S", pThreshold = 0.05,
-  mycoption = 1, robust = 1, sparseness = 0.045, nvecs = 1,
-  cthresh = 150, its = 20, npermsSCCAN = 0, smooth = 0.4,
-  maxBased = FALSE, directionalSCCAN = FALSE, ...)
+lsm_sccan(lesmat, behavior, mask, rawStat = FALSE, showInfo = TRUE,
+  optimizeSparseness = TRUE, validateSparseness = FALSE,
+  tstamp = "\%H:\%M:\%S", pThreshold = 0.05, mycoption = 1,
+  robust = 1, sparseness = 0.045, nvecs = 1, cthresh = 150,
+  its = 20, npermsSCCAN = 0, smooth = 0.4, maxBased = FALSE,
+  directionalSCCAN = FALSE, ...)
 }
 \arguments{
 \item{lesmat}{matrix of voxels (columns) and subjects (rows).}
@@ -24,10 +25,14 @@ behavior, and CCA summary.}
 \item{showInfo}{logical (default=TRUE) display messages}
 
 \item{optimizeSparseness}{logical (default=TRUE) whether to
-run the sparseness optimization routine. If false, the default
+run the sparseness optimization routine. If FALSE, the default
 sparseness value will be used. If sparseness is manually defined
 this flag decides if cross validated correlations will be
 computed for the defined sparseness.}
+
+\item{validateSparseness}{logical (conditional default=TRUE) If
+sparseness is manually defined, this flag decides if cross
+validated correlations will be computed for the defined sparseness.}
 
 \item{tstamp}{timestamp format used in LESYMAP}
 

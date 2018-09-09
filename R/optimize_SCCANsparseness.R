@@ -10,8 +10,8 @@
 #' @param mask antsImage mask
 #' @param nfolds how many folds to use
 #' @param sparsenessPenalty penalty term
-#' @param lower minimum searched sparseness
-#' @param upper maximum searched sparseness
+#' @param lowerSparseness minimum searched sparseness
+#' @param upperSparseness maximum searched sparseness
 #' @param tol tolerance value, see \code{optimize()} in R
 #' @param justValidate just check the CV of provided sparseness
 #' @param cvRepetitions number of cross-validations at each sparseness
@@ -44,13 +44,19 @@
 #' @author Dorian Pustina
 #'
 #'
-optimize_SCCANsparseness <- function(lesmat, behavior, mask, nfolds = 4, sparsenessPenalty=0.03,
-                                     lower=0.005, upper=0.9, tol = 0.03, justValidate=FALSE,
+optimize_SCCANsparseness <- function(lesmat, behavior, mask,
+                                     nFolds = 4,
+                                     sparsenessPenalty=0.03,
+                                     lowerSparseness=0.005,
+                                     upperSparseness=0.9,
+                                     tol = 0.03,
+                                     justValidate=FALSE,
                                      cvRepetitions=ifelse(length(behavior)<=30,6,
                                                    ifelse(length(behavior)<=40,5,
                                                    ifelse(length(behavior)<=50,4,
                                                                                3))),
                                      showInfo = TRUE,
+                                     directionalSCCAN=FALSE,
                       mycoption=1,
                       robust=1,
                       sparseness=NA, # 0.045,
@@ -61,17 +67,16 @@ optimize_SCCANsparseness <- function(lesmat, behavior, mask, nfolds = 4, sparsen
                       smooth=0.4,
                       sparseness.behav = -0.99,
                       maxBased=FALSE,
-                      directionalSCCAN=FALSE,
                       ...) {
 
   # flip default bounds to negative eventually
   if (directionalSCCAN) {
-    if (! ( 'upper' %in% names(match.call()) |
-            'lower' %in% names(match.call()) )) {
+    if (! ( 'upperSparseness' %in% names(match.call()) |
+            'lowerSparseness' %in% names(match.call()) )) {
 
-      temp = sort( -abs(c(lower,upper)))
-      lower = temp[1]
-      upper = temp[2]
+      temp = sort( -abs(c(lowerSparseness,upperSparseness)))
+      lowerSparseness = temp[1]
+      upperSparseness = temp[2]
       rm(temp)
 
     }
@@ -101,7 +106,7 @@ optimize_SCCANsparseness <- function(lesmat, behavior, mask, nfolds = 4, sparsen
                        maxBased=maxBased,
                        showInfo=showInfo, tstamp="%H:%M:%S", sparsenessPenalty=sparsenessPenalty) {
 
-    if (showInfo) cat(paste0('\n', format(Sys.time(), tstamp), '            Checking sparseness ', round(thissparse,3),' ... '))
+    if (showInfo) cat(paste0('\n', format(Sys.time(), tstamp), '        Checking sparseness ', round(thissparse,3),' ... '))
 
     CVcorr = rep(NA, length(myfolds))
     # rmse = rep(NA, length(myfolds))
@@ -145,13 +150,13 @@ optimize_SCCANsparseness <- function(lesmat, behavior, mask, nfolds = 4, sparsen
 
   if (!justValidate) { # FULL OPTIMIZATION
     if (showInfo) cat(paste('\n       Searching for optimal sparseness:'))
-    if (showInfo) cat(paste('\n         lower/upper bound:\t ', lower, '/', upper))
+    if (showInfo) cat(paste('\n         lower/upper bound:\t ', lowerSparseness, '/', upperSparseness))
     if (showInfo) cat(paste('\n         cvRepetitions:\t\t ', cvRepetitions))
     if (showInfo) cat(paste('\n         nfolds:\t\t ', nfolds))
     if (showInfo) cat(paste('\n         sparsenessPenalty:\t ', sparsenessPenalty))
     if (showInfo) cat(paste('\n         optim tolerance:\t ', tol))
 
-    temp = optimize(f=optimfun, lower=lower, upper=upper, maximum = F, tol = tol,
+    temp = optimize(f=optimfun, lower=lowerSparseness, upper=upperSparseness, maximum = F, tol = tol,
                     lesmat=lesmat, behavior=behavior, sccan.masks=sccan.masks, cthresh=cthresh,
                     mycoption=mycoption, robust=robust, myfolds=myfolds, sparseness.behav=sparseness.behav,
                     maxBased=maxBased,

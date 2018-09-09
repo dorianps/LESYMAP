@@ -4,14 +4,15 @@
 \alias{optimize_SCCANsparseness}
 \title{Optimization of SCCAN sparseness}
 \usage{
-optimize_SCCANsparseness(lesmat, behavior, mask, nfolds = 4,
-  sparsenessPenalty = 0.03, lower = 0.005, upper = 0.9, tol = 0.03,
-  justValidate = FALSE, cvRepetitions = ifelse(length(behavior) <= 30,
-  6, ifelse(length(behavior) <= 40, 5, ifelse(length(behavior) <= 50, 4,
-  3))), showInfo = TRUE, mycoption = 1, robust = 1,
-  sparseness = NA, nvecs = 1, cthresh = 150, its = 30,
-  npermsSCCAN = 0, smooth = 0.4, sparseness.behav = -0.99,
-  maxBased = FALSE, directionalSCCAN = FALSE, ...)
+optimize_SCCANsparseness(lesmat, behavior, mask, nFolds = 4,
+  sparsenessPenalty = 0.03, lowerSparseness = 0.005,
+  upperSparseness = 0.9, tol = 0.03, justValidate = FALSE,
+  cvRepetitions = ifelse(length(behavior) <= 30, 6,
+  ifelse(length(behavior) <= 40, 5, ifelse(length(behavior) <= 50, 4, 3))),
+  showInfo = TRUE, directionalSCCAN = FALSE, mycoption = 1,
+  robust = 1, sparseness = NA, nvecs = 1, cthresh = 150,
+  its = 30, npermsSCCAN = 0, smooth = 0.4,
+  sparseness.behav = -0.99, maxBased = FALSE, ...)
 }
 \arguments{
 \item{lesmat}{lesion matrix}
@@ -20,15 +21,13 @@ optimize_SCCANsparseness(lesmat, behavior, mask, nfolds = 4,
 
 \item{mask}{antsImage mask}
 
-\item{nfolds}{how many folds to use}
-
 \item{sparsenessPenalty}{penalty term}
 
-\item{lower}{minimum searched sparseness}
+\item{lowerSparseness}{minimum searched sparseness}
 
-\item{upper}{maximum searched sparseness}
+\item{upperSparseness}{maximum searched sparseness}
 
-\item{tol}{tolerance value, see optimize() in R}
+\item{tol}{tolerance value, see \code{optimize()} in R}
 
 \item{justValidate}{just check the CV of provided sparseness}
 
@@ -37,6 +36,11 @@ value. Dynamically set depending on sample size: <=30 to 6 reps,
 <=40 to 5 reps, <=50 to 4 reps, > 50 to 3 reps.}
 
 \item{showInfo}{logical (default=TRUE) display messages}
+
+\item{directionalSCCAN}{(default=FALSE) If TRUE, the upper and lower
+bounds of sparseness search will be negative. A negative sparseness
+permits positive and negative voxel weights, thus finding the
+direction of the relationship with behavior.}
 
 \item{mycoption}{standard SCCAN parameter}
 
@@ -58,13 +62,10 @@ value. Dynamically set depending on sample size: <=30 to 6 reps,
 
 \item{maxBased}{standard SCCAN parameter}
 
-\item{directionalSCCAN}{(default=FALSE) If TRUE, the upper and lower
-bounds of sparseness search will be negative. A negative sparseness
-permits positive and negative voxel weights, thus finding the
-direction of the relationship with behavior.}
-
 \item{...}{other arguments received from \code{\link{lesymap}}
 or \code{\link{lsm_sccan}}.}
+
+\item{nfolds}{how many folds to use}
 }
 \value{
 List with: \cr
