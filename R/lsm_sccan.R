@@ -11,9 +11,6 @@
 #' @param lesmat matrix of voxels (columns) and subjects (rows).
 #' @param behavior vector of behavioral scores.
 #' @param mask antsImage binary mask to put back voxels in image.
-#' @param rawStat logical (default=FALSE) if TRUE, more data will be
-#' returned, included an image with raw voxel weights, eigenvalue for
-#' behavior, and CCA summary.
 #' @param optimizeSparseness logical (default=TRUE) whether to
 #' run the sparseness optimization routine. If FALSE, the default
 #' sparseness value will be used. If sparseness is manually defined
@@ -70,18 +67,17 @@
 #' \itemize{
 #' \item\code{statistic} - vector of statistical values
 #' \item\code{pvalue} - vector of pvalues
-#' \item\code{rawStat.img} - (if rawStat=TRUE) image with raw voxel
-#' weights as returned by \code{\link[ANTsR]{sparseDecom2}}
-#' \item\code{sccan.eig2} - (if rawStat=TRUE) SCCAN weight for behavior
+#' \item\code{rawWeights.img} - image with raw SCCAN voxel weights
+#' \item\code{sccan.eig2} - SCCAN weight(s) for behavior
 #' column(s).
-#' \item\code{sccan.ccasummary} - (if rawStat=TRUE) SCCAN summary of
-#' projection correlations and pvalues (if permutations were used)
-#' \item\code{optimalSparseness} - (if optimizeSparsness=TRUE) optimal
+#' \item\code{sccan.ccasummary} - SCCAN summary of
+#' projection correlations and permutation-derived pvalues
+#' \item\code{optimalSparseness} - (if optimizeSparseness=TRUE) optimal
 #' value found for sparseness
-#' \item\code{CVcorrelation.stat} - (if optimizeSparsness=TRUE)
+#' \item\code{CVcorrelation.stat} - (if optimizeSparseness=TRUE)
 #' Correlation between true and predicted score with k-fold validation
 #' using the optimal sparseness value
-#' \item\code{CVcorrelation.pval} - (if optimizeSparsness=TRUE) p-value
+#' \item\code{CVcorrelation.pval} - (if optimizeSparseness=TRUE) p-value
 #'  of the above correlation
 #' }
 #'
@@ -102,7 +98,7 @@
 #' @author Dorian Pustina
 #'
 #' @export
-lsm_sccan <- function(lesmat, behavior, mask, rawStat=FALSE, showInfo=TRUE,
+lsm_sccan <- function(lesmat, behavior, mask, showInfo=TRUE,
                       optimizeSparseness = TRUE, validateSparseness=FALSE,
                       tstamp = "%H:%M:%S", pThreshold=0.05,
                       mycoption=1,
@@ -212,20 +208,17 @@ lsm_sccan <- function(lesmat, behavior, mask, rawStat=FALSE, showInfo=TRUE,
   # placed on purpose after 0.1 thresholding to remove
   # remaining small leftover clusters
   temp = makeImage(mask,statistic) # put stat in image
-  tempabs = abs(temp) # flip all weights to positive
-  tempclust = labelClusters(tempabs, minClusterSize = cthresh, minThresh = .Machine$double.eps, maxThresh=Inf)
+  tempclust = labelClusters(abs(temp), minClusterSize = cthresh, minThresh = .Machine$double.eps, maxThresh=Inf)
   temp = temp * thresholdImage(tempclust, .Machine$double.eps, Inf)
   statistic = imageListToMatrix(list(temp), mask)[1,]
   if (showInfo & sum(statistic!=0) == 0) cat('\n       WARNING: Post-sccan cluster thresholding removed all voxels.')
 
 
-  pvalue = rep(1, length(statistic))
+  output = list(statistic=statistic)
 
-  output = list(statistic=statistic, pvalue=pvalue)
-
-  if (rawStat) output$rawStat.img = makeImage(mask,sccan$eig1)
-  if (rawStat) output$sccan.eig2 = sccan$eig2
-  if (rawStat) output$sccan.ccasummary = sccan$ccasummary
+  output$rawWeights.img = makeImage(mask,sccan$eig1)
+  output$sccan.eig2 = sccan$eig2
+  output$sccan.ccasummary = sccan$ccasummary
 
   if (optimizeSparseness) {
     output$optimalSparseness = sparse.optim$minimum

@@ -4,7 +4,7 @@
 \alias{lsm_sccan}
 \title{Sparse canonical correlations for symptom mapping.}
 \usage{
-lsm_sccan(lesmat, behavior, mask, rawStat = FALSE, showInfo = TRUE,
+lsm_sccan(lesmat, behavior, mask, showInfo = TRUE,
   optimizeSparseness = TRUE, validateSparseness = FALSE,
   tstamp = "\%H:\%M:\%S", pThreshold = 0.05, mycoption = 1,
   robust = 1, sparseness = 0.045, nvecs = 1, cthresh = 150,
@@ -17,10 +17,6 @@ lsm_sccan(lesmat, behavior, mask, rawStat = FALSE, showInfo = TRUE,
 \item{behavior}{vector of behavioral scores.}
 
 \item{mask}{antsImage binary mask to put back voxels in image.}
-
-\item{rawStat}{logical (default=FALSE) if TRUE, more data will be
-returned, included an image with raw voxel weights, eigenvalue for
-behavior, and CCA summary.}
 
 \item{showInfo}{logical (default=TRUE) display messages}
 
@@ -93,18 +89,17 @@ List of objects returned:
 \itemize{
 \item\code{statistic} - vector of statistical values
 \item\code{pvalue} - vector of pvalues
-\item\code{rawStat.img} - (if rawStat=TRUE) image with raw voxel
-weights as returned by \code{\link[ANTsR]{sparseDecom2}}
-\item\code{sccan.eig2} - (if rawStat=TRUE) SCCAN weight for behavior
+\item\code{rawWeights.img} - image with raw SCCAN voxel weights
+\item\code{sccan.eig2} - SCCAN weight(s) for behavior
 column(s).
-\item\code{sccan.ccasummary} - (if rawStat=TRUE) SCCAN summary of
-projection correlations and pvalues (if permutations were used)
-\item\code{optimalSparseness} - (if optimizeSparsness=TRUE) optimal
+\item\code{sccan.ccasummary} - SCCAN summary of
+projection correlations and permutation-derived pvalues
+\item\code{optimalSparseness} - (if optimizeSparseness=TRUE) optimal
 value found for sparseness
-\item\code{CVcorrelation.stat} - (if optimizeSparsness=TRUE)
+\item\code{CVcorrelation.stat} - (if optimizeSparseness=TRUE)
 Correlation between true and predicted score with k-fold validation
 using the optimal sparseness value
-\item\code{CVcorrelation.pval} - (if optimizeSparsness=TRUE) p-value
+\item\code{CVcorrelation.pval} - (if optimizeSparseness=TRUE) p-value
  of the above correlation
 }
 }

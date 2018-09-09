@@ -8,7 +8,7 @@
 #' @param lesmat lesion matrix
 #' @param behavior behavior vector
 #' @param mask antsImage mask
-#' @param nfolds how many folds to use
+#' @param nFolds how many folds to use
 #' @param sparsenessPenalty penalty term
 #' @param lowerSparseness minimum searched sparseness
 #' @param upperSparseness maximum searched sparseness
@@ -86,7 +86,7 @@ optimize_SCCANsparseness <- function(lesmat, behavior, mask,
   # if (! 'caret' %in% rownames(installed.packages())) stop('SCCAN optimization requires the caret package. Try installing with install.packages("caret")')
   myfolds = list()
   for (i in 1:cvRepetitions) {
-    myfolds[[i]] = .createFolds(behavior, nfolds) # caret::createFolds(behavior, nfolds)
+    myfolds[[i]] = .createFolds(behavior, nFolds) # caret::createFolds(behavior, nFolds)
   }
 
   cthresh = c(cthresh,0)
@@ -106,11 +106,12 @@ optimize_SCCANsparseness <- function(lesmat, behavior, mask,
                        maxBased=maxBased,
                        showInfo=showInfo, tstamp="%H:%M:%S", sparsenessPenalty=sparsenessPenalty) {
 
-    if (showInfo) cat(paste0('\n', format(Sys.time(), tstamp), '        Checking sparseness ', round(thissparse,3),' ... '))
+    if (showInfo) cat(paste0('\n', format(Sys.time(), tstamp), '        Checking sparseness ', round(thissparse,3),' '))
 
     CVcorr = rep(NA, length(myfolds))
     # rmse = rep(NA, length(myfolds))
     for (cvrep in 1:length(myfolds)) {
+      if (showInfo) cat('.') # showing dot for working cvrep
 
       sparseness = c( thissparse, sparseness.behav )
       behavior.predicted = rep(NA, length(behavior))
@@ -138,7 +139,7 @@ optimize_SCCANsparseness <- function(lesmat, behavior, mask,
 
     output = 1 - ( CVcorr - (abs(thissparse)*sparsenessPenalty) )
 
-    if (showInfo) cat(paste0('CV correlation ', format(CVcorr,digits=3,nsmall=3),
+    if (showInfo) cat(paste0(' CV correlation ', format(CVcorr,digits=3,nsmall=3),
                              ' (', format(mean(traincorr, na.rm=T),digits=3,nsmall=3), ')',
                              ' (cost=',format(output,digits=3,nsmall=3), ')' ))
 
@@ -152,7 +153,7 @@ optimize_SCCANsparseness <- function(lesmat, behavior, mask,
     if (showInfo) cat(paste('\n       Searching for optimal sparseness:'))
     if (showInfo) cat(paste('\n         lower/upper bound:\t ', lowerSparseness, '/', upperSparseness))
     if (showInfo) cat(paste('\n         cvRepetitions:\t\t ', cvRepetitions))
-    if (showInfo) cat(paste('\n         nfolds:\t\t ', nfolds))
+    if (showInfo) cat(paste('\n         nFolds:\t\t ', nFolds))
     if (showInfo) cat(paste('\n         sparsenessPenalty:\t ', sparsenessPenalty))
     if (showInfo) cat(paste('\n         optim tolerance:\t ', tol))
 
@@ -167,6 +168,8 @@ optimize_SCCANsparseness <- function(lesmat, behavior, mask,
     temp$CVcorrelation.stat = (1 - temp$objective) + (abs(temp$minimum)*sparsenessPenalty)
   } else { # JUST CHECK THE CV FOR USER DEFINED SPARSENESS
     if (showInfo) cat('\n       Validating sparseness:')
+    if (showInfo) cat(paste('\n         cvRepetitions:\t\t ', cvRepetitions))
+    if (showInfo) cat(paste('\n         nFolds:\t\t ', nFolds))
     objective = optimfun(thissparse=sparseness, lesmat=lesmat, behavior=behavior, sccan.masks=sccan.masks, cthresh=cthresh,
                          mycoption=mycoption, robust=robust, myfolds=myfolds, sparseness.behav=sparseness.behav,
                          maxBased=maxBased,

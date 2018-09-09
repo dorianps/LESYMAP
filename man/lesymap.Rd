@@ -165,8 +165,9 @@ is ignored when performing SCCAN analyses.}
 The following objects are typically found in the returned list:
 \itemize{
 \item\code{stat.img}   - statistical map
-\item\code{pval.img}   - p-values map
-\item\code{zmap.img}   - zscore map
+\item\code{rawStat.img}   - (optional) raw SCCAN weights
+\item\code{pval.img}   - (optional) p-values map
+\item\code{zmap.img}   - (optional) zscore map
 \item\code{mask.img}    - mask used for the analyses
 \item\code{average.img} - map of all lesions averaged. Map is
            produced only if no mask is defined.

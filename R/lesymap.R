@@ -211,8 +211,9 @@
 #' The following objects are typically found in the returned list:
 #' \itemize{
 #' \item\code{stat.img}   - statistical map
-#' \item\code{pval.img}   - p-values map
-#' \item\code{zmap.img}   - zscore map
+#' \item\code{rawStat.img}   - (optional) raw SCCAN weights
+#' \item\code{pval.img}   - (optional) p-values map
+#' \item\code{zmap.img}   - (optional) zscore map
 #' \item\code{mask.img}    - mask used for the analyses
 #' \item\code{average.img} - map of all lesions averaged. Map is
 #'            produced only if no mask is defined.
@@ -563,21 +564,30 @@ lesymap <- function(lesions.list, behavior,
   if (showInfo) cat('\n')
 
 
-  pvalue = lsm$pvalue
+  # START POST PROCESSING THE OUTPUT
   statistic = lsm$statistic
+
   if ('zscore' %in% names(lsm)) {
     haszscore = T
     zscore = lsm$zscore
   } else { haszscore=F }
 
+  if ('pvalue' %in% names(lsm)) {
+    haspvalue = T
+    pvalue = lsm$pvalue
+  } else { haspvalue=F }
+
+
   # multiple comparison correction
-  if (multipleComparison %in% p.adjust.methods ) {
-    if (showInfo & multipleComparison != 'none') cat(paste(format(Sys.time(), tstamp) , 'Correcting p-values:',multipleComparison,'...\n'))
-    pvalue.adj = p.adjust(pvalue, method = multipleComparison)
-    statistic[pvalue.adj>=pThreshold] = 0
-    if (haszscore) zscore[pvalue.adj>pThreshold] = 0
-  } else {
-    pvalue.adj = pvalue
+  if (haspvalue) {
+    if (multipleComparison %in% p.adjust.methods ) {
+      if (showInfo & multipleComparison != 'none') cat(paste(format(Sys.time(), tstamp) , 'Correcting p-values:',multipleComparison,'...\n'))
+      pvalue.adj = p.adjust(pvalue, method = multipleComparison)
+      statistic[pvalue.adj>=pThreshold] = 0
+      if (haszscore) zscore[pvalue.adj>pThreshold] = 0
+    } else {
+      pvalue.adj = pvalue
+    }
   }
 
   # flip sign if asked
@@ -592,9 +602,9 @@ lesymap <- function(lesions.list, behavior,
   if (any(is.nan(statistic))) cat('WARNING: NaN values detected in statistic.\n')
   if (any(is.na(statistic))) cat('WARNING: NA values detected in statistic.\n')
   if (any(is.infinite(statistic))) cat('WARNING: Infinite values detected in statistic.\n')
-  if (any(is.nan(pvalue.adj))) cat('WARNING: NaN values detected in pvalues.\n')
-  if (any(is.na(pvalue.adj))) cat('WARNING: NA values detected in pvalues.v')
-  if (any(is.infinite(pvalue.adj))) cat('WARNING: Infinite values detected in pvalues.\n')
+  if (haspvalue && any(is.nan(pvalue.adj))) cat('WARNING: NaN values detected in pvalues.\n')
+  if (haspvalue && any(is.na(pvalue.adj))) cat('WARNING: NA values detected in pvalues.v')
+  if (haspvalue && any(is.infinite(pvalue.adj))) cat('WARNING: Infinite values detected in pvalues.\n')
   if (haszscore && any(is.nan(zscore))) cat('WARNING: NaN values detected in zscore\n')
   if (haszscore && any(is.na(zscore))) cat('WARNING: NA values detected in zscore\n')
   if (haszscore && any(is.infinite(zscore))) cat('WARNING: Infinite values detected in zscore\n')
@@ -603,11 +613,10 @@ lesymap <- function(lesions.list, behavior,
   # put results in images
   if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Preparing images...\n'))
   vlsm.stat = makeImage(mask, voxval=statistic[voxindx])
-  vlsm.pval = makeImage(mask, voxval=pvalue.adj[voxindx])
-  vlsm.pval[mask==0] = 1
-  if (haszscore) {
-    vlsm.zmap = makeImage(mask, voxval=zscore[voxindx])
-  }
+  # optional outputs
+  if (haspvalue) vlsm.pval = makeImage(mask, voxval=pvalue.adj[voxindx])
+  if (haspvalue) vlsm.pval[mask==0] = 1
+  if (haszscore) vlsm.zmap = makeImage(mask, voxval=zscore[voxindx])
 
 
 
@@ -629,11 +638,11 @@ lesymap <- function(lesions.list, behavior,
 
 
   # return results
-  output = list(
-    stat.img=vlsm.stat,
-    pval.img=vlsm.pval)
-
+  output = list(stat.img=vlsm.stat)
+  # optional
   if (exists('vlsm.zmap')) output$zmap.img=vlsm.zmap
+  if (exists('vlsm.pval')) output$vlsm.pval=vlsm.pval
+
   output$mask.img=mask
   otherindx = (! names(lsm) %in% c('statistic', 'pvalue', 'zscore'))
   output = c(output, lsm[otherindx])

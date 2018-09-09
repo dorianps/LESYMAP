@@ -21,6 +21,8 @@ optimize_SCCANsparseness(lesmat, behavior, mask, nFolds = 4,
 
 \item{mask}{antsImage mask}
 
+\item{nFolds}{how many folds to use}
+
 \item{sparsenessPenalty}{penalty term}
 
 \item{lowerSparseness}{minimum searched sparseness}
@@ -64,8 +66,6 @@ direction of the relationship with behavior.}
 
 \item{...}{other arguments received from \code{\link{lesymap}}
 or \code{\link{lsm_sccan}}.}
-
-\item{nfolds}{how many folds to use}
 }
 \value{
 List with: \cr
