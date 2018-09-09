@@ -217,6 +217,7 @@
 #' \item\code{average.img} - map of all lesions averaged. Map is
 #'            produced only if no mask is defined.
 #' \item\code{callinfo} - list of details of how you called lesymap
+#' \item\code{printedOutput} - terminal output in a character variable
 #' \item\code{perm.vector} - the values obtained from each permutation
 #' \item\code{perm.clusterThreshold} - threshold computed for cluster thresholding
 #' \item\code{perm.FWERthresh} - threshold computed for FWERperm thresholding
@@ -285,6 +286,9 @@ lesymap <- function(lesions.list, behavior,
   ver = as.character(packageVersion('LESYMAP'))
   tstamp = "%H:%M:%S"
   toc = Sys.time()
+
+  # start capturing window output to save later
+  outputLog = capture.output({
 
   if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Running LESYMAP', ver, "\n"))
   if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Checking a few things...\n'))
@@ -568,7 +572,7 @@ lesymap <- function(lesions.list, behavior,
 
   # multiple comparison correction
   if (multipleComparison %in% p.adjust.methods ) {
-    if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Correcting p-values:',multipleComparison,'...\n'))
+    if (showInfo & multipleComparison != 'none') cat(paste(format(Sys.time(), tstamp) , 'Correcting p-values:',multipleComparison,'...\n'))
     pvalue.adj = p.adjust(pvalue, method = multipleComparison)
     statistic[pvalue.adj>=pThreshold] = 0
     if (haszscore) zscore[pvalue.adj>pThreshold] = 0
@@ -585,15 +589,15 @@ lesymap <- function(lesions.list, behavior,
 
   # a final check to make sure there are no
   # infinite, na, or nan values
-  if (any(is.nan(statistic))) warning('NaN values detected in statistic.')
-  if (any(is.na(statistic))) warning('NA values detected in statistic.')
-  if (any(is.infinite(statistic))) warning('Infinite values detected in statistic.')
-  if (any(is.nan(pvalue.adj))) warning('NaN values detected in pvalues.')
-  if (any(is.na(pvalue.adj))) warning('NA values detected in pvalues.')
-  if (any(is.infinite(pvalue.adj))) warning('Infinite values detected in pvalues.')
-  if (haszscore && any(is.nan(zscore))) warning('NaN values detected in zscore')
-  if (haszscore && any(is.na(zscore))) warning('NA values detected in zscore')
-  if (haszscore && any(is.infinite(zscore))) warning('Infinite values detected in zscore')
+  if (any(is.nan(statistic))) cat('WARNING: NaN values detected in statistic.\n')
+  if (any(is.na(statistic))) cat('WARNING: NA values detected in statistic.\n')
+  if (any(is.infinite(statistic))) cat('WARNING: Infinite values detected in statistic.\n')
+  if (any(is.nan(pvalue.adj))) cat('WARNING: NaN values detected in pvalues.\n')
+  if (any(is.na(pvalue.adj))) cat('WARNING: NA values detected in pvalues.v')
+  if (any(is.infinite(pvalue.adj))) cat('WARNING: Infinite values detected in pvalues.\n')
+  if (haszscore && any(is.nan(zscore))) cat('WARNING: NaN values detected in zscore\n')
+  if (haszscore && any(is.na(zscore))) cat('WARNING: NA values detected in zscore\n')
+  if (haszscore && any(is.infinite(zscore))) cat('WARNING: Infinite values detected in zscore\n')
 
 
   # put results in images
@@ -648,6 +652,10 @@ lesymap <- function(lesions.list, behavior,
   runtime = paste(round(as.double(difftime(tic,toc)),1), units(difftime(tic,toc)))
   output$callinfo$Runtime = runtime
   if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Done!',runtime,'\n'))
+
+  }, split = TRUE, type = "output") # end printedOutput
+
+  output$outputLog = outputLog
 
   rm(lesions.list)
   invisible(gc())

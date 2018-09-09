@@ -12,7 +12,7 @@
 #' @param sparsenessPenalty penalty term
 #' @param lower minimum searched sparseness
 #' @param upper maximum searched sparseness
-#' @param tol tolerance value, see optimize() in R
+#' @param tol tolerance value, see \code{optimize()} in R
 #' @param justValidate just check the CV of provided sparseness
 #' @param cvRepetitions number of cross-validations at each sparseness
 #' value. Dynamically set depending on sample size: <=30 to 6 reps,
@@ -64,12 +64,17 @@ optimize_SCCANsparseness <- function(lesmat, behavior, mask, nfolds = 4, sparsen
                       directionalSCCAN=FALSE,
                       ...) {
 
-  # make sure sparseness is negative if we want both positive and negative SCCAN weights
+  # flip default bounds to negative eventually
   if (directionalSCCAN) {
-    temp = sort( -abs(c(lower,upper)))
-    lower = temp[1]
-    upper = temp[2]
-    rm(temp)
+    if (! ( 'upper' %in% names(match.call()) |
+            'lower' %in% names(match.call()) )) {
+
+      temp = sort( -abs(c(lower,upper)))
+      lower = temp[1]
+      upper = temp[2]
+      rm(temp)
+
+    }
   }
 
   # REQUIRES CARET
@@ -140,10 +145,11 @@ optimize_SCCANsparseness <- function(lesmat, behavior, mask, nfolds = 4, sparsen
 
   if (!justValidate) { # FULL OPTIMIZATION
     if (showInfo) cat(paste('\n       Searching for optimal sparseness:'))
-    if (showInfo) cat(paste('\n         lower/upper bound: ', lower, '/', upper))
-    if (showInfo) cat(paste('\n         cvRepetitions: ', cvRepetitions))
-    if (showInfo) cat(paste('\n         nfolds: ', nfolds))
-    if (showInfo) cat(paste('\n         sparsenessPenalty: ', sparsenessPenalty))
+    if (showInfo) cat(paste('\n         lower/upper bound:\t ', lower, '/', upper))
+    if (showInfo) cat(paste('\n         cvRepetitions:\t\t ', cvRepetitions))
+    if (showInfo) cat(paste('\n         nfolds:\t\t ', nfolds))
+    if (showInfo) cat(paste('\n         sparsenessPenalty:\t ', sparsenessPenalty))
+    if (showInfo) cat(paste('\n         optim tolerance:\t ', tol))
 
     temp = optimize(f=optimfun, lower=lower, upper=upper, maximum = F, tol = tol,
                     lesmat=lesmat, behavior=behavior, sccan.masks=sccan.masks, cthresh=cthresh,
@@ -155,7 +161,7 @@ optimize_SCCANsparseness <- function(lesmat, behavior, mask, nfolds = 4, sparsen
     # recover true CV correlation, not just the returned function outcome
     temp$CVcorrelation.stat = (1 - temp$objective) + (abs(temp$minimum)*sparsenessPenalty)
   } else { # JUST CHECK THE CV FOR USER DEFINED SPARSENESS
-    if (showInfo) cat(paste('\n       Validating sparseness:', sparseness))
+    if (showInfo) cat('\n       Validating sparseness:')
     objective = optimfun(thissparse=sparseness, lesmat=lesmat, behavior=behavior, sccan.masks=sccan.masks, cthresh=cthresh,
                          mycoption=mycoption, robust=robust, myfolds=myfolds, sparseness.behav=sparseness.behav,
                          maxBased=maxBased,

@@ -11,15 +11,17 @@
 #' @param lesmat matrix of voxels (columns) and subjects (rows).
 #' @param behavior vector of behavioral scores.
 #' @param mask antsImage binary mask to put back voxels in image.
-#' @param rawStat logical (default=FALSE) whether to skip converting all
-#' weights to positive, normalizing 0-1, and removing weights < 0.1.
-#' If TRUE, the raw voxel weights will be returned as returned by
-#' \code{\link[ANTsR]{sparseDecom2}}.
+#' @param rawStat logical (default=FALSE) if TRUE, more data will be
+#' returned, included an image with raw voxel weights, eigenvalue for
+#' behavior, and CCA summary.
 #' @param optimizeSparseness logical (default=TRUE) whether to
-#' run the sparseness optimization routine. If false, the default
+#' run the sparseness optimization routine. If FALSE, the default
 #' sparseness value will be used. If sparseness is manually defined
 #' this flag decides if cross validated correlations will be
 #' computed for the defined sparseness.
+#' @param validateSparseness logical (conditional default=TRUE) If
+#' sparseness is manually defined, this flag decides if cross
+#' validated correlations will be computed for the defined sparseness.
 #' @param pThreshold (default=0.05) If cross validated
 #' correlations show significance below this value
 #' the results are considered null and an empty
@@ -68,14 +70,19 @@
 #' \itemize{
 #' \item\code{statistic} - vector of statistical values
 #' \item\code{pvalue} - vector of pvalues
-#' \item\code{eig2} - SCCAN weight for behavior column(s).
-#' \item\code{ccasummary} - SCCAN summary of projection correlations and
-#' pvalues (if permutations were used)
-#' \item\code{optimalSparseness} - (optional) optimal value found for sparseness
-#' \item\code{CVcorrelation.stat} - (optional) Correlation between
-#' true and predicted score with k-fold validation using
-#' the optimal sparseness value
-#' \item\code{CVcorrelation.pval} - (optional) p-value of the above correlation
+#' \item\code{rawStat.img} - (if rawStat=TRUE) image with raw voxel
+#' weights as returned by \code{\link[ANTsR]{sparseDecom2}}
+#' \item\code{sccan.eig2} - (if rawStat=TRUE) SCCAN weight for behavior
+#' column(s).
+#' \item\code{sccan.ccasummary} - (if rawStat=TRUE) SCCAN summary of
+#' projection correlations and pvalues (if permutations were used)
+#' \item\code{optimalSparseness} - (if optimizeSparsness=TRUE) optimal
+#' value found for sparseness
+#' \item\code{CVcorrelation.stat} - (if optimizeSparsness=TRUE)
+#' Correlation between true and predicted score with k-fold validation
+#' using the optimal sparseness value
+#' \item\code{CVcorrelation.pval} - (if optimizeSparsness=TRUE) p-value
+#'  of the above correlation
 #' }
 #'
 #' @examples{
@@ -95,7 +102,8 @@
 #' @author Dorian Pustina
 #'
 #' @export
-lsm_sccan <- function(lesmat, behavior, mask, rawStat=F, showInfo=T, optimizeSparseness = T,
+lsm_sccan <- function(lesmat, behavior, mask, rawStat=FALSE, showInfo=TRUE,
+                      optimizeSparseness = TRUE, validateSparseness=FALSE,
                       tstamp = "%H:%M:%S", pThreshold=0.05,
                       mycoption=1,
                       robust=1,
@@ -121,17 +129,21 @@ lsm_sccan <- function(lesmat, behavior, mask, rawStat=F, showInfo=T, optimizeSpa
   sccan.masks=c(mask,NA)
 
   # check if user specified sparseness
-  justValidate = F
-  if ('sparseness' %in% names(match.call())) justValidate = T
+  if ('sparseness' %in% names(match.call())) {
+    optimizeSparseness = FALSE
+    if (!('validateSparseness' %in% names(match.call()))) {
+      validateSparseness = TRUE
+    }
+  }
 
-  if (optimizeSparseness) {
+  if (optimizeSparseness | validateSparseness) {
     sparse.optim = optimize_SCCANsparseness(lesmat = lesmat, behavior = behavior, mask=mask,
                                             cthresh=cthresh, mycoption=mycoption, robust=robust,
                                             nvecs=nvecs, its=its, npermsSCCAN=npermsSCCAN,
                                             smooth=smooth, sparseness.behav=sparseness.behav,
                                             showInfo=showInfo, tstamp=tstamp,
                                             maxBased=maxBased,
-                                            sparseness=sparseness[1], justValidate=justValidate,
+                                            sparseness=sparseness[1], justValidate=validateSparseness,
                                             directionalSCCAN=directionalSCCAN, ...)
 
     sparseness = c(sparse.optim$minimum, sparseness.behav)
@@ -142,15 +154,15 @@ lsm_sccan <- function(lesmat, behavior, mask, rawStat=F, showInfo=T, optimizeSpa
     CVcorrelation.pval = pt(-abs(tstat), n-2)*2
     CVcorrelation.pval = ifelse(CVcorrelation.pval<1, CVcorrelation.pval, 1) # to fix p > 1
 
-    if (showInfo & !justValidate) cat(paste0('\n       Found optimal sparsenes ', round(sparseness[1],3),
+    if (showInfo & !validateSparseness) cat(paste0('\n       Found optimal sparsenes ', round(sparseness[1],3),
                              ' (CV corr=', round(CVcorrelation.stat,3), ' p=', format(CVcorrelation.pval, digits=3), ')'))
 
-    if (showInfo & justValidate) cat(paste0('\n       Validated sparseness ', round(sparseness[1],3),
+    if (showInfo & validateSparseness) cat(paste0('\n       Validated sparseness ', round(sparseness[1],3),
                                              ' (CV corr=', round(CVcorrelation.stat,3), ' p=', format(CVcorrelation.pval, digits=3), ')'))
 
     # if poor result, end it here
     if (CVcorrelation.pval > pThreshold) {
-      if (showInfo) warning('\n       Poor cross-validated accuracy, returning NULL result.')
+      if (showInfo) cat('\n       WARNING: Poor cross-validated accuracy, returning NULL result.')
       return(list(statistic=rep(0,ncol(lesmat)),
                   pvalue=rep(1,ncol(lesmat)),
                   optimalSparseness = sparse.optim$minimum,
@@ -163,15 +175,15 @@ lsm_sccan <- function(lesmat, behavior, mask, rawStat=F, showInfo=T, optimizeSpa
 
   if (showInfo) {
     cat(paste('\n       Calling SCCAN with:'))
-    cat(paste('\n            Components =', nvecs))
-    cat(paste('\n            Use ranks =', robust))
-    cat(paste('\n            Sparseness =', round(sparseness[1], 3)))
-    cat(paste('\n            Cluster threshold =', cthresh[1]))
-    cat(paste('\n            Smooth sigma =', smooth))
-    cat(paste('\n            Iterations =', its))
-    cat(paste('\n            maxBased =', maxBased))
-    cat(paste('\n            directionalSCCAN =', directionalSCCAN))
-    cat(paste('\n            Permutations =', npermsSCCAN))
+    cat(paste('\n            Components:\t\t', nvecs))
+    cat(paste('\n            Use ranks:\t\t', robust))
+    cat(paste('\n            Sparseness:\t\t', round(sparseness[1], 3)))
+    cat(paste('\n            Cluster threshold:\t', cthresh[1]))
+    cat(paste('\n            Smooth sigma:\t', smooth))
+    cat(paste('\n            Iterations:\t\t', its))
+    cat(paste('\n            maxBased:\t\t', maxBased))
+    cat(paste('\n            directionalSCCAN:\t', directionalSCCAN))
+    cat(paste('\n            Permutations:\t', npermsSCCAN))
   }
 
   sccan = sparseDecom2( inmats,inmask=sccan.masks, mycoption=mycoption,
@@ -179,38 +191,41 @@ lsm_sccan <- function(lesmat, behavior, mask, rawStat=F, showInfo=T, optimizeSpa
                            cthresh=cthresh,its=its, perms=npermsSCCAN, smooth=smooth,
                         maxBased=maxBased)
 
-  if (!rawStat) {
-    # normalize values to 1 or -1
-    statistic = sccan$eig1 / max(abs(sccan$eig1))
 
-    # flip weights if necessary
-    if (directionalSCCAN) {
-      posbehav = ifelse(sccan$eig2[1,1] < 0, -1, 1)
-      poscor = ifelse(sccan$ccasummary$corrs[1] < 0, -1, 1)
-      flipval =  posbehav * poscor
-      statistic = statistic * flipval
-    } else {
-      statistic = abs(statistic)
-    }
+  # normalize values to 1 or -1
+  statistic = sccan$eig1 / max(abs(sccan$eig1))
 
-    # shave away weights < 0.1, not needed for maxBased because they are removed in sparseDecom2
-    if (!maxBased) statistic[statistic < 0.1 & statistic > -0.1] = 0
-
-    # eleminate small clusters
-    temp = makeImage(mask,statistic)
-    tempclust = labelClusters(temp, minClusterSize = cthresh, minThresh = .Machine$double.eps, Inf)
-    temp = temp * thresholdImage(tempclust, .Machine$double.eps, Inf)
-    statistic = imageListToMatrix(list(temp), mask)[1,]
+  # flip weights if necessary
+  if (directionalSCCAN) {
+    posbehav = ifelse(sccan$eig2[1,1] < 0, -1, 1)
+    poscor = ifelse(sccan$ccasummary$corrs[1] < 0, -1, 1)
+    flipval =  posbehav * poscor
+    statistic = statistic * flipval
   } else {
-    # give back raw values without touching anything
-    statistic = sccan$eig1
+    statistic = abs(statistic)
   }
+
+  # shave away weights < 0.1, not needed for maxBased because they are removed in sparseDecom2
+  if (!maxBased) statistic[statistic < 0.1 & statistic > -0.1] = 0
+
+  # eleminate small clusters
+  # placed on purpose after 0.1 thresholding to remove
+  # remaining small leftover clusters
+  temp = makeImage(mask,statistic) # put stat in image
+  tempabs = abs(temp) # flip all weights to positive
+  tempclust = labelClusters(tempabs, minClusterSize = cthresh, minThresh = .Machine$double.eps, maxThresh=Inf)
+  temp = temp * thresholdImage(tempclust, .Machine$double.eps, Inf)
+  statistic = imageListToMatrix(list(temp), mask)[1,]
+  if (showInfo & sum(statistic!=0) == 0) cat('\n       WARNING: Post-sccan cluster thresholding removed all voxels.')
+
+
   pvalue = statistic*0
 
   output = list(statistic=statistic, pvalue=pvalue)
-  output$eig2 = sccan$eig2
-  output$ccasummary = sccan$ccasummary
 
+  if (rawStat) output$rawStat.img = makeImage(mask,sccan$eig1)
+  if (rawStat) output$sccan.eig2 = sccan$eig2
+  if (rawStat) output$sccan.ccasummary = sccan$ccasummary
 
   if (optimizeSparseness) {
     output$optimalSparseness = sparse.optim$minimum

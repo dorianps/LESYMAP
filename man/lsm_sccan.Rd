@@ -17,10 +17,9 @@ lsm_sccan(lesmat, behavior, mask, rawStat = F, showInfo = T,
 
 \item{mask}{antsImage binary mask to put back voxels in image.}
 
-\item{rawStat}{logical (default=FALSE) whether to skip converting all
-weights to positive, normalizing 0-1, and removing weights < 0.1.
-If TRUE, the raw voxel weights will be returned as returned by
-\code{\link[ANTsR]{sparseDecom2}}.}
+\item{rawStat}{logical (default=FALSE) if TRUE, more data will be
+returned, included an image with raw voxel weights, eigenvalue for
+behavior, and CCA summary.}
 
 \item{showInfo}{logical (default=TRUE) display messages}
 
@@ -89,14 +88,19 @@ List of objects returned:
 \itemize{
 \item\code{statistic} - vector of statistical values
 \item\code{pvalue} - vector of pvalues
-\item\code{sccan.BehaviorWeight} - corresponding SCCAN weight for behavior.
-Can be used in combination with \code{rawStat=TRUE} to investigate
-the direction of brain-behavior relationships reflected in voxel weights.
-\item\code{optimalSparseness} - (optional) optimal value found for sparseness
-\item\code{CVcorrelation.stat} - (optional) Correlation between
-true and predicted score with k-fold validation using
-the optimal sparseness value
-\item\code{CVcorrelation.pval} - (optional) p-value of the above correlation
+\item\code{rawStat.img} - (if rawStat=TRUE) image with raw voxel
+weights as returned by \code{\link[ANTsR]{sparseDecom2}}
+\item\code{sccan.eig2} - (if rawStat=TRUE) SCCAN weight for behavior
+column(s).
+\item\code{sccan.ccasummary} - (if rawStat=TRUE) SCCAN summary of
+projection correlations and pvalues (if permutations were used)
+\item\code{optimalSparseness} - (if optimizeSparsness=TRUE) optimal
+value found for sparseness
+\item\code{CVcorrelation.stat} - (if optimizeSparsness=TRUE)
+Correlation between true and predicted score with k-fold validation
+using the optimal sparseness value
+\item\code{CVcorrelation.pval} - (if optimizeSparsness=TRUE) p-value
+ of the above correlation
 }
 }
 \description{

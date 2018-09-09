@@ -30,7 +30,8 @@
 #' @export
 #' @importFrom graphics plot
 save.lesymap <- function(lsm, saveDir, infoFile='Info.txt', template=NA, saveTemplate=F,
-                          savePatchImages=T, plot.alpha=0.8, plot.axis=3, plot.quality=8, ...) {
+                          savePatchImages=T, plot.alpha=0.8, plot.axis=3, plot.quality=8,
+                         outputLogFile = 'outputLog.txt', ...) {
 
   if ('callinfo' %in% names(lsm)) callinfo = lsm$callinfo
   else callinfo=list()
@@ -141,6 +142,13 @@ save.lesymap <- function(lsm, saveDir, infoFile='Info.txt', template=NA, saveTem
       line = paste0(names(lsm)[i], ': ', paste(lsm[[i]], collapse=' '))
       write(line, outfile, append = T)
     }
+  }
+
+  # write printOutput
+  if ('outputLog' %in% names(lsm)) {
+    outlog =  file.path(saveDir, outputLogFile)
+    file.create(outlog)
+    for (i in 1:length(lsm$outputLog)) write(lsm$outputLog[i], outlog, append = T)
   }
 
 }

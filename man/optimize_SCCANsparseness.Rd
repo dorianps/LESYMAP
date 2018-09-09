@@ -6,11 +6,12 @@
 \usage{
 optimize_SCCANsparseness(lesmat, behavior, mask, nfolds = 4,
   sparsenessPenalty = 0.03, lower = 0.005, upper = 0.9, tol = 0.03,
-  justValidate = FALSE, cvRepetitions = 3, showInfo = TRUE,
-  mycoption = 1, robust = 1, sparseness = NA, nvecs = 1,
-  cthresh = 150, its = 30, npermsSCCAN = 0, smooth = 0.4,
-  sparseness.behav = -0.99, maxBased = FALSE,
-  directionalSCCAN = FALSE, ...)
+  justValidate = FALSE, cvRepetitions = ifelse(length(behavior) <= 30,
+  6, ifelse(length(behavior) <= 40, 5, ifelse(length(behavior) <= 50, 4,
+  3))), showInfo = TRUE, mycoption = 1, robust = 1,
+  sparseness = NA, nvecs = 1, cthresh = 150, its = 30,
+  npermsSCCAN = 0, smooth = 0.4, sparseness.behav = -0.99,
+  maxBased = FALSE, directionalSCCAN = FALSE, ...)
 }
 \arguments{
 \item{lesmat}{lesion matrix}
@@ -31,7 +32,9 @@ optimize_SCCANsparseness(lesmat, behavior, mask, nfolds = 4,
 
 \item{justValidate}{just check the CV of provided sparseness}
 
-\item{cvRepetitions}{number of cross-validations}
+\item{cvRepetitions}{number of cross-validations at each sparseness
+value. Dynamically set depending on sample size: <=30 to 6 reps,
+<=40 to 5 reps, <=50 to 4 reps, > 50 to 3 reps.}
 
 \item{showInfo}{logical (default=TRUE) display messages}
 
