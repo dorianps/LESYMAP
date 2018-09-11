@@ -25,9 +25,18 @@
 #' map is returned.
 #' @param showInfo logical (default=TRUE) display messages
 #' @param tstamp timestamp format used in LESYMAP
-#' @param sparseness (default=1) SCCAN parameter. Setting this
-#' manually is not recommended. For more, see
-#' \code{\link[ANTsR]{sparseDecom2}}.
+#' @param sparseness (default=1) SCCAN parameter. Decides the proportion
+#' of voxels that will receive a non-zero weight. A positive sparseness
+#' will force the solution of each component to be one sided, i.e.,
+#' voxels cannot have both positive and negative weights. A negative
+#' sparseness allows dual sided solution, where some voxels can have
+#' positive weights and other voxels can have negative weights. Setting
+#' sparseness manually without running the optimization routing is not
+#' recommended. For more, see \code{\link[ANTsR]{sparseDecom2}}.
+#' @param sparseness.behav SCCAN parameter, what sparsness to use for
+#' behavioral scores. Useful only if multiple behavioral scores are
+#' passed. This argument is not optimized, you should not change it
+#' if you are not familiar with SCCAN.
 #' @param mycoption (default=1) SCCAN parameter, see \code{\link[ANTsR]{sparseDecom2}}
 #' @param robust (ddefault=1) SCCAN parameter, see \code{\link[ANTsR]{sparseDecom2}}
 #' @param nvecs (default=1) SCCAN parameter. Normally only
@@ -104,6 +113,7 @@ lsm_sccan <- function(lesmat, behavior, mask, showInfo=TRUE,
                       mycoption=1,
                       robust=1,
                       sparseness=0.045,
+                      sparseness.behav = -0.99,
                       nvecs=1,
                       cthresh=150,
                       its=20,
@@ -113,7 +123,6 @@ lsm_sccan <- function(lesmat, behavior, mask, showInfo=TRUE,
                       directionalSCCAN=FALSE,
                       ...) {
 
-  sparseness.behav = -0.99
   sparseness = c( sparseness, sparseness.behav )
   cthresh = c(cthresh,0)
 

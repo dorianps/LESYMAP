@@ -7,9 +7,9 @@
 lsm_sccan(lesmat, behavior, mask, showInfo = TRUE,
   optimizeSparseness = TRUE, validateSparseness = FALSE,
   tstamp = "\%H:\%M:\%S", pThreshold = 0.05, mycoption = 1,
-  robust = 1, sparseness = 0.045, nvecs = 1, cthresh = 150,
-  its = 20, npermsSCCAN = 0, smooth = 0.4, maxBased = FALSE,
-  directionalSCCAN = FALSE, ...)
+  robust = 1, sparseness = 0.045, sparseness.behav = -0.99,
+  nvecs = 1, cthresh = 150, its = 20, npermsSCCAN = 0,
+  smooth = 0.4, maxBased = FALSE, directionalSCCAN = FALSE, ...)
 }
 \arguments{
 \item{lesmat}{matrix of voxels (columns) and subjects (rows).}
@@ -41,9 +41,19 @@ map is returned.}
 
 \item{robust}{(ddefault=1) SCCAN parameter, see \code{\link[ANTsR]{sparseDecom2}}}
 
-\item{sparseness}{(default=1) SCCAN parameter. Setting this
-manually is not recommended. For more, see
-\code{\link[ANTsR]{sparseDecom2}}.}
+\item{sparseness}{(default=1) SCCAN parameter. Decides the proportion
+of voxels that will receive a non-zero weight. A positive sparseness
+will force the solution of each component to be one sided, i.e.,
+voxels cannot have both positive and negative weights. A negative
+sparseness allows dual sided solution, where some voxels can have
+positive weights and other voxels can have negative weights. Setting
+sparseness manually without running the optimization routing is not
+recommended. For more, see \code{\link[ANTsR]{sparseDecom2}}.}
+
+\item{sparseness.behav}{SCCAN parameter, what sparsness to use for
+behavioral scores. Useful only if multiple behavioral scores are
+passed. This argument is not optimized, you should not change it
+if you are not familiar with SCCAN.}
 
 \item{nvecs}{(default=1) SCCAN parameter. Normally only
 one eigenvector of weights is obtained in LESYMAP. Multiple
