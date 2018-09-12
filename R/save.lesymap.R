@@ -100,7 +100,14 @@ save.lesymap <- function(lsm, saveDir, infoFile='Info.txt', template=NA, saveTem
   # write lesymap call parameters
   if (length(callinfo)>0) {
     for (i in 1:length(callinfo)) {
-      line = paste0(names(callinfo)[i], ': ', callinfo[[i]])
+      if (is.numeric(callinfo[[i]])) {
+        thisval = paste(callinfo[[i]], collapse=' ')
+      } else if (typeof(callinfo[[16]]) == 'language') { # special case for negative numbers
+        thisval = paste(callinfo[[i]], collapse='')
+      } else {
+        thisval = callinfo[[i]]
+      }
+      line = paste0(names(callinfo)[i], ': ', thisval)
       write(line, outfile, append = T)
     }
   }

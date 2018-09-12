@@ -9,7 +9,7 @@ lsm_sccan(lesmat, behavior, mask, showInfo = TRUE,
   tstamp = "\%H:\%M:\%S", pThreshold = 0.05, mycoption = 1,
   robust = 1, sparseness = 0.045, sparseness.behav = -0.99,
   nvecs = 1, cthresh = 150, its = 20, npermsSCCAN = 0,
-  smooth = 0.4, maxBased = FALSE, directionalSCCAN = FALSE, ...)
+  smooth = 0.4, maxBased = FALSE, directionalSCCAN = TRUE, ...)
 }
 \arguments{
 \item{lesmat}{matrix of voxels (columns) and subjects (rows).}
@@ -87,7 +87,7 @@ has not been tested thoroughly. Note that the optimal sparseness
 obtained with \code{maxBased=TRUE} is not optimal when switching to
 \code{maxBased=FALSE}.}
 
-\item{directionalSCCAN}{(default=FALSE) If TRUE, the upper and lower
+\item{directionalSCCAN}{(default=TRUE) If TRUE, the upper and lower
 bounds of sparseness search will be negative. A negative sparseness
 permits positive and negative voxel weights, thus finding the
 direction of the relationship with behavior.}

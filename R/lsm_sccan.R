@@ -65,7 +65,7 @@
 #' has not been tested thoroughly. Note that the optimal sparseness
 #' obtained with \code{maxBased=TRUE} is not optimal when switching to
 #' \code{maxBased=FALSE}.
-#' @param directionalSCCAN (default=FALSE) If TRUE, the upper and lower
+#' @param directionalSCCAN (default=TRUE) If TRUE, the upper and lower
 #' bounds of sparseness search will be negative. A negative sparseness
 #' permits positive and negative voxel weights, thus finding the
 #' direction of the relationship with behavior.
@@ -120,7 +120,7 @@ lsm_sccan <- function(lesmat, behavior, mask, showInfo=TRUE,
                       npermsSCCAN=0,
                       smooth=0.4,
                       maxBased=FALSE,
-                      directionalSCCAN=FALSE,
+                      directionalSCCAN=TRUE,
                       ...) {
 
   sparseness = c( sparseness, sparseness.behav )
