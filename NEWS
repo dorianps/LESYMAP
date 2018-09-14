@@ -2,28 +2,21 @@
 LESYMAP v0.0.0.9201 (Release date: 2018-09-13)
 
   This is a major update. Changes include:
-    - SCCAN weights now show relationship with behavior and range -1 to 1.
+  - SCCAN weights now show relationship with behavior
+  - SCCAN weights can now range -1 to 1
   - added 'directionalSCCAN' argument for back compatbility
   - default sparseness range is now -0.9 to 0.9
-  - changed argument names for
   - removed pval.img output from SCCAN output
   - removed rawStat argument from SCCAN
   - raw SCCAN weights always returned in rawWeights.img output
   - new outputs returned from SCCAN: eig2 and ccasummary
-  - added sparsenessBehav argument to lsm_sccan
+  - added sparseness.behav argument to lsm_sccan
+  - changed names for lowerSparseness, upperSparseness, nFolds, etc.
   - overall info display improvements
   - increased 'cvRepetitions' automatically for small samples
-
-
-  - Lesymap screen output now captured in printedOutput and saved with results.
+  - lesymap screen output now captured in printedOutput variable
+  - save.lesymap() now saving printed output
   - changed warnings to cat for proper output capture
-  - removed rawStat argument from SCCAN. Raw weights
-  are now returned by default in rawStat.img
-  to allow proper
-  retreival of
-  Enabled maxBased SCCAN approach (experimental)
-  Added new output to SCCAN results: sccan.BehaviorWeight
-  Removed 'caret' requirement in optimize_SCCANsparseness
 
 ==============
 LESYMAP v0.0.0.9009 (Release date: 2018-09-03)
