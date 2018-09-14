@@ -5,11 +5,11 @@
 \title{Optimization of SCCAN sparseness}
 \usage{
 optimize_SCCANsparseness(lesmat, behavior, mask, nFolds = 4,
-  sparsenessPenalty = 0.03, lowerSparseness = 0.005,
+  sparsenessPenalty = 0.03, lowerSparseness = -0.9,
   upperSparseness = 0.9, tol = 0.03, justValidate = FALSE,
   cvRepetitions = ifelse(length(behavior) <= 30, 6,
   ifelse(length(behavior) <= 40, 5, ifelse(length(behavior) <= 50, 4, 3))),
-  showInfo = TRUE, directionalSCCAN = FALSE, mycoption = 1,
+  showInfo = TRUE, directionalSCCAN = TRUE, mycoption = 1,
   robust = 1, sparseness = NA, nvecs = 1, cthresh = 150,
   its = 30, npermsSCCAN = 0, smooth = 0.4,
   sparseness.behav = -0.99, maxBased = FALSE, ...)
@@ -39,10 +39,8 @@ value. Dynamically set depending on sample size: <=30 to 6 reps,
 
 \item{showInfo}{logical (default=TRUE) display messages}
 
-\item{directionalSCCAN}{(default=FALSE) If TRUE, the upper and lower
-bounds of sparseness search will be negative. A negative sparseness
-permits positive and negative voxel weights, thus finding the
-direction of the relationship with behavior.}
+\item{directionalSCCAN}{(default=TRUE) switching to FALSE will
+switch sparseness range in the positive side, 0.005 to 0.9}
 
 \item{mycoption}{standard SCCAN parameter}
 
