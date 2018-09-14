@@ -10,9 +10,12 @@
 #' @param lesmat binary matrix (0/1) of voxels (columns)
 #' and subjects (rows).
 #' @param behavior vector of behavioral scores.
-#' @param permuteNthreshold (default=9) Voxels lesioned in less than
-#' this number will undergo permutation based thresholding.
-#' See Medina et al 2010.
+#' @param permuteNthreshold (default=9) Voxels lesioned in fewer
+#' than 9 subjects may yield incorrect p-values with Brunner-Munzel
+#' tests, so they need to identify pvalues through individualized
+#' permutations. This parameter sets the threshold to find which
+#' voxels need permutations. See
+#' \href{https://www.ncbi.nlm.nih.gov/pubmed/19766664}{Medina et al (2010)}.
 #' @param permuteAllVoxelsBM (default=FALSE) whether to force the
 #' permutation-based p-value calulation for all voxels, instead of
 #' applying only to voxels below \code{permuteNthrehsold}. Setting this
@@ -111,7 +114,7 @@ lsm_BMfast <- function(lesmat, behavior, permuteNthreshold=9, alternative="great
 
     # run voxel-wise BM permutations when needed
     if (any(permindx)) {
-      if (showInfo) cat(paste0('\n        running ',npermBM,' permutations on ', sum(permindx),' voxels below permuteNthreshold' ))
+      if (showInfo) cat(paste0('\n        running ',npermBM,' Brunner-Munzel permutations in ', sum(permindx),' voxels lesioned in less than ', permuteNthreshold, ' subjects to find correct p-value' ))
 
       if ((alternative == "greater") | (alternative == "g")) {
         BMpermalternative = 1

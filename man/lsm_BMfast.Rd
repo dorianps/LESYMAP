@@ -15,9 +15,12 @@ and subjects (rows).}
 
 \item{behavior}{vector of behavioral scores.}
 
-\item{permuteNthreshold}{(default=9) Voxels lesioned in less than
-this number will undergo permutation based thresholding.
-See Medina et al 2010.}
+\item{permuteNthreshold}{(default=9) Voxels lesioned in fewer
+than 9 subjects may yield incorrect p-values with Brunner-Munzel
+tests, so they need to identify pvalues through individualized
+permutations. This parameter sets the threshold to find which
+voxels need permutations. See
+\href{https://www.ncbi.nlm.nih.gov/pubmed/19766664}{Medina et al (2010)}.}
 
 \item{alternative}{(default="greater") It is assumed that
 healthy voxels (0) have greater behavioral scores. If your

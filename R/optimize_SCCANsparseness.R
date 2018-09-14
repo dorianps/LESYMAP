@@ -27,10 +27,8 @@
 #' @param smooth standard SCCAN parameter
 #' @param sparseness.behav what sparsness to use for behavior
 #' @param maxBased standard SCCAN parameter
-#' @param directionalSCCAN (default=FALSE) If TRUE, the upper and lower
-#' bounds of sparseness search will be negative. A negative sparseness
-#' permits positive and negative voxel weights, thus finding the
-#' direction of the relationship with behavior.
+#' @param directionalSCCAN (default=TRUE) switching to FALSE will
+#' switch sparseness range in the positive side, 0.005 to 0.9
 #' @param showInfo logical (default=TRUE) display messages
 #' @param ... other arguments received from \code{\link{lesymap}}
 #' or \code{\link{lsm_sccan}}.
@@ -47,7 +45,7 @@
 optimize_SCCANsparseness <- function(lesmat, behavior, mask,
                                      nFolds = 4,
                                      sparsenessPenalty=0.03,
-                                     lowerSparseness=0.005,
+                                     lowerSparseness=-0.9,
                                      upperSparseness=0.9,
                                      tol = 0.03,
                                      justValidate=FALSE,
@@ -56,7 +54,7 @@ optimize_SCCANsparseness <- function(lesmat, behavior, mask,
                                                    ifelse(length(behavior)<=50,4,
                                                                                3))),
                                      showInfo = TRUE,
-                                     directionalSCCAN=FALSE,
+                                     directionalSCCAN=TRUE,
                       mycoption=1,
                       robust=1,
                       sparseness=NA, # 0.045,
@@ -70,16 +68,10 @@ optimize_SCCANsparseness <- function(lesmat, behavior, mask,
                       ...) {
 
   # flip default bounds to negative eventually
-  if (directionalSCCAN) {
-    if (! ( 'upperSparseness' %in% names(match.call()) |
-            'lowerSparseness' %in% names(match.call()) )) {
-
-      temp = sort( -abs(c(lowerSparseness,upperSparseness)))
-      lowerSparseness = temp[1]
-      upperSparseness = temp[2]
-      rm(temp)
-
-    }
+  if (!directionalSCCAN) {
+    upperSparseness=0.9
+    lowerSparseness=0.005
+    if (showInfo) cat(paste('\n       directionalSCCAN=FALSE, switchin default sparseness range', lowerSparseness, 'to', upperSparseness))
   }
 
   # REQUIRES CARET
