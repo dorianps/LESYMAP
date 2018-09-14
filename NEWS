@@ -1,7 +1,7 @@
 ==============
 LESYMAP v0.0.0.9201 (Release date: 2018-09-13)
 
-  This is a major update. Changes include:
+  This is a major update, some default outputs have changed:
   - SCCAN weights now show relationship with behavior
   - SCCAN weights can now range -1 to 1
   - added 'directionalSCCAN' argument for back compatbility
