@@ -9,7 +9,7 @@ lsm_sccan(lesmat, behavior, mask, rawStat = F, showInfo = T,
   mycoption = 1, robust = 1, sparseness = 0.045,
   sparseness.behav = -0.99, nvecs = 1, cthresh = 150, its = 20,
   npermsSCCAN = 0, smooth = 0.4, maxBased = FALSE,
-  directionalSCCAN = FALSE, ...)
+  directionalSCCAN = TRUE, ...)
 }
 \arguments{
 \item{lesmat}{matrix of voxels (columns) and subjects (rows).}

@@ -1,7 +1,7 @@
 ==============
-LESYMAP v0.0.0.9201 (Release date: 2018-09-13)
+LESYMAP v0.0.0.9201 (Release date: 2018-09-14)
 
-  This is a major update, some default outputs have changed:
+  This is a major update, the default SCCAN output has changed:
   - SCCAN weights now show relationship with behavior
   - SCCAN weights can now range -1 to 1
   - added 'directionalSCCAN' argument for back compatbility
@@ -10,6 +10,7 @@ LESYMAP v0.0.0.9201 (Release date: 2018-09-13)
   - removed rawStat argument from SCCAN
   - raw SCCAN weights always returned in rawWeights.img output
   - new outputs returned from SCCAN: eig2 and ccasummary
+  - removed sccan.BehaviorWeight output, info now in eig2 output
   - added sparseness.behav argument to lsm_sccan
   - changed names for lowerSparseness, upperSparseness, nFolds, etc.
   - overall info display improvements

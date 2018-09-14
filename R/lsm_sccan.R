@@ -110,7 +110,7 @@ lsm_sccan <- function(lesmat, behavior, mask, rawStat=F, showInfo=T, optimizeSpa
                       npermsSCCAN=0,
                       smooth=0.4,
                       maxBased=FALSE,
-                      directionalSCCAN=FALSE,
+                      directionalSCCAN=TRUE,
                       ...) {
 
 
