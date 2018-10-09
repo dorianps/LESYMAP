@@ -10,6 +10,7 @@ Language: R (version 3.0 or above)
 License:  Apache License 2.0  
   
 [![Travis](https://img.shields.io/travis/dorianps/LESYMAP.svg?branch=master)](https://travis-ci.org/dorianps/LESYMAP)  
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1452007.svg)](https://doi.org/10.5281/zenodo.1452007)  
 
   
 *****
