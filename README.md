@@ -68,7 +68,8 @@ Check out how this example looks on [the screen](https://youtu.be/0WQXEgip_zk).
 [Fast lesion drawing in ITKsnap](https://www.youtube.com/watch?v=ZVmINdWk5R4)  
 [All Videos](https://github.com/dorianps/LESYMAP/wiki/Videos)  
 [SCCAN questions](https://github.com/dorianps/LESYMAP/wiki/SCCAN-questions)  
-[Known limitations](https://github.com/dorianps/LESYMAP/wiki/Known-Limitations)
+[Known limitations](https://github.com/dorianps/LESYMAP/wiki/Known-Limitations)  
+[List of LESYMAP functions](https://github.com/dorianps/LESYMAP/blob/master/LESYMAP.pdf)  
 
 *****    
 ### Note
