@@ -69,7 +69,7 @@ Check out how this example looks on [the screen](https://youtu.be/0WQXEgip_zk).
 [All Videos](https://github.com/dorianps/LESYMAP/wiki/Videos)  
 [SCCAN questions](https://github.com/dorianps/LESYMAP/wiki/SCCAN-questions)  
 [Known limitations](https://github.com/dorianps/LESYMAP/wiki/Known-Limitations)  
-[List of LESYMAP functions](https://github.com/dorianps/LESYMAP/raw/master/LESYMAP.pdf)  
+[LESYMAP function reference](https://github.com/dorianps/LESYMAP/raw/master/LESYMAP.pdf)  
 
 *****    
 ### Note
