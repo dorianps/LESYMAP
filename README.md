@@ -40,7 +40,7 @@ library(LESYMAP)
 example(lesymap)
 ```
 ```
-3:46:03 Running LESYMAP 0.0.0.9201 
+13:46:03 Running LESYMAP 0.0.0.9201 
 13:46:03 Checking a few things...
 13:46:03 Loading behavioral data...131 scores found.
 13:46:03 Filenames as input, checking lesion values on 1st image...
