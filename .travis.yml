@@ -7,9 +7,9 @@ os:
 compiler:
   - clang
 
-#matrix:
-#  allow_failures:
-#    - os: linux
+matrix:
+ allow_failures:
+   - os: osx
 
 dist: trusty
 
