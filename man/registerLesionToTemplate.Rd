@@ -58,7 +58,8 @@ please set \code{verbose=TRUE}.}
 \value{
 List of objects returned:
 \itemize{
- \item\code{subImg} - subject\'s image in native space (after some preprocessing)
+ \item\code{subImg} - subject\'s image in native space (after bias correction,
+  denoising, skull stripping, etc.)
  \item\code{subLesion} - subject\'s lesion map in native space
  \item\code{subImgTemplate} - subject\'s image in template space
  \item\code{subLesionTemplate} - subject\'s lesion in template space
