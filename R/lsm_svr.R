@@ -127,16 +127,18 @@ lsm_svr <- function(lesmat, behavior, mask,
     betaScale = 10/max(abs(w))
     thisstat = as.vector(w*betaScale);
 
-    exceed[posindx] = exceed[posindx] + thisstat[posindx] >= statistic[posindx]
-    exceed[negindx] = exceed[negindx] + thisstat[negindx] <= statistic[negindx]
+    exceed[posindx] = exceed[posindx] + (thisstat[posindx] >= statistic[posindx])
+    exceed[negindx] = exceed[negindx] + (thisstat[negindx] <= statistic[negindx])
 
   }
 
-  pvalue = exceed / SVR.nperm
+  pvalue = exceed / (SVR.nperm + 1)
 
   output = list()
   output$statistic = statistic
   output$pvalue = pvalue
+
+  return(output)
 
 
 
