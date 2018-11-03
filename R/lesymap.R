@@ -410,8 +410,7 @@ lesymap <- function(lesions.list, behavior,
   ########
   # special case for SVR
   if (method %in% c('svr') ) {
-    if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'SVR method: ignoring patch and nperm...\n'))
-    noPatch = T
+    if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'SVR method: ignoring nperm, use SVR.nperm instead...\n'))
     nperm=0
   }
 
@@ -651,7 +650,7 @@ lesymap <- function(lesions.list, behavior,
   output = list(stat.img=vlsm.stat)
   # optional
   if (exists('vlsm.zmap')) output$zmap.img=vlsm.zmap
-  if (exists('vlsm.pval')) output$vlsm.pval=vlsm.pval
+  if (exists('vlsm.pval')) output$pval.img=vlsm.pval
 
   output$mask.img=mask
   otherindx = (! names(lsm) %in% c('statistic', 'pvalue', 'zscore'))

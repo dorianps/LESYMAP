@@ -96,11 +96,11 @@ lsm_svr <- function(lesmat, behavior, mask,
   # scale weights
   #' WHAT IS THE RATIONALE FOR SCALING BY 10?
   betaScale = 10/max(abs(w))
-  statistic = as.vector(w*betaScale);
+  statistic = as.vector(w*betaScale)
 
 
 
-  # run permutations to establish wegith p-values (uncorrected)
+  # run permutations to establish p-values for weights (uncorrected)
   if (showInfo) {
     toc = tic + (SVR.nperm * onerun)
     expect = paste(round(as.double(difftime(toc,tic)),1), units(difftime(toc,tic)))
