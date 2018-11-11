@@ -35,6 +35,9 @@ be saved}
 
 \item{plot.quality}{see plot.antsImage}
 
+\item{outputLogFile}{(default='outputLog.txt')
+the filename to save the console output}
+
 \item{...}{other arguments to use for plot().}
 }
 \value{

@@ -1,6 +1,6 @@
 sudo: false
 latex: false
-warnings_are_errors: false
+warnings_are_errors: true
 os:
   - linux
   - osx

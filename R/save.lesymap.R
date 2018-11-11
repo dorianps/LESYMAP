@@ -18,6 +18,8 @@
 #' @param plot.alpha see plot.antsImage
 #' @param plot.axis see plot.antsImage
 #' @param plot.quality see plot.antsImage
+#' @param outputLogFile (default='outputLog.txt')
+#' the filename to save the console output
 #' @param ... other arguments to use for plot().
 #'
 #' @return Nothing is returned.
