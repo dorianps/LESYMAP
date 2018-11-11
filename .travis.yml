@@ -1,16 +1,15 @@
 sudo: false
 latex: false
-warnings_are_errors: false
+warnings_are_errors: true
 os:
   - linux
   - osx
 compiler:
-  - gcc
-  #- clang
+  - clang
 
-#matrix:
-#  allow_failures:
-#    - os: linux
+matrix:
+ allow_failures:
+   - os: osx
 
 dist: trusty
 
@@ -22,12 +21,7 @@ r:
   - release
 
 before_install:
-  - export itkrrel=0.4.12
-  - export gh_user=stnava
-  - export ANTsRCorerel=0.4.2.1
-  - export reldir=latest
-  - export antsrrel=0.6.1
-  - Rscript -e 'install.packages("RcppArmadillo")'
+  - Rscript -e "install.packages(c('Rcpp', 'RcppEigen'), type = 'source', repos=c(CRAN='https://cran.rstudio.com'))"
   - wget -O antsr_travis.sh http://bit.ly/antsr_travis_sh
   - chmod +x antsr_travis.sh
   - . ./antsr_travis.sh
