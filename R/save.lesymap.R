@@ -104,7 +104,7 @@ save.lesymap <- function(lsm, saveDir, infoFile='Info.txt', template=NA, saveTem
     for (i in 1:length(callinfo)) {
       if (is.numeric(callinfo[[i]])) {
         thisval = paste(callinfo[[i]], collapse=' ')
-      } else if (typeof(callinfo[[16]]) == 'language') { # special case for negative numbers
+      } else if (typeof(callinfo[[i]]) == 'language') { # special case for negative numbers
         thisval = paste(callinfo[[i]], collapse='')
       } else {
         thisval = callinfo[[i]]
