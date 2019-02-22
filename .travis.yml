@@ -11,7 +11,7 @@ matrix:
  allow_failures:
    - os: osx
 
-dist: trusty
+dist: xenial
 
 language: r
 
