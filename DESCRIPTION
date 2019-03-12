@@ -23,7 +23,7 @@ Imports:
     stats,
     utils
 Suggests:
-    nparcomp
+    nparcomp,
     e1071
 Remotes: ANTsX/ANTsR,
     ANTsX/ANTsRCore
