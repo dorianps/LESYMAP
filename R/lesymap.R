@@ -407,6 +407,13 @@ lesymap <- function(lesions.list, behavior,
     nperm=0
   }
 
+  ########
+  # special case for SVR
+  if (method %in% c('svr') ) {
+    if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'SVR method: ignoring nperm, use SVR.nperm instead...\n'))
+    nperm=0
+  }
+
 
   ## CHECK AND PREPARE MASK
   writeavgles = F
@@ -558,6 +565,8 @@ lesymap <- function(lesions.list, behavior,
     lsm = lsm_chisq(lesmat, behavior, runPermutations = T, nperm=nperm)
   } else if (method == 'sccan') {
     lsm = lsm_sccan(lesmat, behavior, mask=mask, showInfo=showInfo, pThreshold=pThreshold, ...)
+  } else if (method == 'svr') {
+    lsm = lsm_svr(lesmat, behavior, showInfo=showInfo, ...)
   } else {
     stop(paste0('Unrecognized method: "', method, '"'))
   }
@@ -641,7 +650,7 @@ lesymap <- function(lesions.list, behavior,
   output = list(stat.img=vlsm.stat)
   # optional
   if (exists('vlsm.zmap')) output$zmap.img=vlsm.zmap
-  if (exists('vlsm.pval')) output$vlsm.pval=vlsm.pval
+  if (exists('vlsm.pval')) output$pval.img=vlsm.pval
 
   output$mask.img=mask
   otherindx = (! names(lsm) %in% c('statistic', 'pvalue', 'zscore'))

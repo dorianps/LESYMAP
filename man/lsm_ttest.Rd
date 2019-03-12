@@ -22,7 +22,8 @@ relationship between voxel value and behavior. By default
 voxels with zero are not lesioned, and behavior is expected to
 be higher, thus \code{alternative='greater'}. If the relationship in your
 data is inverted, use \code{alternative='less'}, and if
-you don't know your data, use \code{alternative='two.sided'}.}
+you don't have a relationship hypothesis data,
+use \code{alternative='two.sided'}.}
 
 \item{...}{other arguments received from \code{\link{lesymap}}.}
 }
