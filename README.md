@@ -4,7 +4,7 @@ Lesion to Symptom Mapping (R toolbox)
 *****  
 #### Package details  
 [![Open Source Love](https://badges.frapsoft.com/os/v3/open-source.svg?v=103)](https://github.com/dorianps/LESYMAP)  
-Version:  0.0.0.9202  
+Version:  0.0.0.9210  
 Systems:  Linux, Mac or [Windows Linux Subsystem](https://github.com/stnava/ANTsR/wiki/Installing-ANTsR-in-Windows-10-(along-with-FSL,-Rstudio,-Freesurfer,-etc).)  
 Language: R (version 3.0 or above)  
 License:  Apache License 2.0  
@@ -59,7 +59,7 @@ Check out how this example looks on [the screen](https://youtu.be/0WQXEgip_zk).
   
 *****    
 ## Documentation
-***[New]*** [What's new in v0.0.0.9201](https://github.com/dorianps/LESYMAP/wiki/What's-new-in-v0.0.0.9201)  
+[What's new in v0.0.0.9201](https://github.com/dorianps/LESYMAP/wiki/What's-new-in-v0.0.0.9201)  
 [What is lesion to symptom mapping](https://github.com/dorianps/LESYMAP/wiki/What-is-lesion-to-symptom-mapping)  
 [Installing LESYMAP](https://github.com/dorianps/LESYMAP/wiki/Lesymap-Installation)  
 [Registering lesions in template space](https://github.com/dorianps/LESYMAP/wiki/Registering-lesions-in-template-space)  
