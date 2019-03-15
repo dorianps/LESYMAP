@@ -1,4 +1,4 @@
-sudo: false
+sudo: required
 latex: false
 warnings_are_errors: false
 os:
@@ -11,20 +11,48 @@ matrix:
  allow_failures:
    - os: osx
 
+
 dist: trusty
 
 language: r
-
-cache: packages
-
+cache:
+  - timeout: 1000
+  - packages
+  - ccache
+  
 r:
   - release
 
+env:
+  global:
+  - R_BUILD_ARGS=" --no-build-vignettes --no-manual "
+  - R_CHECK_ARGS=" --timings --as-cran --no-manual --install-args=--build"
+  - R_CHECK_TIME="TRUE"
+  - R_CHECK_TESTS="FALSE"
+  - _R_CHECK_TIMINGS_="0"
+  - BOOTSTRAP_LATEX=1
+  - DISPLAY=:99.0
+  - _R_CHECK_FORCE_SUGGESTS_="0"
+
 before_install:
-  - Rscript -e "install.packages(c('Rcpp', 'RcppEigen'), type = 'source', repos=c(CRAN='https://cran.rstudio.com'))"
+  - ulimit -n 2048
+  - export LD_LIBRARY_PATH=/usr/local/clang/lib:${LD_LIBRARY_PATH}
+  - export ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=1
   - wget -O antsr_travis.sh http://bit.ly/antsr_travis_sh
   - chmod +x antsr_travis.sh
   - . ./antsr_travis.sh
   - rm antsr_travis.sh
+  - v8_install
+  - Rscript -e "install.packages(c('Rcpp', 'RcppEigen'), type = 'source', repos=c(CRAN='https://cran.rstudio.com'))"
+  - Rscript -e "install.packages( c('magrittr','testthat','knitr','rmarkdown','covr','devtools', 'desc',  'remotes', 'colormap' ), repos=c(CRAN='https://cran.rstudio.com'))"
+  - Rscript -e 'install.packages("rsvd")'
+  - Rscript -e 'install.packages("magic")'
+  - Rscript -e 'install.packages("ggplot2")'
+  - Rscript -e 'install.packages("psych")'
+  - Rscript -e 'install.packages("randomForest")'
+  - Rscript -e "install.packages(c('lmPerm', 'multcomp', 'mvtnorm', 'nparcomp', 'RcppArmadillo', 'sandwitch', 'TH.data', 'zoo'), type = 'source', repos=c(CRAN='https://cran.rstudio.com'))"
   - cat DESCRIPTION
+  
+after_failure:
+  - cat /home/travis/build/dorianps/LESYMAP/LESYMAP.Rcheck/00install.out
 
