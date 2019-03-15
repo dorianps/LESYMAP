@@ -22,14 +22,23 @@ r:
 
 env:
   global:
-    - _R_CHECK_FORCE_SUGGESTS_: false
+    - _R_CHECK_FORCE_SUGGESTS_="0"
+
 
 before_install:
-  - Rscript -e "install.packages(c('Rcpp', 'RcppEigen'), type = 'source', repos=c(CRAN='https://cran.rstudio.com'))"
+  - export ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=1
   - wget -O antsr_travis.sh http://bit.ly/antsr_travis_sh
   - chmod +x antsr_travis.sh
   - . ./antsr_travis.sh
   - rm antsr_travis.sh
+  - v8_install
+  - Rscript -e "install.packages(c('Rcpp', 'RcppEigen'), type = 'source', repos=c(CRAN='https://cran.rstudio.com'))"
+  - Rscript -e "install.packages( c('magrittr','testthat','knitr','rmarkdown','covr','devtools', 'desc',  'remotes', 'colormap' ), repos=c(CRAN='https://cran.rstudio.com'))"
+  - Rscript -e 'install.packages("rsvd")'
+  - Rscript -e 'install.packages("magic")'
+  - Rscript -e 'install.packages("ggplot2")'
+  - Rscript -e 'install.packages("psych")'
+  - Rscript -e 'install.packages("randomForest")'
   - cat DESCRIPTION
   
 after_failure:
