@@ -27,4 +27,7 @@ before_install:
   - . ./antsr_travis.sh
   - rm antsr_travis.sh
   - cat DESCRIPTION
+  
+after_failure:
+  - cat /home/travis/build/dorianps/LESYMAP/LESYMAP.Rcheck/00install.out
 
