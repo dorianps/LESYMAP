@@ -130,15 +130,22 @@ save.lesymap <- function(lsm, saveDir, infoFile='Info.txt', template=NA, saveTem
   write(line, outfile, append = T)
   line = paste('Suprathreshold voxels:', sum(lsm$stat.img!=0))
   write(line, outfile, append = T)
+  
+  if ("rawWeights.img" %in% names(lsm)) {
+    line = paste('Range rawWeights:', paste( range(lsm$rawWeights.img) , collapse=' '))
+    write(line, outfile, append = T)
+  }
 
-  clust.stat = labelStats(lsm$stat.img, labelClusters(abs(lsm$stat.img), minThresh = .Machine$double.eps, maxThresh = Inf))
-  clust.stat = clust.stat[clust.stat$LabelValue!=0,]
-  line = paste('Number of Clusters:', nrow(clust.stat))
-  write(line, outfile, append = T)
-  line = paste('Cluster sizes (voxels):', paste(clust.stat$Count, collapse=' '))
-  write(line, outfile, append = T)
-  line = paste('Cluster sizes (mm3):', paste(clust.stat$Volume, collapse=' '))
-  write(line, outfile, append = T)
+  if (sum(lsm$stat.img!=0) > 0) {
+    clust.stat = labelStats(lsm$stat.img, labelClusters(abs(lsm$stat.img), minThresh = .Machine$double.eps, maxThresh = Inf))
+    clust.stat = clust.stat[clust.stat$LabelValue!=0,]
+    line = paste('Number of Clusters:', nrow(clust.stat))
+    write(line, outfile, append = T)
+    line = paste('Cluster sizes (voxels):', paste(clust.stat$Count, collapse=' '))
+    write(line, outfile, append = T)
+    line = paste('Cluster sizes (mm3):', paste(clust.stat$Volume, collapse=' '))
+    write(line, outfile, append = T)
+  }
 
   # write other occasional outputs
   # must be a single scalar value in lsm to be written
@@ -149,6 +156,10 @@ save.lesymap <- function(lsm, saveDir, infoFile='Info.txt', template=NA, saveTem
     }
     if (is.character(lsm[[i]]) & length(lsm[[i]]) <= 2) {
       line = paste0(names(lsm)[i], ': ', paste(lsm[[i]], collapse=' '))
+      write(line, outfile, append = T)
+    }
+    if (names(lsm)[i] == "sccan.ccasummary") {
+      line = paste0(names(lsm)[i], ': ', paste(as.numeric(lsm[[i]])[1], collapse=' '))
       write(line, outfile, append = T)
     }
   }

@@ -1,7 +1,16 @@
 ==============
+LESYMAP v0.0.0.9210 (Release date: 2019-03-15)
+  - Added new method 'svr' - Support Vector Regression (experimental)
+  - Fixed missing 'rawWeights.img' in SCCAN output
+  - Fixed missing 'sccan.ccasummary' in save.lesymap printout
+  - Switched default method from "BM" to "sccan"
+  - Some user inputs made case tolerant: i.e., 'FDR' is same as 'fdr'
+  - Documentation improvement
+
+==============
 LESYMAP v0.0.0.9202 (Release date: 2019-01-29)
   Attempting to fix error in save.lesymap() from Issue #12
-  
+
 ==============
 LESYMAP v0.0.0.9201 (Release date: 2018-09-14)
 

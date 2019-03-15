@@ -26,19 +26,21 @@
 #' @param SVR.epsilon (default=0.1) epsilon value, see
 #' \code{\link[e1071]{svm}}.
 #' @param showInfo logical (default=TRUE) display messages
-#' @param tstamp (default="\%H:\%M:\%S") timestamp format for messages
+#' @param tstamp (default="\%H:\%M:\%S") timestamp format for
+#'  messages
+#' @param ... other arguments received from \code{\link{lesymap}}.
 #'
 #' @return
 #' List of objects returned:
 #' \itemize{
-#' \item\code{statistic} - vector of statistical values
-#' \item\code{pvalue} - vector of pvalues
+#'   \item\code{statistic} - vector of statistical values
+#'   \item\code{pvalue} - vector of pvalues
 #' }
 #'
-#' @author Daniel Wiesen, Dorian Pustina
-#'
 #' @export
-lsm_svr <- function(lesmat, behavior, mask,
+#' @author Daniel Wiesen, Dorian Pustina
+
+lsm_svr <- function(lesmat, behavior,
                     SVR.nperm = 10000,
                     SVR.type = 'eps-regression',
                     SVR.kernel = 'radial',
@@ -52,19 +54,6 @@ lsm_svr <- function(lesmat, behavior, mask,
 
   if (! 'e1071' %in% rownames(installed.packages())) stop('SVR-LSM requires e1071 package. Try installing with install.packages("e1071")')
 
-  # library(e1071)
-
-  # if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Write mask to file... ', "\n"))
-  #
-  # antsImageWrite(mask, filename = file.path(saveDir, 'mask.nii'))
-
-  #get the idx to be able to create brain image after SVR-LSM
-  # maskIdx = which(mask>0)
-  # maskInfo = antsImageHeaderInfo(mask)
-  # maskDim = maskInfo$dimensions
-  #
-  # #scaling behavioral
-  # behavior = behavior*100/max(abs(behavior));
 
   # scale and center data
   behavior = scale(behavior, scale=T, center=T)

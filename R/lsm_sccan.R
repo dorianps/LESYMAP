@@ -188,7 +188,8 @@ lsm_sccan <- function(lesmat, behavior, mask, showInfo=TRUE,
     cat(paste('\n            Iterations:\t\t', its))
     cat(paste('\n            maxBased:\t\t', maxBased))
     cat(paste('\n            directionalSCCAN:\t', directionalSCCAN))
-    cat(paste('\n            Permutations:\t', npermsSCCAN))
+    cat(paste('\n            optimizeSparseness:\t', optimizeSparseness))
+    cat(paste('\n            validateSparseness:\t', validateSparseness))
   }
 
   sccan = sparseDecom2( inmats,inmask=sccan.masks, mycoption=mycoption,

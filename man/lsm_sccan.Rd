@@ -4,12 +4,12 @@
 \alias{lsm_sccan}
 \title{Sparse canonical correlations for symptom mapping.}
 \usage{
-lsm_sccan(lesmat, behavior, mask, rawStat = F, showInfo = T,
-  optimizeSparseness = T, tstamp = "\%H:\%M:\%S", pThreshold = 0.05,
-  mycoption = 1, robust = 1, sparseness = 0.045,
-  sparseness.behav = -0.99, nvecs = 1, cthresh = 150, its = 20,
-  npermsSCCAN = 0, smooth = 0.4, maxBased = FALSE,
-  directionalSCCAN = TRUE, ...)
+lsm_sccan(lesmat, behavior, mask, showInfo = TRUE,
+  optimizeSparseness = TRUE, validateSparseness = FALSE,
+  tstamp = "\%H:\%M:\%S", pThreshold = 0.05, mycoption = 1,
+  robust = 1, sparseness = 0.045, sparseness.behav = -0.99,
+  nvecs = 1, cthresh = 150, its = 20, npermsSCCAN = 0,
+  smooth = 0.4, maxBased = FALSE, directionalSCCAN = TRUE, ...)
 }
 \arguments{
 \item{lesmat}{matrix of voxels (columns) and subjects (rows).}
@@ -18,18 +18,17 @@ lsm_sccan(lesmat, behavior, mask, rawStat = F, showInfo = T,
 
 \item{mask}{antsImage binary mask to put back voxels in image.}
 
-\item{rawStat}{logical (default=FALSE) whether to skip converting all
-weights to positive, normalizing 0-1, and removing weights < 0.1.
-If TRUE, the raw voxel weights will be returned as returned by
-\code{\link[ANTsR]{sparseDecom2}}.}
-
 \item{showInfo}{logical (default=TRUE) display messages}
 
 \item{optimizeSparseness}{logical (default=TRUE) whether to
-run the sparseness optimization routine. If false, the default
+run the sparseness optimization routine. If FALSE, the default
 sparseness value will be used. If sparseness is manually defined
 this flag decides if cross validated correlations will be
 computed for the defined sparseness.}
+
+\item{validateSparseness}{logical (conditional default=TRUE) If
+sparseness is manually defined, this flag decides if cross
+validated correlations will be computed for the defined sparseness.}
 
 \item{tstamp}{timestamp format used in LESYMAP}
 
@@ -42,13 +41,19 @@ map is returned.}
 
 \item{robust}{(ddefault=1) SCCAN parameter, see \code{\link[ANTsR]{sparseDecom2}}}
 
-\item{sparseness}{(default=0.045) SCCAN parameter. Setting this
-manually is not recommended. For more, see
-\code{\link[ANTsR]{sparseDecom2}}.}
+\item{sparseness}{(default=1) SCCAN parameter. Decides the proportion
+of voxels that will receive a non-zero weight. A positive sparseness
+will force the solution of each component to be one sided, i.e.,
+voxels cannot have both positive and negative weights. A negative
+sparseness allows dual sided solution, where some voxels can have
+positive weights and other voxels can have negative weights. Setting
+sparseness manually without running the optimization routing is not
+recommended. For more, see \code{\link[ANTsR]{sparseDecom2}}.}
 
-\item{sparseness.behav}{(default=-0.99) the amount of
-sparseness used for behavior. Not to be changed for
-standard analyses.}
+\item{sparseness.behav}{SCCAN parameter, what sparsness to use for
+behavioral scores. Useful only if multiple behavioral scores are
+passed. This argument is not optimized, you should not change it
+if you are not familiar with SCCAN.}
 
 \item{nvecs}{(default=1) SCCAN parameter. Normally only
 one eigenvector of weights is obtained in LESYMAP. Multiple
@@ -82,7 +87,7 @@ has not been tested thoroughly. Note that the optimal sparseness
 obtained with \code{maxBased=TRUE} is not optimal when switching to
 \code{maxBased=FALSE}.}
 
-\item{directionalSCCAN}{(default=FALSE) If TRUE, the upper and lower
+\item{directionalSCCAN}{(default=TRUE) If TRUE, the upper and lower
 bounds of sparseness search will be negative. A negative sparseness
 permits positive and negative voxel weights, thus finding the
 direction of the relationship with behavior.}
@@ -94,14 +99,18 @@ List of objects returned:
 \itemize{
 \item\code{statistic} - vector of statistical values
 \item\code{pvalue} - vector of pvalues
-\item\code{sccan.eig2} - SCCAN weight for behavior column(s).
-\item\code{sccan.ccasummary} - SCCAN summary of projection correlations and
-pvalues (if permutations were used)
-\item\code{optimalSparseness} - (optional) optimal value found for sparseness
-\item\code{CVcorrelation.stat} - (optional) Correlation between
-true and predicted score with k-fold validation using
-the optimal sparseness value
-\item\code{CVcorrelation.pval} - (optional) p-value of the above correlation
+\item\code{rawWeights.img} - image with raw SCCAN voxel weights
+\item\code{sccan.eig2} - SCCAN weight(s) for behavior
+column(s).
+\item\code{sccan.ccasummary} - SCCAN summary of
+projection correlations and permutation-derived pvalues
+\item\code{optimalSparseness} - (if optimizeSparseness=TRUE) optimal
+value found for sparseness
+\item\code{CVcorrelation.stat} - (if optimizeSparseness=TRUE)
+Correlation between true and predicted score with k-fold validation
+using the optimal sparseness value
+\item\code{CVcorrelation.pval} - (if optimizeSparseness=TRUE) p-value
+ of the above correlation
 }
 }
 \description{

@@ -4,7 +4,7 @@
 \alias{lsm_svr}
 \title{Support Vector Regression for symptom mapping}
 \usage{
-lsm_svr(lesmat, behavior, mask, SVR.nperm = 10000,
+lsm_svr(lesmat, behavior, SVR.nperm = 10000,
   SVR.type = "eps-regression", SVR.kernel = "radial", SVR.gamma = 5,
   SVR.cost = 30, SVR.epsilon = 0.1, showInfo = TRUE,
   tstamp = "\%H:\%M:\%S", ...)
@@ -35,13 +35,16 @@ multiple comparisons.}
 
 \item{showInfo}{logical (default=TRUE) display messages}
 
-\item{tstamp}{(default="\%H:\%M:\%S") timestamp format for messages}
+\item{tstamp}{(default="\%H:\%M:\%S") timestamp format for
+messages}
+
+\item{...}{other arguments received from \code{\link{lesymap}}.}
 }
 \value{
 List of objects returned:
 \itemize{
-\item\code{statistic} - vector of statistical values
-\item\code{pvalue} - vector of pvalues
+  \item\code{statistic} - vector of statistical values
+  \item\code{pvalue} - vector of pvalues
 }
 }
 \description{
@@ -57,4 +60,6 @@ for multiple comparisons.
 }
 \author{
 Daniel Wiesen, Dorian Pustina
+WHAT IS THE RATIONALE FOR SCALING BY 10?
+WHAT IS THE RATIONALE FOR SCALING BY 10?
 }

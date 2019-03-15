@@ -86,7 +86,8 @@ we use the inverse transformation. Also note, at the moment ANTsR
 does not produce an inverse affine transformation explicitly, both
 forward and inverse affine transforms are identical. You can use ANTs
 to compute the inverse, or tell ANTsR if you need to invert an affine
-matrix applying the transformations (see \code{whichtoinvert}).
+matrix applying the transformations (see \code{whichtoinvert} in
+\code{\link[ANTsRCore]{antsApplyTransforms}}).
 }
 \examples{
 \dontrun{

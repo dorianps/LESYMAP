@@ -5,7 +5,7 @@
 \title{Lesion to Symptom Mapping}
 \usage{
 lesymap(lesions.list, behavior, mask = NA, patchinfo = NA,
-  method = "BM", correctByLesSize = "none",
+  method = "sccan", correctByLesSize = "none",
   multipleComparison = "fdr", pThreshold = 0.05, flipSign = F,
   minSubjectPerVoxel = "10\%", nperm = 1000, saveDir = NA,
   binaryCheck = FALSE, noPatch = FALSE, showInfo = TRUE, ...)
@@ -21,54 +21,62 @@ pointing to a file with a single column of numbers.}
 where analysis will be performed. If
 not provided will be computed automatically
 by thresholding the average lesion map at
-minSubjectPerVoxel.}
+\code{minSubjectPerVoxel}.}
 
-\item{patchinfo}{(default=NA) an object obtained with getUniqueLesionPatches or from
-a previous analyses. Useful for repetitive analysis to save time and
-avoid the computation of patches each time.}
+\item{patchinfo}{(default=NA) an object obtained with the
+\code{getUniqueLesionPatches} function. Useful to set if your
+run repetitive analysese and want toavoid the computation of
+patches each time. You can also pass the patchinfo object
+obtained from a previous analysis.}
 
-\item{method}{what tests to run, one of 'BM' (default), 'BMfast', 'ttest',
- 'welch', 'regres', 'regresfast', 'regresPerm', 'sccan', 'sccanRaw'.
+\item{method}{what analysis method to use to run, one of
+'BM', 'BMfast', 'ttest', 'welch', 'regres', 'regresfast',
+'regresPerm', 'sccan' (default) or 'svr',.
 
        \code{\link[=lsm_BM]{BM}} - Brunner-Munzel non parametric test, also
          called the Generalized Wilcoxon Test. The BM test is the
-         same test used in the npm/Mricron software. See
+         same test used in the npm/Mricron software
          (see \href{https://www.ncbi.nlm.nih.gov/pubmed/17583985}{Rorden (2007)}).
+         This method is slow, use 'BMfast" for a compiled faster analysis.
 
-       \code{\link[=lsm_BMfast]{BMfast}} - ultrafast Brunner-Munzel with compiled code.
-         BMfast can be
+       \code{\link[=lsm_BMfast]{BMfast}} - ultrafast Brunner-Munzel with compiled
+         code. BMfast can be
          combined with \code{multipleComparison='FWERperm'}
          to perform permutation based thresholding in a short time.
 
-       \code{\link[=lsm_ttest]{ttest}} - Regular single tailed t-test. Variances of groups
-         are assumed to be equal. This is the test used in the voxbo
+       \code{\link[=lsm_ttest]{ttest}} - Regular single tailed t-test.
+         Variances of groups are assumed to be equal at each voxel, which may not
+         be true. This is the test used in the voxbo
          software. Relies on \code{t.test} function in R. It is assumed
          that 0 voxels are healthy, i.e., higher behavioral scores.
          See the \code{alternative} parameter for inverted cases.
          (see \href{https://www.ncbi.nlm.nih.gov/pubmed/12704393}{Bates (2003)}).
 
-       \code{\link[=lsm_ttest]{welch}} - t-test that assumes unequal variance between
-         groups. Relies on \code{t.test} function in R.
+       \code{\link[=lsm_ttest]{welch}} - t-test that does not assume equal
+         variance between groups. Relies on \code{t.test} function in R.
 
-       \code{\link[=lsm_regres]{regres}} - linear model between voxel values and behavior.
-         Uses the \code{lm} function in R. This is equivalent to a
-         t-test, but is useful when voxel values are continuous. To model
-         the effect of covariates use the \code{"regresfast"} method
+       \code{\link[=lsm_regres]{regres}} - linear model between voxel values
+         and behavior. Uses the \code{lm} function in R. This is equivalent to a
+         t-test, but is useful when voxel values are continuous. This method is
+         R-based and slow, for faster analysis and to add covariates
+         use the \code{"regresfast"} method compiled in LESYMAP.
 
-       \code{\link[=lsm_regresfast]{regresfast}} - ultrafast linear regressions with compiled code.
-         This method allows setting covariates. If covariates are specified
-         the effect of each voxel will be estimated with the formula:\cr
+       \code{\link[=lsm_regresfast]{regresfast}} - fast linear regressions with
+         compiled code. This method allows setting covariates. If covariates are
+         specified the effect of each voxel will be estimated with the formula:\cr
          \code{behavior ~ voxel + covar1 + covar2 + ...}\cr
-         This method allows multiple comparison correction with permutation based methods
-         \code{"FWERperm"} and \code{"clusterPerm"}. If these corrections are required
-         and covariates are specified, the effect of each voxel is established with
+         The effect of covariates at each voxel is established with
          the Freedman-Lane method
          (see \href{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4010955/}{Winkler (2014)}).
+         This LESYMAP method allows multiple comparison correction with permutation
+         based methods \code{"FWERperm"} and \code{"clusterPerm"}.
 
-       \code{\link[=lsm_regresPerm]{regresPerm}} - linear model between voxel values and behavior.
-         The p-value of each individual voxel us established by permuting voxel values. The
-         lmPerm package is used for this purpose. Note, these permutations do not correct for
-         multiple comparisons, they only establish voxel-wise p-values.
+       \code{\link[=lsm_regresPerm]{regresPerm}} - linear model between voxel values
+         and behavior. The p-value of each individual voxel is established by
+         permuting voxel values. The lmPerm package is used for this purpose.
+         Note, these permutations do not correct for
+         multiple comparisons, they only establish voxel-wise p-values, a correction
+         for multiple comparisons is still required.
 
        \code{\link[=lsm_chisq]{chisq}} - chi-square test between voxel values and behavior.
          The method is used when behavioral scores are binary (i.e. presence of absence
@@ -80,21 +88,34 @@ avoid the computation of patches each time.}
          through permutation tests instead of regular statistics.
          Relies on the \code{\link[stats]{chisq.test}} R function.
 
-       \code{\link[=lsm_sccan]{sccan}} - sparse canonical correlations (NEW). Multivariate
-         method that considers all voxels at once. By default,
+       \code{\link[=lsm_sccan]{sccan}} - sparse canonical correlations. Multivariate
+         method that considers all voxels at once by searching for voxel weights
+         that collectively explain behavioral variance. For our purposes, this
+         method can be considered a sparse regression technice. By default,
          lesymap will run a lengthy procedure to determine the optimal
          sparseness value (how extensive the results should be). You
          can set \code{optimizeSparseness=FALSE} if you want to skip this
          optimization. The search for optimal sparsness provides
          a cross-validated correlation measure that shows how well the
-         sparseness value can predict new patients. If this predicive correlation
-         is below significance (i.e., below pThreshold), the entire solution will be ignored and a
-         NULL result will be returned. Lesymap returns normalized (0-1)
-         voxel weights converted to positive; you can use \code{rawStat=TRUE}
-         to retain the original voxel weights. Note that both lesion and behavior
-         data are scale and centered before running SCCAN (hardcoded in \link{lsm_sccan}).
-         You must apply the same scaling if you were to predict behavioral scores with
-         the obtained voxel weights.}
+         sparseness value can predict new patients. If this predictive correlation
+         is below significance (i.e., below \code{pThreshold}), the entire solution
+         will be dropped and LESYMAP will return an empty statistical map.
+         If the predictive correlation is significant, LESYMAP will return
+         a statistical image with normalized weights between -1 and 1. The raw SCCAN
+         weights image is returned in \code{rawWeights.img} as well. LESYMAP scales
+         and centers both lesion and behavior data before running SCCAN
+         (hardcoded in \link{lsm_sccan}). See more details in
+         \href{https://www.ncbi.nlm.nih.gov/pubmed/28882479}{Pustina (2018)}
+
+       \code{\link[=lsm_svr]{svr}} - support vector regression. Multivariate
+         method that considers all voxels at once by searching for voxel weights.
+         To establish p-values, a number of permutations are needed as set with
+         \code{SVR.nperm}. The current implementation of SVR in LESYMAP is not
+         parallelized and takes many hours to finish all permutations. The SVR
+         method is initially described in
+         \href{https://www.ncbi.nlm.nih.gov/pubmed/25044213}{Zhang (2014)},
+         LESYMAP uses a contribution by the
+         \href{https://www.ncbi.nlm.nih.gov/pubmed/30549154}{Tuebingen group}.}
 
 \item{correctByLesSize}{whether to correct for lesion size in the analysis.
 Options are "none", "voxel", "behavior":
@@ -133,7 +154,7 @@ Permutation methods include: \cr
   score and sets a cluster threshold based on that distribution.
   You must select pThreshold (voxel-wise, default=0.05) and
   clusterPermThreshold (cluster-wise, default 0.05) to achieve
-  optimal with this method.}
+  optimal thresholding with this approach.}
 
 \item{pThreshold}{(default=0.05) threshold statistics at this p-value
 (after corrections or permutations)}
@@ -145,16 +166,22 @@ in less than X subjects. Value can
 be speficifed as percentage ('10\%')
 or exact number of subjects (10).}
 
-\item{nperm}{(default=1000) number of permutations to run when necessary.}
+\item{nperm}{(default=1000) number of permutations to run when
+necessary. This is used mostly for univariate analyses, while
+multivariate methods have their own permutation arguments.
+Check the documentation of each method to know more.}
 
 \item{saveDir}{(default=NA) save results in the specified folder.}
 
-\item{binaryCheck}{logical (default=FALSE), make sure the lesion matrix is 0/1.}
+\item{binaryCheck}{logical (default=FALSE), make sure the lesion matrix is 0/1.
+This will help if lesion maps are drawn in MRIcron or other software which
+label lesioned voxel with value 255.}
 
-\item{noPatch}{logical (default=FALSE), if True avoids using patch information and
-will analyze all voxels. It will take longer and results will be
+\item{noPatch}{logical (default=FALSE), if True avoids using patch information
+and will analyze all voxels. It will take longer and results will be
 worse due to more multiple comparison corrections. This argument
-is ignored when performing SCCAN analyses.}
+is ignored when performing multivariate analyses, SCCAN or SVR, for
+which all voxels are always used.}
 
 \item{showInfo}{logical (default=TRUE), display time-stamped info messages}
 
@@ -165,17 +192,19 @@ is ignored when performing SCCAN analyses.}
 The following objects are typically found in the returned list:
 \itemize{
 \item\code{stat.img}   - statistical map
-\item\code{rawStat.img}   - (optional) raw SCCAN weights
+\item\code{rawWeights.img}   - (optional) raw SCCAN weights
 \item\code{pval.img}   - (optional) p-values map
 \item\code{zmap.img}   - (optional) zscore map
 \item\code{mask.img}    - mask used for the analyses
-\item\code{average.img} - map of all lesions averaged. Map is
+\item\code{average.img} - map of all lesions averaged,
            produced only if no mask is defined.
 \item\code{callinfo} - list of details of how you called lesymap
-\item\code{printedOutput} - terminal output in a character variable
-\item\code{perm.vector} - the values obtained from each permutation
-\item\code{perm.clusterThreshold} - threshold computed for cluster thresholding
-\item\code{perm.FWERthresh} - threshold computed for FWERperm thresholding
+\item\code{outputLog} - terminal output in a character variable
+\item\code{perm.vector} - (optional) the values obtained from each permutation
+\item\code{perm.clusterThreshold} - (optional) threshold computed
+           for cluster thresholding
+\item\code{perm.FWERthresh} - (optional) threshold computed for FWERperm
+           thresholding
 \item\code{patchinfo}   - list of variables describing patch information:
     \itemize{
     \item\code{patchimg} - antsImage with the patch number each voxels belongs to
@@ -195,34 +224,38 @@ The following objects are typically found in the returned list:
 \description{
 Lesymap uses univariate and multivariate methods to map
 functional regions of the brain that, when lesioned,
-cause specific cognitive deficits. All is required is
-a set of Nifti images with the lesion of each subject
-and the vector of behavioral scores. Lesions must be
-already registered in template space, use `antsRegistration`
-or other ANTs tools to achieve this. Lesymap will check that
-lesions are in the same space before running. By default, voxels
-with identical lesion patterns are grouped together in
-unique patches, and analysis are run on patches.
-Patch-based mapping decreases the number of multiple
-comparisons and speeds up the analyses. Multivariate mapping
-is performed using an optimized version of sparse canonical
-correlations (SCCAN).
+cause specific cognitive deficits. It requires is
+a set of binary lesion maps (nifti files) in template
+space and the vector of corresponding behavioral scores.
+Note, lesions must be already registered in template space,
+use the built-in function
+\code{\link[=registerLesionToTemplate]{registerLesionToTemplate}}
+or other ANTs tools to register lesions. Lesymap will check that
+lesion maps are in the same space before running. For traditional
+mass-univariate analyses (i.e., BMfast, ttest, etc.),
+voxels with identical lesion patterns are grouped together in
+unique patches. Patch-based analysis decreases the number of
+multiple comparisons and speeds up the analyses. Multivariate
+analysis are performed using an optimized version of sparse
+canonical correlations (SCCAN, \code{method='sccan'})or support
+vector regression (\code{method='svr'}).
 }
 \details{
 Several other parameters can be specified to lesymap()
 which will be passed to other called fuctions. Here are
 some examples:
 
-\code{permuteNthreshold}  - (default=9) for Brunner-Munzel tests only.
+\code{permuteNthreshold}  - (default=9) for Brunner-Munzel tests
+   in \code{method='BMfast'} or \code{method='BM'}.
    Voxels lesioned in less than this number
    of subjects will undergo permutation-based
    p-value estimation. Useful because the BM test
    is not valid when comparing groups with N < 9.
-   Note, permuted BM tests currently require the package
-   'nparcomp'.
+   Issue described in:
+   \href{https://www.ncbi.nlm.nih.gov/pubmed/19766664}{Medina (2010)}
 
 \code{clusterPermThreshold} - threshold used to find the optimal cluster size when
-   using 'clusterPerm' multiple comparison correction.
+   using \code{multipleComparison='clusterPerm'}.
 
 \code{alternative} - (default='greater') for two sample tests (ttests and BM).
    By default LESYMAP computes single tailed p-values assuming
@@ -245,7 +278,8 @@ some examples:
 
 \code{v} - (default=1) which voxel to record for permutation based thresholding.
    Normally the peak voxel is used (1), but other voxels can be recorded.
-   See Mirman 2017 for this approach.
+   See \href{https://www.ncbi.nlm.nih.gov/pubmed/28847712}{Mirman (2017)}
+   for this approach.
 }
 \examples{
 lesydata = file.path(find.package('LESYMAP'),'extdata')
@@ -259,7 +293,7 @@ plot(template, lsm$stat.img, window.overlay = range(lsm$stat.img))
 \dontrun{
 # Same analysis with SCCAN
 lsm = lesymap(filenames, behavior, method = 'sccan',
-sparseness=0.045, optimizeSparseness=FALSE)
+sparseness=0.045, validateSparseness=FALSE)
 plot(template, lsm$stat.img, window.overlay = range(lsm$stat.img))
 save.lesymap(lsm, saveDir='/home/dp/Desktop/SCCANresults')
 }
