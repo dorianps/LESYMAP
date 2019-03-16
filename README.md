@@ -63,7 +63,6 @@ Check out how this example looks on [the screen](https://youtu.be/0WQXEgip_zk).
   
 *****    
 ## Documentation
-[What's new in v0.0.0.9201](https://github.com/dorianps/LESYMAP/wiki/What's-new-in-v0.0.0.9201)  
 [What is lesion to symptom mapping](https://github.com/dorianps/LESYMAP/wiki/What-is-lesion-to-symptom-mapping)  
 [Installing LESYMAP](https://github.com/dorianps/LESYMAP/wiki/Lesymap-Installation)  
 [Registering lesions in template space](https://github.com/dorianps/LESYMAP/wiki/Registering-lesions-in-template-space)  
