@@ -29,7 +29,7 @@ devtools::install_github('dorianps/LESYMAP')
 This will install all the dependencies, including ANTsR (may take one hour on some computers). Here is the [video](https://youtu.be/HSK2txFvbMU) of the installation process. If it doesn't work, check out the more detailed [installation instructions](https://github.com/dorianps/LESYMAP/wiki/Lesymap-Installation).
   
 *****  
-## Testing the installation
+## Test the installation
 Check [these examples](https://github.com/dorianps/LESYMAP/wiki/Testing-LESYMAP-installation) to make sure LESYMAP is working properly.
   
 *****
