@@ -24,7 +24,6 @@
 #' the results are considered null and an empty
 #' map is returned.
 #' @param showInfo logical (default=TRUE) display messages
-#' @param tstamp timestamp format used in LESYMAP
 #' @param sparseness (default=1) SCCAN parameter. Decides the proportion
 #' of voxels that will receive a non-zero weight. A positive sparseness
 #' will force the solution of each component to be one sided, i.e.,
@@ -109,7 +108,7 @@
 #' @export
 lsm_sccan <- function(lesmat, behavior, mask, showInfo=TRUE,
                       optimizeSparseness = TRUE, validateSparseness=FALSE,
-                      tstamp = "%H:%M:%S", pThreshold=0.05,
+                      pThreshold=0.05,
                       mycoption=1,
                       robust=1,
                       sparseness=0.045,
@@ -146,7 +145,7 @@ lsm_sccan <- function(lesmat, behavior, mask, showInfo=TRUE,
                                             cthresh=cthresh, mycoption=mycoption, robust=robust,
                                             nvecs=nvecs, its=its, npermsSCCAN=npermsSCCAN,
                                             smooth=smooth, sparseness.behav=sparseness.behav,
-                                            showInfo=showInfo, tstamp=tstamp,
+                                            showInfo=showInfo,
                                             maxBased=maxBased,
                                             sparseness=sparseness[1], justValidate=validateSparseness,
                                             directionalSCCAN=directionalSCCAN, ...)
@@ -159,15 +158,21 @@ lsm_sccan <- function(lesmat, behavior, mask, showInfo=TRUE,
     CVcorrelation.pval = pt(-abs(tstat), n-2)*2
     CVcorrelation.pval = ifelse(CVcorrelation.pval<1, CVcorrelation.pval, 1) # to fix p > 1
 
-    if (showInfo & !validateSparseness) cat(paste0('\n       Found optimal sparsenes ', round(sparseness[1],3),
-                             ' (CV corr=', round(CVcorrelation.stat,3), ' p=', format(CVcorrelation.pval, digits=3), ')'))
+    if (showInfo & !validateSparseness) {
+      msg = paste0('\n       Found optimal sparsenes ', round(sparseness[1],3),
+                             ' (CV corr=', round(CVcorrelation.stat,3), ' p=', format(CVcorrelation.pval, digits=3), ')')
+      printInfo(msg, type='middle')
+    }
 
-    if (showInfo & validateSparseness) cat(paste0('\n       Validated sparseness ', round(sparseness[1],3),
-                                             ' (CV corr=', round(CVcorrelation.stat,3), ' p=', format(CVcorrelation.pval, digits=3), ')'))
+    if (showInfo & validateSparseness) {
+      msg = paste0('\n       Validated sparseness ', round(sparseness[1],3),
+                                             ' (CV corr=', round(CVcorrelation.stat,3), ' p=', format(CVcorrelation.pval, digits=3), ')')
+      printInfo(msg, type='middle')
+    }
 
     # if poor result, end it here
     if (CVcorrelation.pval > pThreshold) {
-      if (showInfo) cat('\n       WARNING: Poor cross-validated accuracy, returning NULL result.')
+      if (showInfo) printInfo('\n       WARNING: Poor cross-validated accuracy, returning NULL result.', type='middle')
       return(list(statistic=rep(0,ncol(lesmat)),
                   pvalue=rep(1,ncol(lesmat)),
                   optimalSparseness = sparse.optim$minimum,
@@ -179,17 +184,17 @@ lsm_sccan <- function(lesmat, behavior, mask, showInfo=TRUE,
 
 
   if (showInfo) {
-    cat(paste('\n       Calling SCCAN with:'))
-    cat(paste('\n            Components:\t\t', nvecs))
-    cat(paste('\n            Use ranks:\t\t', robust))
-    cat(paste('\n            Sparseness:\t\t', round(sparseness[1], 3)))
-    cat(paste('\n            Cluster threshold:\t', cthresh[1]))
-    cat(paste('\n            Smooth sigma:\t', smooth))
-    cat(paste('\n            Iterations:\t\t', its))
-    cat(paste('\n            maxBased:\t\t', maxBased))
-    cat(paste('\n            directionalSCCAN:\t', directionalSCCAN))
-    cat(paste('\n            optimizeSparseness:\t', optimizeSparseness))
-    cat(paste('\n            validateSparseness:\t', validateSparseness))
+    printInfo(paste('\n       Calling SCCAN with:'))
+    printInfo(paste('\n            Components:\t\t', nvecs), type='middle')
+    printInfo(paste('\n            Use ranks:\t\t', robust), type='middle')
+    printInfo(paste('\n            Sparseness:\t\t', round(sparseness[1], 3)), type='middle')
+    printInfo(paste('\n            Cluster threshold:\t', cthresh[1]), type='middle')
+    printInfo(paste('\n            Smooth sigma:\t', smooth), type='middle')
+    printInfo(paste('\n            Iterations:\t\t', its), type='middle')
+    printInfo(paste('\n            maxBased:\t\t', maxBased), type='middle')
+    printInfo(paste('\n            directionalSCCAN:\t', directionalSCCAN), type='middle')
+    printInfo(paste('\n            optimizeSparseness:\t', optimizeSparseness), type='middle')
+    printInfo(paste('\n            validateSparseness:\t', validateSparseness), type='middle')
   }
 
   sccan = sparseDecom2( inmats,inmask=sccan.masks, mycoption=mycoption,
@@ -221,7 +226,7 @@ lsm_sccan <- function(lesmat, behavior, mask, showInfo=TRUE,
   tempclust = labelClusters(abs(temp), minClusterSize = cthresh, minThresh = .Machine$double.eps, maxThresh=Inf)
   temp = temp * thresholdImage(tempclust, .Machine$double.eps, Inf)
   statistic = imageListToMatrix(list(temp), mask)[1,]
-  if (showInfo & sum(statistic!=0) == 0) cat('\n       WARNING: Post-sccan cluster thresholding removed all voxels.')
+  if (showInfo & sum(statistic!=0) == 0) printInfo('\n       WARNING: Post-sccan cluster thresholding removed all voxels.', type='middle')
 
 
   output = list(statistic=statistic)

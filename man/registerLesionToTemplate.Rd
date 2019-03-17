@@ -6,8 +6,7 @@
 \usage{
 registerLesionToTemplate(subImg, subLesion, templateImg = NA,
   templateBrainMask = NA, templateRegMask = NA, skullStrip = T,
-  typeofTransform = "SyNCC", outprefix = "", tstamp = "\%H:\%M:\%S",
-  showInfo = T, ...)
+  typeofTransform = "SyNCC", outprefix = "", showInfo = T, ...)
 }
 \arguments{
 \item{subImg}{antsImage or character filename of the anatomical
@@ -46,8 +45,6 @@ this is set, most of images and transformations will be
 saved at the specified path/prefix. The folder must exist or you
 will get an error. It is passed without modification to
 \code{antsRegistration}.}
-
-\item{tstamp}{format of the timestamp when displaying info messages.}
 
 \item{showInfo}{logical whether to show info messages or be completely
 quiet. If you want also verbose registration messages,

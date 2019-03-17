@@ -54,8 +54,6 @@
 #'               will get an error. It is passed without modification to
 #'               \code{antsRegistration}.
 #'
-#' @param tstamp format of the timestamp when displaying info messages.
-#'
 #' @param showInfo logical whether to show info messages or be completely
 #'               quiet. If you want also verbose registration messages,
 #'               please set \code{verbose=TRUE}.
@@ -98,7 +96,6 @@ registerLesionToTemplate <- function(subImg, subLesion,
                                      skullStrip=T,
                                      typeofTransform = 'SyNCC',
                                      outprefix = '',
-                                     tstamp = "%H:%M:%S",
                                      showInfo = T,
                                       ...) {
 
@@ -107,9 +104,9 @@ registerLesionToTemplate <- function(subImg, subLesion,
 
   # load provided MNI template if user did not specify
   if (is.na(templateImg)) {
-    if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Template undefined, using provided MNI152_2009c\n'))
+    if (showInfo) printInfo('Template undefined, using provided MNI152_2009c')
     mnipath = file.path(find.package('LESYMAP'), 'extdata', 'template','other_templates', 'MNI152_2009c')
-    if (showInfo) cat(paste0('     ', mnipath,'\n') )
+    if (showInfo) printInfo(paste0('     ', mnipath), type='tail' )
     templateImg = antsImageRead(file.path(mnipath,'mni_icbm152_t1_tal_nlin_sym_09c.nii.gz'))
     templateBrainMask = antsImageRead(file.path(mnipath,'mni_icbm152_t1_tal_nlin_sym_09c_mask.nii.gz'))
     templateRegMask = antsImageRead(file.path(mnipath,'mni_icbm152_t1_tal_nlin_sym_09c_mask_skullnoface.nii.gz'))
@@ -119,29 +116,28 @@ registerLesionToTemplate <- function(subImg, subLesion,
 
   # load images if filenames are passed
   if ( checkAntsInput(subImg) == 'antsFiles') {
-    if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Loading subject\'s anatomical...\n'))
+    if (showInfo) printInfo('Loading subject\'s anatomical...')
     subImg = antsImageRead(subImg)
   }
   if ( checkAntsInput(subLesion) == 'antsFiles') {
-    if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Loading subject\'s lesion file...\n'))
+    if (showInfo) printInfo('Loading subject\'s lesion file...')
     subLesion = antsImageRead(subLesion)
   }
   if ( checkAntsInput(templateImg) == 'antsFiles') {
-    if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Loading template anatomical...\n'))
+    if (showInfo) printInfo('Loading template anatomical...')
     templateImg = antsImageRead(templateImg)
   }
   if ( !is.na(templateBrainMask) && checkAntsInput(templateBrainMask) == 'antsFiles') {
-    if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Loading template brain mask...\n'))
+    if (showInfo) printInfo('Loading template brain mask...')
     templateBrainMask = antsImageRead(templateBrainMask)
   }
   if ( !is.na(templateRegMask) && checkAntsInput(templateRegMask) == 'antsFiles') {
-    if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Loading template registration mask...\n'))
+    if (showInfo) printInfo('Loading template registration mask...')
     templateRegMask = antsImageRead(templateRegMask)
   }
 
   if ( is.na(templateBrainMask) & skullStrip) {
-    if (showInfo) cat(paste(format(Sys.time(), tstamp) ,
-                            'templateBrainMask not specified. No skull stripping will be performed...\n'))
+    if (showInfo) printInfo('templateBrainMask not specified. No skull stripping will be performed...')
     skullStrip = FALSE
   }
 
@@ -153,17 +149,14 @@ registerLesionToTemplate <- function(subImg, subLesion,
   if ( !is.na(templateRegMask) ) templateRegMask = thresholdImage(templateRegMask, 0.1, Inf)
 
   # make sure lesion and anatomical are in the same space
-  if (showInfo)
-    cat(paste(format(Sys.time(), tstamp) , 'Assuring lesion and antomical are in the same space...\n'))
+  if (showInfo) printInfo('Assuring lesion and antomical are in the same space...')
   checkMask(subImg, subLesion)
 
 
   # truncate outlier intensities, bias correct, and denoise
-  if (showInfo)
-    cat(paste(format(Sys.time(), tstamp) , 'Running bias correction on anatomical...\n'))
+  if (showInfo) printInfo('Running bias correction on anatomical...')
   subImg = abpN4(subImg)
-  if (showInfo)
-    cat(paste(format(Sys.time(), tstamp) , 'Denoising the anatomical...\n'))
+  if (showInfo) printInfo('Denoising the anatomical...')
   subImg = subImg %>% iMath('PeronaMalik', 10, 0.4)
 
 
@@ -177,8 +170,7 @@ registerLesionToTemplate <- function(subImg, subLesion,
   # https://github.com/ANTsX/ANTs/issues/483
   #
   if (skullStrip) {
-    if (showInfo)
-      cat(paste(format(Sys.time(), tstamp) , 'Skull-stripping subject\'s image...\n'))
+    if (showInfo) printInfo('Skull-stripping subject\'s image...')
     temp = abpBrainExtraction(img = subImg, tem = templateImg,
                               temmask = templateBrainMask,
                               temregmask = templateRegMask,
@@ -210,8 +202,8 @@ registerLesionToTemplate <- function(subImg, subLesion,
   # subject needs to be fixed and template moving
   # otherwise can't use mask with existing ANTsR
   if (showInfo) {
-    cat(paste(format(Sys.time(), tstamp) , 'Running template registration',
-              ifelse(typeofTransform=='SyNCC','(expect >1 hour)',''),'...\n'))
+    printInfo(paste('Running template registration',
+              ifelse(typeofTransform=='SyNCC','(expect >1 hour)',''),'...'))
   }
   reg = antsRegistration(fixed = subImg, moving = templateImg, mask = subRegMask,
                    outprefix = outprefix,
@@ -221,9 +213,8 @@ registerLesionToTemplate <- function(subImg, subLesion,
     antsImageWrite(reg$warpedfixout, filename = paste0(outprefix, '_subImgTemplate.nii.gz'))
 
   # bring lesion in template space
-  if (showInfo) {
-    cat(paste(format(Sys.time(), tstamp) , 'Applying registration to lesion image...\n'))
-  }
+  if (showInfo) printInfo('Applying registration to lesion image...')
+
   subLesionTemplate = antsApplyTransforms(fixed = templateImg, moving = subLesion,
                                       transformlist = reg$invtransforms, whichtoinvert = c(1,0),
                                       interpolator = 'nearestNeighbor')
@@ -232,10 +223,10 @@ registerLesionToTemplate <- function(subImg, subLesion,
     antsImageWrite(subLesionTemplate, filename = paste0(outprefix, '_subLesionTemplate.nii.gz'))
 
   if (showInfo) {
-    cat(paste(format(Sys.time(), tstamp) , 'Lesion size native:',
-              round( sum(subLesion) * prod(antsGetSpacing(subLesion))/1000, 2),'ml\n'))
-    cat(paste(format(Sys.time(), tstamp) , 'Lesion size template:',
-              round( sum(subLesion) * prod(antsGetSpacing(subLesionTemplate))/1000, 2),'ml\n'))
+    printInfo(paste('Lesion size native:',
+              round( sum(subLesion) * prod(antsGetSpacing(subLesion))/1000, 2),'ml'))
+    printInfo(paste('Lesion size template:',
+              round( sum(subLesion) * prod(antsGetSpacing(subLesionTemplate))/1000, 2),'ml'))
   }
 
   # prepare output list
@@ -255,7 +246,7 @@ registerLesionToTemplate <- function(subImg, subLesion,
 
   tic = Sys.time()
   runtime = paste(round(as.double(difftime(tic,toc)),1), units(difftime(tic,toc)))
-  if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Done!',runtime,'\n'))
+  if (showInfo) print(paste('Done!',runtime))
 
   return(output)
 

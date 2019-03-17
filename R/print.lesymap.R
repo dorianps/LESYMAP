@@ -10,16 +10,16 @@
 #'
 #' @export
 print.lesymap <- function(x, ...) {
-  cat("Lesymap Summary:\n")
-  cat("  Version             :", x$callinfo$LesymapVersion, "\n")
-  cat("  Subjects            :", x$callinfo$Subjects, "\n")
-  cat("  Method              :", x$callinfo$method, "\n")
-  cat("  Voxels in mask      :", sum(x$mask.img), "\n")
-  cat("  Multiple comparison :", x$callinfo$multipleComparison, "\n")
-  cat("  P-threshold         :", x$callinfo$pThreshold, "\n")
-  cat("  Statistic range     :", paste(round(range(x$stat.img),1), collapse=" "), "\n")
-  cat("  Significant voxels  :", sum(x$stat.img!=0), "\n")
-  cat("  Runtime             :", x$callinfo$Runtime, "\n")
-  cat("  ... save the output for more info ...\n")
-  cat("\n")
+  printInfo("Lesymap Summary:", type='tail')
+  printInfo(paste0("  Version             :", x$callinfo$LesymapVersion), type='tail')
+  printInfo(paste0("  Subjects            :", x$callinfo$Subjects), type='tail')
+  printInfo(paste0("  Method              :", x$callinfo$method), type='tail')
+  printInfo(paste0("  Voxels in mask      :", sum(x$mask.img)), type='tail')
+  printInfo(paste0("  Multiple comparison :", x$callinfo$multipleComparison), type='tail')
+  printInfo(paste0("  P-threshold         :", x$callinfo$pThreshold), type='tail')
+  printInfo(paste0("  Statistic range     :", paste(round(range(x$stat.img),1), collapse=" ")), type='tail')
+  printInfo(paste0("  Significant voxels  :", sum(x$stat.img!=0)), type='tail')
+  printInfo(paste0("  Runtime             :", x$callinfo$Runtime), type='tail')
+  printInfo("  ... save the output for more info ...", type='tail')
+  printInfo("", type='tail')
 }

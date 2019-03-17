@@ -115,11 +115,11 @@ getUniqueLesionPatches <- function(lesions.list, mask=NA, returnPatchMatrix=F,
   if (returnPatchMatrix) patchmatrix = lesmat[ , patindx==1]
 
   if (showInfo) {
-    cat(paste(
+    printInfo(paste(
       numpatches, 'unique patches,',
       numvoxels, 'voxels -',
-      round(numvoxels/numpatches,1), 'times more voxels\n'
-    ))
+      round(numvoxels/numpatches,1), 'times more voxels'
+    ), type='tail')
   }
 
   output = list(

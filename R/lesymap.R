@@ -118,7 +118,7 @@
 #'  or exact number of subjects (10).
 #'
 #' @param correctByLesSize whether to correct for lesion size in the analysis.
-#'  Options are "none", "voxel", "behavior":
+#'  Options are "none", "voxel", "behavior", "both":
 #'  \itemize{
 #'  \item\code{"none"}: (default) no correction
 #'  \item\code{"voxel"}: divide voxel values by 1/sqrt(lesionsize).
@@ -132,6 +132,7 @@
 #'  \item\code{"behavior"}: residualize behavioral scores by removing
 #'     the effect of lesion size. This works on all methods,
 #'     but is more agressive on results.
+#'  \item\code{"both"}: both voxel and behavior residualized.
 #'     }
 #'
 #' @param multipleComparison (default='fdr') method to adjust p-values.
@@ -319,32 +320,43 @@ lesymap <- function(lesions.list, behavior,
                     noPatch=FALSE, showInfo=TRUE,
                     ...) {
   ver = as.character(packageVersion('LESYMAP'))
-  tstamp = "%H:%M:%S"
   toc = Sys.time()
 
   # start capturing window output to save later
   outputLog = capture.output({
 
-    if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Running LESYMAP', ver, "\n"))
-    if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Checking a few things...\n'))
+    if (showInfo) printInfo(paste('Running LESYMAP', ver))
+    if (showInfo) printInfo('Checking a few things...')
 
     # the full array of methods and other arguments accepted by lesymap
     acceptedArgs = list()
-    acceptedArgs$BM = list(multipleComparison = c(p.adjust.methods))
-    acceptedArgs$BMfast = list(multipleComparison = c(p.adjust.methods, 'FWERperm'))
-    acceptedArgs$ttest = list(multipleComparison = c(p.adjust.methods))
-    acceptedArgs$welch = list(multipleComparison = c(p.adjust.methods))
-    acceptedArgs$regres = list(multipleComparison = c(p.adjust.methods))
-    acceptedArgs$regresfast = list(multipleComparison = c(p.adjust.methods, 'FWERperm', 'clusterPerm'))
-    acceptedArgs$regresperm = list(multipleComparison = c(p.adjust.methods))
-    acceptedArgs$chisq = list(multipleComparison = c(p.adjust.methods))
-    acceptedArgs$chisqperm = list(multipleComparison = c(p.adjust.methods))
-    acceptedArgs$sccan = list(multipleComparison = c(p.adjust.methods))
+    acceptedArgs$BM = list(multipleComparison = c(p.adjust.methods),
+                           correctByLesSize = c('none', 'behavior') )
+    acceptedArgs$BMfast = list(multipleComparison = c(p.adjust.methods, 'FWERperm'),
+                               correctByLesSize = c('none', 'behavior') )
+    acceptedArgs$ttest = list(multipleComparison = c(p.adjust.methods),
+                              correctByLesSize = c('none', 'behavior') )
+    acceptedArgs$welch = list(multipleComparison = c(p.adjust.methods),
+                              correctByLesSize = c('none', 'behavior') )
+    acceptedArgs$regres = list(multipleComparison = c(p.adjust.methods),
+                               correctByLesSize = c('none', 'behavior', 'voxel', 'both') )
+    acceptedArgs$regresfast = list(multipleComparison = c(p.adjust.methods, 'FWERperm', 'clusterPerm'),
+                                   correctByLesSize = c('none', 'behavior', 'voxel', 'both') )
+    acceptedArgs$regresperm = list(multipleComparison = c(p.adjust.methods),
+                                   correctByLesSize = c('none', 'behavior', 'voxel', 'both') )
+    acceptedArgs$chisq = list(multipleComparison = c(p.adjust.methods),
+                              correctByLesSize = c('none') )
+    acceptedArgs$chisqperm = list(multipleComparison = c(p.adjust.methods),
+                                  correctByLesSize = c('none') )
+    acceptedArgs$sccan = list(multipleComparison = c(p.adjust.methods),
+                              correctByLesSize = c('none', 'behavior', 'voxel', 'both') )
 
     # now check the inputs
     methodID = match( tolower(method), tolower(names(acceptedArgs)) )
     if (is.na(methodID)) {
-      stop(paste0('Unrecognized method: ', method, '. Available methods: ', paste(names(acceptedArgs), collapse=', ')))
+      stop(paste0('Unrecognized method: ', method, '. Available methods: ',
+                  paste(names(acceptedArgs), collapse=', ')
+                  ))
     }
     method = names(acceptedArgs)[methodID] # ignore case, use our internal
     for (b in 1:length(acceptedArgs[[methodID]])) {
@@ -354,7 +366,10 @@ lesymap <- function(lesions.list, behavior,
       argID = match(tolower(thisArgValue), tolower(thisAcceptedValues))
 
       if (is.na(argID)) {
-        stop(paste0('Unrecognized value for ', thisAcceptedArg, '. Available options: ', paste(thisAcceptedValues, collapse=', ')))
+        stop(paste0('Method ', method, ' - Unrecognized value for ',
+                    thisAcceptedArg, '. Available options: ',
+                    paste(thisAcceptedValues, collapse=', ')
+                    ))
       }
 
       # ignore case for user, use our internal option
@@ -364,12 +379,12 @@ lesymap <- function(lesions.list, behavior,
 
     # load behavior if filename
     if (checkAntsInput(behavior) == 'antsFiles') {
-      if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Loading behavioral data...'))
-      behavior = read.table(behavior, header = F)$V1
-      if (showInfo) cat(paste(length(behavior), 'scores found.\n'))
+      if (showInfo) printInfo('Loading behavioral data...', type='head')
+      behavior = read.table(behavior, header = FALSE)$V1
+      if (showInfo) printInfo(paste(length(behavior), 'scores found.'), type='tail')
     }
 
-    inputtype = checkAntsInput(lesions.list, checkHeaders = T)
+    inputtype = checkAntsInput(lesions.list, checkHeaders = TRUE)
 
     # make sure input is a list or filenames
     if ( !(inputtype %in% c('antsImageList', 'antsFiles', 'antsImage')) ) {
@@ -381,16 +396,16 @@ lesymap <- function(lesions.list, behavior,
     if (inputtype == 'antsFiles' & length(lesions.list) == 1) {
       temp = antsImageHeaderInfo(lesions.list[1])
       if (temp$nDimensions != 4) stop('File is not a 4D image. You must point to a 4D file when a single filename is defined.')
-      if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Loading 4D image...'))
+      if (showInfo) printInfo('Loading 4D image...', type='head')
       lesions.list = antsImageRead(lesions.list[1])
-      if (showInfo) cat(paste( dim(lesions.list)[4], 'images present.\n'))
-      if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Converting 4D image into 3D image list...\n'))
+      if (showInfo) printInfo(paste( dim(lesions.list)[4], 'images present.'), type='tail')
+      if (showInfo) printInfo('Converting 4D image into 3D image list...')
       lesions.list = splitNDImageToList(lesions.list)
       invisible(gc()) # free some memory after conversion
       inputtype = 'antsImageList'
     } else if (inputtype == 'antsImage') {
       if (lesions.list@dimension != 4) stop('Input is a single image but is not 4D.')
-      if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Single 4D image passed, converting to 3D image list...\n'))
+      if (showInfo) printInfo('Single 4D image passed, converting to 3D image list...')
       lesions.list = splitNDImageToList(lesions.list)
       invisible(gc()) # free some memory after conversion
       inputtype = 'antsImageList'
@@ -401,7 +416,7 @@ lesymap <- function(lesions.list, behavior,
     # Few tests on images coming as filenames
     # check proper binarization and 255 values, maybe preload
     if (inputtype == 'antsFiles') {
-      if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Filenames as input, checking lesion values on 1st image...\n'))
+      if (showInfo) printInfo('Filenames as input, checking lesion values on 1st image...')
 
       temp = antsImageRead(lesions.list[1])
       voxvals = unique(c(as.numeric(temp)))
@@ -409,7 +424,7 @@ lesymap <- function(lesions.list, behavior,
       if (length(voxvals) != 2) stop('Non binary image detected. Lesions should have only two values (0/1).')
 
       if (any(! voxvals %in% c(0,1) )) {
-        if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Detected unusual lesion values, loading files into memory to fix...\n'))
+        if (showInfo) printInfo('Detected unusual lesion values, loading files into memory to fix...')
         lesions.list = imageFileNames2ImageList(lesions.list)
         inputtype = 'antsImageList'
       }
@@ -431,7 +446,7 @@ lesymap <- function(lesions.list, behavior,
 
       # perform binarization if needed
       if (rebinarize) {
-        if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Detected lesion value above 1. Rebinarizing 0/1...\n'))
+        if (showInfo) printInfo('Detected lesion value above 1. Rebinarizing 0/1...')
         for (i in 1:length(lesions.list)) lesions.list[[i]] = thresholdImage(lesions.list[[i]], 0.1, Inf)
         binaryCheck = FALSE # no need to check binarization anymore
       }
@@ -442,8 +457,8 @@ lesymap <- function(lesions.list, behavior,
     # for antsFiles, we checked only 1st, and
     # will check lesmat later
     if (binaryCheck & inputtype == 'antsImageList') {
-      if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Verifying that lesions are binary 0/1...\n'))
-      checkImageList(lesions.list, binaryCheck = T)
+      if (showInfo) printInfo('Verifying that lesions are binary 0/1...')
+      checkImageList(lesions.list, binaryCheck = TRUE)
     }
 
     #########
@@ -459,16 +474,16 @@ lesymap <- function(lesions.list, behavior,
     ########
     # special case for SCCAN
     if (method %in% c('sccan', 'sccanRaw') ) {
-      if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'SCCAN method: ignoring patch, nperm, and multiple comparison...\n'))
+      if (showInfo) printInfo('SCCAN method: ignoring patch, nperm, and multiple comparison...')
       multipleComparison = 'none'
-      noPatch = T
+      noPatch = TRUE
       nperm=0
     }
 
     ########
     # special case for SVR
     if (method %in% c('svr') ) {
-      if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'SVR method: ignoring nperm, use SVR.nperm instead...\n'))
+      if (showInfo) printInfo('SVR method: ignoring nperm, use SVR.nperm instead...')
       nperm=0
     }
 
@@ -477,7 +492,7 @@ lesymap <- function(lesions.list, behavior,
     writeavgles = F
     if (!is.na(mask)) { # USER DEFINED
 
-      if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Using predefined mask...\n'))
+      if (showInfo) printInfo('Using predefined mask...')
 
       # check mask and lesions have same headers
       checkMask(lesions.list, mask) # first, if mask is a file
@@ -493,12 +508,12 @@ lesymap <- function(lesions.list, behavior,
 
     } else if (!is.na(patchinfo[1])) { # GET IT FROM patchinfo
 
-      if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Using mask passed with patchinfo...\n'))
+      if (showInfo) printInfo('Using mask passed with patchinfo...')
       mask = patchinfo$patchimg.mask
       checkMask(lesions.list, mask)
 
     } else { # DEFINE THE MASK
-      if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Searching voxels lesioned >=',minSubjectPerVoxel,'subjects...'))
+      if (showInfo) printInfo(paste('Searching voxels lesioned in >=',minSubjectPerVoxel,'subjects...'), type='head')
       # compute thresholdPercent based on minSubjectPerVoxel
       # it's used to remove voxels lesioned in few subjects
       if (!is.numeric(minSubjectPerVoxel) & is.character(minSubjectPerVoxel)) { # input is percentage
@@ -514,9 +529,9 @@ lesymap <- function(lesions.list, behavior,
       mask = thresholdImage(avgles, thresholdPercent, 1 - thresholdPercent)
       # if user set minSubjectPerVoxel=0, mask is all 1, so fix it
       if (thresholdPercent == 0) mask[avgles==0] = 0
-      writeavgles = T
+      writeavgles = TRUE
 
-      if (showInfo) cat(paste(sum(mask), 'found\n')) # voxels in mask
+      if (showInfo) printInfo(paste(sum(mask), 'found'), type='tail') # voxels in mask
       # check mask is not empty
       if (max(mask) == 0) stop('Mask is empty. No voxels to run VLSM on.')
     }
@@ -525,24 +540,24 @@ lesymap <- function(lesions.list, behavior,
 
     ##########
     # get patch information
-    haslesmat = F
+    haslesmat = FALSE
     if (noPatch) {
-      if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'noPatch true - Patches will not be used...\n'))
+      if (showInfo) printInfo('noPatch true - Patches will not be used...')
       voxmask = mask
       voxindx = 1:sum(mask)
       patchinfo.derived = 'not computed'
     } else {
       if (is.na(patchinfo[1])) {
 
-        if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Computing unique patches...\n'))
+        if (showInfo) printInfo('Computing unique patches...')
         patchinfo = getUniqueLesionPatches(lesions.list, mask=mask, showInfo = F, returnPatchMatrix = T)
         lesmat = patchinfo$patchmatrix
-        haslesmat = T
+        haslesmat = TRUE
         patchinfo.derived = 'Computed'
 
       } else {
 
-        if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Using predefined patch information...\n'))
+        if (showInfo) printInfo('Using predefined patch information...')
         if (!(checkImageList(list(patchinfo$patchimg, mask), showError = F)))
           stop('Patch image header is different from mask header.')
 
@@ -556,20 +571,20 @@ lesymap <- function(lesions.list, behavior,
       voxindx = patchinfo$patchindx
       voxmask = patchinfo$patchimg.samples
 
-      if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Found',patchinfo$npatches,'patches in', patchinfo$nvoxels, 'voxels -', round(patchinfo$nvoxels/patchinfo$npatches,1), 'times more voxels\n'))
+      if (showInfo) printInfo(paste('Found',patchinfo$npatches,'patches in', patchinfo$nvoxels, 'voxels -', round(patchinfo$nvoxels/patchinfo$npatches,1), 'times more voxels'))
     }
 
 
     # create matrix of lesions
-    if (showInfo & !haslesmat) cat(paste(format(Sys.time(), tstamp) , 'Computing lesion matrix... '))
-    if (showInfo & haslesmat) cat(paste(format(Sys.time(), tstamp) , 'Using existing lesion matrix... '))
+    if (showInfo & !haslesmat) printInfo('Computing lesion matrix... ', type='head')
+    if (showInfo & haslesmat) printInfo('Using existing lesion matrix... ', type='head')
     if (inputtype == 'antsImageList') { # list of antsImages
       if (!haslesmat) lesmat = imageListToMatrix(lesions.list, voxmask)
     } else if (inputtype == 'antsFiles') { # vector of filenames
       if (!haslesmat) lesmat = imagesToMatrix(lesions.list, voxmask)
     }
 
-    if (showInfo) cat(paste0( paste(dim(lesmat), collapse='x'), '\n'))
+    if (showInfo) printInfo(paste(dim(lesmat), collapse='x'), type='tail')
 
 
     ###########
@@ -585,11 +600,12 @@ lesymap <- function(lesions.list, behavior,
 
 
     # residualize by lesion size eventually
-    if (correctByLesSize == 'behavior') {
-      if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Correcting for lesion size:',correctByLesSize,'...\n'))
+    if ( correctByLesSize %in% c('behavior','both') ) {
+      if (showInfo) printInfo('Correcting for lesion size: behavior...')
       behavior = residuals(lm(behavior ~ getLesionSize(lesions.list, showInfo)))
-    } else if (correctByLesSize == 'voxel') {
-      if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Correcting for lesion size:',correctByLesSize,'...\n'))
+    }
+    if ( correctByLesSize %in% c('voxel', 'both') ) {
+      if (showInfo) printInfo('Correcting for lesion size: voxel...')
       lesvals = 1/sqrt(getLesionSize(lesions.list, showInfo))
       lesmat = apply(lesmat, 2, function(x) x*lesvals )
     }
@@ -597,7 +613,7 @@ lesymap <- function(lesions.list, behavior,
 
 
     # run the analysis
-    if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Running analysis:', method,'...'))
+    if (showInfo) printInfo(paste('Running analysis:', method,'...'), type='head')
     if (method == 'BM') {
       lsm = lsm_BM(lesmat, behavior, nperm=nperm, ...)
     } else if (method == 'BMfast') {
@@ -614,21 +630,19 @@ lesymap <- function(lesions.list, behavior,
                            clusterPerm=(multipleComparison=='clusterPerm'), mask=mask, voxindx=voxindx, samplemask=voxmask,
                            showInfo=showInfo, ...)
     } else if (method == 'ttest') {
-      lsm = lsm_ttest(lesmat, behavior, ...)
+      lsm = lsm_ttest(lesmat, behavior, showInfo=showInfo, ...)
     } else if (method == 'welch') {
-      lsm = lsm_ttest(lesmat, behavior, var.equal = F, ...)
+      lsm = lsm_ttest(lesmat, behavior, var.equal = FALSE, showInfo=showInfo, ...)
     } else if (method == 'chisq') {
-      lsm = lsm_chisq(lesmat, behavior, runPermutations = F)
+      lsm = lsm_chisq(lesmat, behavior, runPermutations = FALSE)
     } else if (method == 'chisqPerm') {
-      lsm = lsm_chisq(lesmat, behavior, runPermutations = T, nperm=nperm)
+      lsm = lsm_chisq(lesmat, behavior, runPermutations = TRUE, nperm=nperm)
     } else if (method == 'sccan') {
       lsm = lsm_sccan(lesmat, behavior, mask=mask, showInfo=showInfo, pThreshold=pThreshold, ...)
     } else if (method == 'svr') {
       lsm = lsm_svr(lesmat, behavior, showInfo=showInfo, ...)
-    } else {
-      stop(paste0('Unrecognized method: "', method, '"'))
     }
-    if (showInfo) cat('\n')
+    if (showInfo) printInfo('', type='tail')
 
 
     # START POST PROCESSING THE OUTPUT
@@ -648,7 +662,7 @@ lesymap <- function(lesions.list, behavior,
     # multiple comparison correction
     if (haspvalue) {
       if (multipleComparison %in% p.adjust.methods ) {
-        if (showInfo & multipleComparison != 'none') cat(paste(format(Sys.time(), tstamp) , 'Correcting p-values:',multipleComparison,'...\n'))
+        if (showInfo & multipleComparison != 'none') printInfo(paste('Correcting p-values:',multipleComparison,'...'))
         pvalue.adj = p.adjust(pvalue, method = multipleComparison)
         statistic[pvalue.adj>=pThreshold] = 0
         if (haszscore) zscore[pvalue.adj>pThreshold] = 0
@@ -659,26 +673,26 @@ lesymap <- function(lesions.list, behavior,
 
     # flip sign if asked
     if (flipSign) {
-      if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Flipping statistics negative/positive...\n'))
+      if (showInfo) printInfo('Flipping statistics negative/positive...')
       statistic = -(statistic)
       if (haszscore) zscore = -(zscore)
     }
 
     # a final check to make sure there are no
     # infinite, na, or nan values
-    if (any(is.nan(statistic))) cat('WARNING: NaN values detected in statistic.\n')
-    if (any(is.na(statistic))) cat('WARNING: NA values detected in statistic.\n')
-    if (any(is.infinite(statistic))) cat('WARNING: Infinite values detected in statistic.\n')
-    if (haspvalue && any(is.nan(pvalue.adj))) cat('WARNING: NaN values detected in pvalues.\n')
-    if (haspvalue && any(is.na(pvalue.adj))) cat('WARNING: NA values detected in pvalues.v')
-    if (haspvalue && any(is.infinite(pvalue.adj))) cat('WARNING: Infinite values detected in pvalues.\n')
-    if (haszscore && any(is.nan(zscore))) cat('WARNING: NaN values detected in zscore\n')
-    if (haszscore && any(is.na(zscore))) cat('WARNING: NA values detected in zscore\n')
-    if (haszscore && any(is.infinite(zscore))) cat('WARNING: Infinite values detected in zscore\n')
+    if (any(is.nan(statistic))) printInfo('WARNING: NaN values detected in statistic.', type='tail')
+    if (any(is.na(statistic))) printInfo('WARNING: NA values detected in statistic.', type='tail')
+    if (any(is.infinite(statistic))) printInfo('WARNING: Infinite values detected in statistic.', type='tail')
+    if (haspvalue && any(is.nan(pvalue.adj))) printInfo('WARNING: NaN values detected in pvalues.', type='tail')
+    if (haspvalue && any(is.na(pvalue.adj))) printInfo('WARNING: NA values detected in pvalues.', type='tail')
+    if (haspvalue && any(is.infinite(pvalue.adj))) printInfo('WARNING: Infinite values detected in pvalues.', type='tail')
+    if (haszscore && any(is.nan(zscore))) printInfo('WARNING: NaN values detected in zscore.', type='tail')
+    if (haszscore && any(is.na(zscore))) printInfo('WARNING: NA values detected in zscore.', type='tail')
+    if (haszscore && any(is.infinite(zscore))) printInfo('WARNING: Infinite values detected in zscore.', type='tail')
 
 
     # put results in images
-    if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Preparing images...\n'))
+    if (showInfo) printInfo('Preparing images...')
     vlsm.stat = makeImage(mask, voxval=statistic[voxindx])
     # optional outputs
     if (haspvalue) vlsm.pval = makeImage(mask, voxval=pvalue.adj[voxindx])
@@ -688,7 +702,7 @@ lesymap <- function(lesions.list, behavior,
 
 
     # call details
-    if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Logging call details...\n'))
+    if (showInfo) printInfo('Logging call details...')
     noinfo = c('lesions.list', 'mask', 'patchinfo', 'behavior', '...') # skip info on these vars
     callinfo = mget(names(formals()),sys.frame(sys.nframe()))
     callinfo = callinfo[! names(callinfo) %in% noinfo]
@@ -720,14 +734,14 @@ lesymap <- function(lesions.list, behavior,
 
     # save results
     if (!is.na(saveDir)) {
-      if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Saving on disk...\n'))
+      if (showInfo) printInfo('Saving on disk...')
       save.lesymap(lsm = output, saveDir = saveDir, callinfo = callinfo,  ...)
     }
 
     tic = Sys.time()
     runtime = paste(round(as.double(difftime(tic,toc)),1), units(difftime(tic,toc)))
     output$callinfo$Runtime = runtime
-    if (showInfo) cat(paste(format(Sys.time(), tstamp) , 'Done!',runtime,'\n'))
+    if (showInfo) printInfo(paste('Done!',runtime))
 
   }, split = TRUE, type = "output") # end printedOutput
 

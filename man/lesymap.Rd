@@ -118,7 +118,7 @@ obtained from a previous analysis.}
          \href{https://www.ncbi.nlm.nih.gov/pubmed/30549154}{Tuebingen group}.}
 
 \item{correctByLesSize}{whether to correct for lesion size in the analysis.
-Options are "none", "voxel", "behavior":
+Options are "none", "voxel", "behavior", "both":
 \itemize{
 \item\code{"none"}: (default) no correction
 \item\code{"voxel"}: divide voxel values by 1/sqrt(lesionsize).
@@ -132,6 +132,7 @@ Options are "none", "voxel", "behavior":
 \item\code{"behavior"}: residualize behavioral scores by removing
    the effect of lesion size. This works on all methods,
    but is more agressive on results.
+\item\code{"both"}: both voxel and behavior residualized.
    }}
 
 \item{multipleComparison}{(default='fdr') method to adjust p-values.

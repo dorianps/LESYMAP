@@ -6,8 +6,7 @@
 \usage{
 lsm_svr(lesmat, behavior, SVR.nperm = 10000,
   SVR.type = "eps-regression", SVR.kernel = "radial", SVR.gamma = 5,
-  SVR.cost = 30, SVR.epsilon = 0.1, showInfo = TRUE,
-  tstamp = "\%H:\%M:\%S", ...)
+  SVR.cost = 30, SVR.epsilon = 0.1, showInfo = TRUE, ...)
 }
 \arguments{
 \item{lesmat}{matrix of voxels (columns) and subjects (rows).}
@@ -34,9 +33,6 @@ multiple comparisons.}
 \code{\link[e1071]{svm}}.}
 
 \item{showInfo}{logical (default=TRUE) display messages}
-
-\item{tstamp}{(default="\%H:\%M:\%S") timestamp format for
-messages}
 
 \item{...}{other arguments received from \code{\link{lesymap}}.}
 }

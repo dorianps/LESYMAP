@@ -104,7 +104,7 @@ lsm_regresfast <- function(lesmat, behavior, covariates=NA,
         covarinfo = ''
         if (hascovariate) covarinfo = 'with covariates'
         mytype = ifelse(FWERperm, 'FWERperm', 'clusterPerm')
-        cat(paste('\n       ',mytype, nperm, 'permutations', covarinfo,' - expected run =', expect))
+        printInfo(paste('\n       ',mytype, nperm, 'permutations', covarinfo,' - expected run =', expect), type='middle')
       }
 
       # permute behavior

@@ -114,7 +114,7 @@ lsm_BMfast <- function(lesmat, behavior, permuteNthreshold=9, alternative="great
 
     # run voxel-wise BM permutations when needed
     if (any(permindx)) {
-      if (showInfo) cat(paste0('\n        running ',npermBM,' Brunner-Munzel permutations in ', sum(permindx),' voxels lesioned in less than ', permuteNthreshold, ' subjects to find correct p-value' ))
+      if (showInfo) printInfo(paste0('\n        running ',npermBM,' Brunner-Munzel permutations in ', sum(permindx),' voxels lesioned in less than ', permuteNthreshold, ' subjects to find correct p-value' ), type='middle')
 
       if ((alternative == "greater") | (alternative == "g")) {
         BMpermalternative = 1
@@ -158,7 +158,7 @@ lsm_BMfast <- function(lesmat, behavior, permuteNthreshold=9, alternative="great
     if (showInfo) {
       toc = tic + (nperm * onerun)
       expect = paste(round(as.double(difftime(toc,tic)),1), units(difftime(toc,tic)))
-      cat(paste('\n       FWERperm', nperm, 'permutations, expected run =', expect))
+      printInfo(paste('\n       FWERperm', nperm, 'permutations, expected run =', expect), type='middle')
     }
     # run permutations
     maxvec = rep(NA, nperm)

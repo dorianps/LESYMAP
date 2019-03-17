@@ -6,10 +6,10 @@
 \usage{
 lsm_sccan(lesmat, behavior, mask, showInfo = TRUE,
   optimizeSparseness = TRUE, validateSparseness = FALSE,
-  tstamp = "\%H:\%M:\%S", pThreshold = 0.05, mycoption = 1,
-  robust = 1, sparseness = 0.045, sparseness.behav = -0.99,
-  nvecs = 1, cthresh = 150, its = 20, npermsSCCAN = 0,
-  smooth = 0.4, maxBased = FALSE, directionalSCCAN = TRUE, ...)
+  pThreshold = 0.05, mycoption = 1, robust = 1, sparseness = 0.045,
+  sparseness.behav = -0.99, nvecs = 1, cthresh = 150, its = 20,
+  npermsSCCAN = 0, smooth = 0.4, maxBased = FALSE,
+  directionalSCCAN = TRUE, ...)
 }
 \arguments{
 \item{lesmat}{matrix of voxels (columns) and subjects (rows).}
@@ -29,8 +29,6 @@ computed for the defined sparseness.}
 \item{validateSparseness}{logical (conditional default=TRUE) If
 sparseness is manually defined, this flag decides if cross
 validated correlations will be computed for the defined sparseness.}
-
-\item{tstamp}{timestamp format used in LESYMAP}
 
 \item{pThreshold}{(default=0.05) If cross validated
 correlations show significance below this value

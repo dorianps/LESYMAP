@@ -60,7 +60,7 @@ lsm_chisq <- function(lesmat, behavior, YatesCorrect=TRUE,
     onerun = as.double(difftime(Sys.time(),tic, units = 'sec'))
     toc = tic + (ncol(chimatrix)* onerun)
     expect = paste(round(as.double(difftime(toc,tic)),1), units(difftime(toc,tic)))
-    cat(paste('\n       Chi square permutations, expected run =', expect))
+    printInfo(paste('\n       Chi square permutations, expected run =', expect), type='middle')
   }
 
 

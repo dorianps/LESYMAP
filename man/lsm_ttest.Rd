@@ -5,7 +5,7 @@
 \title{lsm_ttest}
 \usage{
 lsm_ttest(lesmat, behavior, var.equal = T, alternative = "greater",
-  ...)
+  checkAssumptions = TRUE, showInfo = TRUE, ...)
 }
 \arguments{
 \item{lesmat}{binary matrix (0/1) of voxels (columns)
@@ -24,6 +24,11 @@ be higher, thus \code{alternative='greater'}. If the relationship in your
 data is inverted, use \code{alternative='less'}, and if
 you don't have a relationship hypothesis data,
 use \code{alternative='two.sided'}.}
+
+\item{checkAssumptions}{Check whether t-test assumptions are met
+for every voxel}
+
+\item{showInfo}{logical (default=TRUE), display time-stamped info messages}
 
 \item{...}{other arguments received from \code{\link{lesymap}}.}
 }

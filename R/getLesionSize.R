@@ -24,7 +24,7 @@ getLesionSize <- function(lesions.list, showInfo=TRUE) {
   }
 
   if (inputtype == 'antsFiles' & showInfo)
-    cat('      Slow computation from filenames. Preload images with imageFileNames2ImageList() for faster processing.')
+    printInfo('      Slow computation from filenames. Preload images with imageFileNames2ImageList() for faster processing.', type='middle')
 
   lessize = rep(NA, length(lesions.list))
 

@@ -26,8 +26,6 @@
 #' @param SVR.epsilon (default=0.1) epsilon value, see
 #' \code{\link[e1071]{svm}}.
 #' @param showInfo logical (default=TRUE) display messages
-#' @param tstamp (default="\%H:\%M:\%S") timestamp format for
-#'  messages
 #' @param ... other arguments received from \code{\link{lesymap}}.
 #'
 #' @return
@@ -48,7 +46,6 @@ lsm_svr <- function(lesmat, behavior,
                     SVR.cost = 30,
                     SVR.epsilon = 0.1,
                     showInfo = TRUE,
-                    tstamp = "%H:%M:%S",
                     ...) {
 
 
@@ -61,12 +58,12 @@ lsm_svr <- function(lesmat, behavior,
 
   # compute SVR
   if (showInfo) {
-    cat(paste('\n       Calling SVR with:'))
-    cat(paste('\n            SVM type =', SVR.type))
-    cat(paste('\n            Kernel =', SVR.kernel))
-    cat(paste('\n            Gamma =', SVR.gamma))
-    cat(paste('\n            Cost =', SVR.cost))
-    cat(paste('\n            Epsilon =', SVR.epsilon))
+    printInfo(paste('\n       Calling SVR with:'), type='middle')
+    printInfo(paste('\n            SVM type =', SVR.type), type='middle')
+    printInfo(paste('\n            Kernel =', SVR.kernel), type='middle')
+    printInfo(paste('\n            Gamma =', SVR.gamma), type='middle')
+    printInfo(paste('\n            Cost =', SVR.cost), type='middle')
+    printInfo(paste('\n            Epsilon =', SVR.epsilon), type='middle')
   }
   tic = Sys.time() # start time
 
@@ -93,7 +90,7 @@ lsm_svr <- function(lesmat, behavior,
   if (showInfo) {
     toc = tic + (SVR.nperm * onerun)
     expect = paste(round(as.double(difftime(toc,tic)),1), units(difftime(toc,tic)))
-    cat(paste('\n       SVR', SVR.nperm, 'permutations, expected run =', expect))
+    printInfo(paste('\n       SVR', SVR.nperm, 'permutations, expected run =', expect), type='middle')
   }
 
   exceed = rep(1, length(statistic))

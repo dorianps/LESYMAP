@@ -75,7 +75,7 @@ lsm_BM <- function(lesmat, behavior, permuteNthreshold=9, nperm=10000,
   # run permutation test on selected voxels
   if (sum(permindx) > 0) { # run only if any voxel needs permutated brunner-munzel
 
-    if (showInfo) cat(paste0('\n        running ', nperm, ' permutations on ', sum(permindx),' voxels below permuteNthreshold' ))
+    if (showInfo) printInfo(paste0('\n        running ', nperm, ' permutations on ', sum(permindx),' voxels below permuteNthreshold' ), type='middle')
     if (nperm < 20000) warning('Number of permutations too small, consider increasing it.')
     if (! 'nparcomp' %in% rownames(installed.packages())) {
       stop('Permutation not possible without the nparcomp package. Try installing with install.packages("nparcomp")')
@@ -101,7 +101,7 @@ lsm_BM <- function(lesmat, behavior, permuteNthreshold=9, nperm=10000,
 
     rm(temp, output)
   } else {
-    if (showInfo) cat(paste0('\n        No permutation needed, all voxels above permuteNthreshold.' ))
+    if (showInfo) printInfo(paste0('\n        No permutation needed, all voxels above permuteNthreshold.' ), type='middle')
   }
 
 

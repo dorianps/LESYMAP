@@ -40,29 +40,29 @@ lesyload_mricron <- function(valfile, imageFolder=NA, returnFilenames=F, checkHe
     stop(paste0('  Some of the files are not found:\n', paste(basename(valdata$ImageName[!existindx]), collapse='\n')))
   }
 
-  if (showInfo) cat('All files found.\n')
+  if (showInfo) printInfo('All files found.')
 
   # all files are there, check their headers
   if (checkHeaders) {
-    if (showInfo) cat('Checking for unusual images...')
+    if (showInfo) printInfo('Checking for unusual images...', type='head')
     checkFilenameHeaders(files = valdata$ImageName, showError = F)
-    if (showInfo) cat('all headers identical.\n')
+    if (showInfo) printInfo('all headers identical.', type='tail')
   }
 
   # prepare lesions output
   if (returnFilenames) {
-    if (showInfo) cat('Filenames will be returned.\n')
+    if (showInfo) printInfo('Filenames will be returned.')
     lesions = valdata$ImageName
   } else {
-    if (showInfo) cat('Image list will be returned, please wait...')
+    if (showInfo) printInfo('Image list will be returned, please wait...', type='head')
     lesions = imageFileNames2ImageList(valdata$ImageName)
-    if (showInfo) cat('all loaded.\n')
+    if (showInfo) printInfo('all loaded.', type='tail')
   }
 
   # prepare behavior output
   behavior = valdata[,2]
 
-  if (showInfo) cat('You can now run lesymap with these data.\n')
+  if (showInfo) printInfo('You can now run lesymap with these data.')
 
   invisible(gc())
   return(list(lesions=lesions,
