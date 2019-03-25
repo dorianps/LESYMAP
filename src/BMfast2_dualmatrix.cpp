@@ -5,17 +5,21 @@
 using namespace Rcpp;
 using namespace arma;
 
-//' @title Fast Brunner-Munzel tests (v2)
+//' @title Fast Brunner-Munzel tests (v2) - dual matrix
 //'
 //' @description
-//' Takes a binary matrix of voxels and a vector of behavior
-//' and runs Brunner-Munzel tests on each voxel.
+//' Takes a binary matrix of voxels and a matrix of
+//' behavioral scores, one for each voxel, then runs Brunner-Munzel
+//' tests on each voxel with the repective behavior column.
+//' Function mostly used to estimate score biases with
+//' full brain simulations.
 //' This is a fast function that corrects for infinite values
 //' with a similar approach as the nparcomp package.
 //'
 //' @param X binary matrix of voxels (columns) for all
 //' subjects (rows)
-//' @param y vector of behavioral scores.
+//' @param Y matrix of voxel specific behavioral scores.
+//' Must be of same dimensions as X.
 //' @param computeDOF (true) chooses whether to compute degrees
 //' of freedom. Set to false to save time during permutations.
 //'
@@ -27,43 +31,33 @@ using namespace arma;
 //'
 //' @examples
 //' set.seed(1234)
-//' lesmat = matrix(rbinom(40,1,0.2), ncol=2)
-//' set.seed(1234)
-//' behavior = rnorm(20)
-//' test = LESYMAP::BMfast2(lesmat, behavior)
-//' test$statistic[,1] # -2.0571825 -0.8259754
-//' test$dfbm[,1] # 16.927348  7.563432
+//' lesmat = matrix(rbinom(60,1,0.2), ncol=2)
+//' set.seed(12345)
+//' behavior = cbind( rnorm(30) )
+//' set.seed(123456)
+//' behavior = cbind ( behavior, rnorm(30) )
+//' test = LESYMAP::BMfast2_dualmatrix(lesmat, behavior)
+//' test$statistic[,1] # -3.6804016  0.6097458
 //'
 //' @author Dorian Pustina
 //'
 //' @export
 // [[Rcpp::export]]
-List BMfast2(const arma::mat& X, const arma::colvec& y, bool computeDOF = true) {
+List BMfast2_dualmatrix(const arma::mat& X, const arma::mat& Y, bool computeDOF = false) {
+
+  // make sure the two matrixes have same dimensions
+  if (X.n_cols != Y.n_cols || X.n_rows != Y.n_rows) {
+    // correct way to throw error from Rcpp
+    throw Rcpp::exception("Input matrices have different dimensions, must be of same size.");
+  }
+
   // initialize output vectors
   int k = X.n_cols;
   int N = X.n_rows;
   vec statistic = zeros<vec>(k);
-  vec dfbm = zeros<vec>(k);
+  vec dfbm = zeros<vec>(k); // we will not use this much
 
-  // find duplicated indices
-  uvec yuniq = find_unique(y);
-  uvec dupli = ones<uvec>(y.size()); // zeros<uvec>(y.size());
-  dupli.elem(yuniq).zeros();
-  bool hasdupli = false;
-  if( dupli.max() > 0) {
-    hasdupli = true;
-  }
 
-  // rank of behavior vector, computed once
-  colvec r = conv_to<colvec>::from(sort_index( sort_index(y) ) + 1);
-  if (hasdupli) {
-    for (int v=0; v<dupli.size(); ++v) {
-      if (dupli[v]) {
-        uvec sameindx = find(y == y[v]);
-        r.elem(sameindx).fill( mean(r.elem(sameindx)) );
-      }
-    }
-  }
 
   // loop through voxels
   for (int vox=0 ; vox < k ; ++vox) {
@@ -72,6 +66,32 @@ List BMfast2(const arma::mat& X, const arma::colvec& y, bool computeDOF = true) 
     if (vox % 50000 == 0) {
       Rcpp::checkUserInterrupt();
     }
+
+    vec y = Y.col(vox);
+
+    // prepare this column of Y just like it was a vector of behavior
+
+    // find duplicated indices
+    uvec yuniq = find_unique(y);
+    uvec dupli = ones<uvec>(y.size()); // zeros<uvec>(y.size());
+    dupli.elem(yuniq).zeros();
+    bool hasdupli = false;
+    if( dupli.max() > 0) {
+      hasdupli = true;
+    }
+
+    // rank of behavior vector, computed once
+    colvec r = conv_to<colvec>::from(sort_index( sort_index(y) ) + 1);
+    if (hasdupli) {
+      for (int v=0; v<dupli.size(); ++v) {
+        if (dupli[v]) {
+          uvec sameindx = find(y == y[v]);
+          r.elem(sameindx).fill( mean(r.elem(sameindx)) );
+        }
+      }
+    }
+
+
 
     vec thisvox = X.col(vox);
 

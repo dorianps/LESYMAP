@@ -18,6 +18,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// BMfast2_dualmatrix
+List BMfast2_dualmatrix(const arma::mat& X, const arma::mat& Y, bool computeDOF);
+RcppExport SEXP _LESYMAP_BMfast2_dualmatrix(SEXP XSEXP, SEXP YSEXP, SEXP computeDOFSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< bool >::type computeDOF(computeDOFSEXP);
+    rcpp_result_gen = Rcpp::wrap(BMfast2_dualmatrix(X, Y, computeDOF));
+    return rcpp_result_gen;
+END_RCPP
+}
 // BMfast2
 List BMfast2(const arma::mat& X, const arma::colvec& y, bool computeDOF);
 RcppExport SEXP _LESYMAP_BMfast2(SEXP XSEXP, SEXP ySEXP, SEXP computeDOFSEXP) {
@@ -60,12 +73,28 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// TTfast
+List TTfast(const arma::mat& X, const arma::mat& Y, bool computeDOF, bool varEqual);
+RcppExport SEXP _LESYMAP_TTfast(SEXP XSEXP, SEXP YSEXP, SEXP computeDOFSEXP, SEXP varEqualSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< bool >::type computeDOF(computeDOFSEXP);
+    Rcpp::traits::input_parameter< bool >::type varEqual(varEqualSEXP);
+    rcpp_result_gen = Rcpp::wrap(TTfast(X, Y, computeDOF, varEqual));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_LESYMAP_BMfast", (DL_FUNC) &_LESYMAP_BMfast, 2},
+    {"_LESYMAP_BMfast2_dualmatrix", (DL_FUNC) &_LESYMAP_BMfast2_dualmatrix, 3},
     {"_LESYMAP_BMfast2", (DL_FUNC) &_LESYMAP_BMfast2, 3},
     {"_LESYMAP_BMperm", (DL_FUNC) &_LESYMAP_BMperm, 5},
     {"_LESYMAP_regresfast", (DL_FUNC) &_LESYMAP_regresfast, 4},
+    {"_LESYMAP_TTfast", (DL_FUNC) &_LESYMAP_TTfast, 4},
     {NULL, NULL, 0}
 };
 

@@ -1,5 +1,5 @@
 Package: LESYMAP
-Title: Leions to Symptom Mapping in R
+Title: Lesion to Symptom Mapping in R
 Version: 0.0.0.9210
 Date: 2019-03-15
 Authors@R: person("Dorian", "Pustina", email='dorian.pustina@chdifoundation.org', role = c("aut", "cre"))

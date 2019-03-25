@@ -25,6 +25,47 @@ BMfast <- function(X, y) {
     .Call('_LESYMAP_BMfast', PACKAGE = 'LESYMAP', X, y)
 }
 
+#' @title Fast Brunner-Munzel tests (v2) - dual matrix
+#'
+#' @description
+#' Takes a binary matrix of voxels and a matrix of
+#' behavioral scores, one for each voxel, then runs Brunner-Munzel
+#' tests on each voxel with the repective behavior column.
+#' Function mostly used to estimate score biases with
+#' full brain simulations.
+#' This is a fast function that corrects for infinite values
+#' with a similar approach as the nparcomp package.
+#'
+#' @param X binary matrix of voxels (columns) for all
+#' subjects (rows)
+#' @param Y matrix of voxel specific behavioral scores.
+#' Must be of same dimensions as X.
+#' @param computeDOF (true) chooses whether to compute degrees
+#' of freedom. Set to false to save time during permutations.
+#'
+#' @return List with two vectors:
+#' \itemize{
+#' \item\code{statistic} - BM values
+#' \item\code{dfbm} - degrees of freedom
+#' }
+#'
+#' @examples
+#' set.seed(1234)
+#' lesmat = matrix(rbinom(60,1,0.2), ncol=2)
+#' set.seed(12345)
+#' behavior = cbind( rnorm(30) )
+#' set.seed(123456)
+#' behavior = cbind ( behavior, rnorm(30) )
+#' test = LESYMAP::BMfast2_dualmatrix(lesmat, behavior)
+#' test$statistic[,1] # -3.6804016  0.6097458
+#'
+#' @author Dorian Pustina
+#'
+#' @export
+BMfast2_dualmatrix <- function(X, Y, computeDOF = FALSE) {
+    .Call('_LESYMAP_BMfast2_dualmatrix', PACKAGE = 'LESYMAP', X, Y, computeDOF)
+}
+
 #' @title Fast Brunner-Munzel tests (v2)
 #'
 #' @description
@@ -33,7 +74,7 @@ BMfast <- function(X, y) {
 #' This is a fast function that corrects for infinite values
 #' with a similar approach as the nparcomp package.
 #'
-#' @param X binary matrix ov voxlels (columns) for all
+#' @param X binary matrix of voxels (columns) for all
 #' subjects (rows)
 #' @param y vector of behavioral scores.
 #' @param computeDOF (true) chooses whether to compute degrees
@@ -147,5 +188,54 @@ BMperm <- function(X, y, computeDOF = TRUE, npermBM = 20000L, alternative = 1L) 
 #' @export
 regresfast <- function(X, y, covariates, hascovar = FALSE) {
     .Call('_LESYMAP_regresfast', PACKAGE = 'LESYMAP', X, y, covariates, hascovar)
+}
+
+#' @title TTfast
+#'
+#' @description
+#' Compiled fast t-tests on matrices. Takes a binary matrix
+#' X with zero and non-zero values, and a matrix Y of
+#' continuous values. Computes the t-test on each Y column
+#' using the respective X column to define the two groups.
+#' If Y is a matrix with one column, that column is used
+#' to test with grouping derived from every column in X.
+#' This function is used in LESYMAP with a binarized X
+#' matrix derived from lesioned voxels in the brain.
+#'
+#' @param X binary matrix of voxels (columns) for all
+#' subjects (rows).
+#' @param Y matrix of behavioral scores of same size as X
+#' or a matrix with a single column.
+#' @param computeDOF (default=true) chooses whether to compute
+#' degrees of freedom. Set to false to save time during
+#' permutations.
+#' @param varEqual (default=true) chooses whether to compute
+#' Student t-scores (true) or Welch d-scores (false). The
+#' only difference is the assumption on variance which for
+#' t-scores must be satisfied. This assumption is often
+#' violated in some voxels, and the use of Welch
+#' (varEqual=false) is recommended for more accurate results.
+#'
+#' @return List with two vectors:
+#' \itemize{
+#' \item\code{statistic} - Student T or Welch D
+#' \item\code{df} - degrees of freedom
+#' }
+#'
+#' @examples
+#' set.seed(1234)
+#' lesmat = matrix(rbinom(60,1,0.2), ncol=2)
+#' set.seed(12345)
+#' behavior = cbind( rnorm(30) )
+#' set.seed(123456)
+#' behavior = cbind ( behavior, rnorm(30) )
+#' test = LESYMAP::TTfast(lesmat, behavior)
+#' test$statistic[,1] # -2.359317  1.040766
+#'
+#' @author Dorian Pustina
+#'
+#' @export
+TTfast <- function(X, Y, computeDOF = TRUE, varEqual = TRUE) {
+    .Call('_LESYMAP_TTfast', PACKAGE = 'LESYMAP', X, Y, computeDOF, varEqual)
 }
 

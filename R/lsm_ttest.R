@@ -50,7 +50,7 @@ lsm_ttest <- function(lesmat, behavior,
                       ...) {
 
   # check assumptions only for t-test, not for welch
-  if (var.equal) checkAssumptions_ttest(lesmat, behavior, showInfo=showInfo, ...)
+  if (var.equal & checkAssumptions) checkAssumptions_ttest(lesmat, behavior, showInfo=showInfo, ...)
 
   # run t-tests
   resultlist = apply(lesmat, 2, function(x) {
@@ -125,20 +125,20 @@ checkAssumptions_ttest <- function(lesmat, behavior,
                                    ...) {
 
   # test for variance homogeneity of behavioral scores at each voxel
-  if (showInfo) printInfo('    checking variance homogeneity...', nlStart=TRUE, nlEnd=FALSE)
+  if (showInfo) printInfo('    checking variance homogeneity...', type='head')
 
   failVarianceTest = apply(lesmat, 2, function(x) var.test(behavior[x==0], behavior[x!=0])$p.value) <= assumptionThreshold
 
   if (showInfo) {
     msg = paste0(sum(failVarianceTest), ' voxels failed ',
             '(', round(sum(failVarianceTest)/ncol(lesmat)*100, 0), '%)')
-    printInfo(msg, nlStart=FALSE, nlEnd=TRUE, showTime=FALSE)
+    printInfo(msg, type='tail')
   }
 
 
   # test for normality of distribution of the
   # behavioral score for either group (x = 0 or 1) at each voxel (lesmat column)
-  if (showInfo) printInfo('    checking distribution normality...', nlStart=FALSE, nlEnd=FALSE)
+  if (showInfo) printInfo('    checking distribution normality...', type='head')
 
   failNormalityTest = apply(lesmat, 2, function(x)
     (
@@ -150,7 +150,7 @@ checkAssumptions_ttest <- function(lesmat, behavior,
   if (showInfo) {
     msg = paste0( sum(failNormalityTest), ' voxels failed ',
       '(', round(sum(failNormalityTest)/ncol(lesmat)*100, 0), '%)')
-    printInfo(msg, nlStart=FALSE, nlEnd=FALSE, showTime=FALSE)
+    printInfo(msg, type='tail')
   }
 
   # output = list()
@@ -160,5 +160,3 @@ checkAssumptions_ttest <- function(lesmat, behavior,
   return()
 
 }
-
-

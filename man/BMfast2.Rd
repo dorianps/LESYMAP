@@ -7,7 +7,7 @@
 BMfast2(X, y, computeDOF = TRUE)
 }
 \arguments{
-\item{X}{binary matrix ov voxlels (columns) for all
+\item{X}{binary matrix of voxels (columns) for all
 subjects (rows)}
 
 \item{y}{vector of behavioral scores.}
