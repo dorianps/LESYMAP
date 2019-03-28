@@ -2,9 +2,9 @@
 % Please edit documentation in R/checkAntsInput.R
 \name{checkAntsInput}
 \alias{checkAntsInput}
-\title{checkAntsInput}
+\title{Determine type of variable passed by user}
 \usage{
-checkAntsInput(input, checkHeaders = F)
+checkAntsInput(input, checkHeaders = FALSE)
 }
 \arguments{
 \item{input}{the variable to be checked}

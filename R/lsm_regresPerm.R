@@ -1,5 +1,6 @@
-#' lsm_regresPerm
+#' @title Regression tests for symptom mapping (permutation p-vlaues)
 #'
+#' @description
 #' Lesion to symptom mapping performed on a prepared matrix.
 #' Regressions are performed between behavior and each column in the
 #' lesmat matrix. This function relies on the lmPerm package

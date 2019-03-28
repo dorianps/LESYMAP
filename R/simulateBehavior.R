@@ -1,5 +1,6 @@
-#' Simulation of behavior scores from lesion maps
+#' @title Simulation of behavior scores from lesion maps
 #'
+#' @description
 #' Function simulate behavioral scores based
 #' on the lesion load of specific brain areas.
 #' Used to run simulation studies.

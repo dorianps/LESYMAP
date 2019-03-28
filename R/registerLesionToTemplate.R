@@ -1,5 +1,6 @@
-#' registerLesionToTemplate
+#' @title Register lesions in template space
 #'
+#' @description
 #' Brings lesion maps in template space by registering the
 #' subject\'s anatomical to the template and applying the
 #' same transform to the lesion. To improve the registration

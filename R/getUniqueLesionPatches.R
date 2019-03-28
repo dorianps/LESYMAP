@@ -1,5 +1,6 @@
-#' Unique Lesion Patches
+#' @title Compute unique lesion patches
 #'
+#' @description
 #' Compute uniqe patches of voxels with the same
 #' pattern of lesions in all subjects. Useful to understand
 #' the number of patterns that will be analyzed in a lesion dataset.

@@ -25,6 +25,42 @@ BMfast <- function(X, y) {
     .Call('_LESYMAP_BMfast', PACKAGE = 'LESYMAP', X, y)
 }
 
+#' @title Fast Brunner-Munzel tests (v2)
+#'
+#' @description
+#' Takes a binary matrix of voxels and a vector of behavior
+#' and runs Brunner-Munzel tests on each voxel.
+#' This is a fast function that corrects for infinite values
+#' with a similar approach as the nparcomp package.
+#'
+#' @param X binary matrix of voxels (columns) for all
+#' subjects (rows)
+#' @param y vector of behavioral scores.
+#' @param computeDOF (true) chooses whether to compute degrees
+#' of freedom. Set to false to save time during permutations.
+#'
+#' @return List with two vectors:
+#' \itemize{
+#' \item\code{statistic} - BM values
+#' \item\code{dfbm} - degrees of freedom
+#' }
+#'
+#' @examples
+#' set.seed(1234)
+#' lesmat = matrix(rbinom(40,1,0.2), ncol=2)
+#' set.seed(1234)
+#' behavior = rnorm(20)
+#' test = LESYMAP::BMfast2(lesmat, behavior)
+#' test$statistic[,1] # -2.0571825 -0.8259754
+#' test$dfbm[,1] # 16.927348  7.563432
+#'
+#' @author Dorian Pustina
+#'
+#' @export
+BMfast2 <- function(X, y, computeDOF = TRUE) {
+    .Call('_LESYMAP_BMfast2', PACKAGE = 'LESYMAP', X, y, computeDOF)
+}
+
 #' @title Fast Brunner-Munzel tests (v2) - dual matrix
 #'
 #' @description
@@ -64,42 +100,6 @@ BMfast <- function(X, y) {
 #' @export
 BMfast2_dualmatrix <- function(X, Y, computeDOF = FALSE) {
     .Call('_LESYMAP_BMfast2_dualmatrix', PACKAGE = 'LESYMAP', X, Y, computeDOF)
-}
-
-#' @title Fast Brunner-Munzel tests (v2)
-#'
-#' @description
-#' Takes a binary matrix of voxels and a vector of behavior
-#' and runs Brunner-Munzel tests on each voxel.
-#' This is a fast function that corrects for infinite values
-#' with a similar approach as the nparcomp package.
-#'
-#' @param X binary matrix of voxels (columns) for all
-#' subjects (rows)
-#' @param y vector of behavioral scores.
-#' @param computeDOF (true) chooses whether to compute degrees
-#' of freedom. Set to false to save time during permutations.
-#'
-#' @return List with two vectors:
-#' \itemize{
-#' \item\code{statistic} - BM values
-#' \item\code{dfbm} - degrees of freedom
-#' }
-#'
-#' @examples
-#' set.seed(1234)
-#' lesmat = matrix(rbinom(40,1,0.2), ncol=2)
-#' set.seed(1234)
-#' behavior = rnorm(20)
-#' test = LESYMAP::BMfast2(lesmat, behavior)
-#' test$statistic[,1] # -2.0571825 -0.8259754
-#' test$dfbm[,1] # 16.927348  7.563432
-#'
-#' @author Dorian Pustina
-#'
-#' @export
-BMfast2 <- function(X, y, computeDOF = TRUE) {
-    .Call('_LESYMAP_BMfast2', PACKAGE = 'LESYMAP', X, y, computeDOF)
 }
 
 #' @title Fast Brunner-Munzel tests (v2) with permutations
@@ -146,48 +146,6 @@ BMfast2 <- function(X, y, computeDOF = TRUE) {
 #' @export
 BMperm <- function(X, y, computeDOF = TRUE, npermBM = 20000L, alternative = 1L) {
     .Call('_LESYMAP_BMperm', PACKAGE = 'LESYMAP', X, y, computeDOF, npermBM, alternative)
-}
-
-#' @title Fast linear regressions
-#'
-#' @description
-#' Takes a matrix of voxels and a vector of behavior
-#' and runs fast regressions for each voxel. Covariates
-#' can be defined (i.e. age) to find the effect of each
-#' voxel on behavior within the context of other predictive
-#' factors.
-#'
-#' @param X matrix of voxlels (columns) for all
-#' subjects (rows).
-#' @param y vector of behavioral scores.
-#' @param covariates matrix with one or more columns.
-#' Must be of same length as behavior. This variable
-#' should always be set, and the next argument can tell
-#' if covariates should be used or not.
-#' @param hascovar logical to tell whether covariates
-#' should be used.
-#'
-#' @return List with:
-#' \itemize{
-#' \item\code{statistic} - regression t-score
-#' \item\code{n} - number of subjects
-#' \item\code{kxfm} - degrees of freedom.
-#' }
-#'
-#' @examples
-#' set.seed(1234)
-#' lesmat = matrix(rbinom(40,1,0.2), ncol=2)
-#' set.seed(1234)
-#' behavior = rnorm(20)
-#' test = LESYMAP::regresfast(lesmat, behavior, as.matrix(behavior), hascovar=FALSE)
-#' test$statistic[,1] # 0.6915683 1.1434760
-#' test$kxmat # 2
-#'
-#' @author Dorian Pustina
-#'
-#' @export
-regresfast <- function(X, y, covariates, hascovar = FALSE) {
-    .Call('_LESYMAP_regresfast', PACKAGE = 'LESYMAP', X, y, covariates, hascovar)
 }
 
 #' @title TTfast
@@ -237,5 +195,47 @@ regresfast <- function(X, y, covariates, hascovar = FALSE) {
 #' @export
 TTfast <- function(X, Y, computeDOF = TRUE, varEqual = TRUE) {
     .Call('_LESYMAP_TTfast', PACKAGE = 'LESYMAP', X, Y, computeDOF, varEqual)
+}
+
+#' @title Fast linear regressions
+#'
+#' @description
+#' Takes a matrix of voxels and a vector of behavior
+#' and runs fast regressions for each voxel. Covariates
+#' can be defined (i.e. age) to find the effect of each
+#' voxel on behavior within the context of other predictive
+#' factors.
+#'
+#' @param X matrix of voxlels (columns) for all
+#' subjects (rows).
+#' @param y vector of behavioral scores.
+#' @param covariates matrix with one or more columns.
+#' Must be of same length as behavior. This variable
+#' should always be set, and the next argument can tell
+#' if covariates should be used or not.
+#' @param hascovar logical to tell whether covariates
+#' should be used.
+#'
+#' @return List with:
+#' \itemize{
+#' \item\code{statistic} - regression t-score
+#' \item\code{n} - number of subjects
+#' \item\code{kxfm} - degrees of freedom.
+#' }
+#'
+#' @examples
+#' set.seed(1234)
+#' lesmat = matrix(rbinom(40,1,0.2), ncol=2)
+#' set.seed(1234)
+#' behavior = rnorm(20)
+#' test = LESYMAP::regresfast(lesmat, behavior, as.matrix(behavior), hascovar=FALSE)
+#' test$statistic[,1] # 0.6915683 1.1434760
+#' test$kxmat # 2
+#'
+#' @author Dorian Pustina
+#'
+#' @export
+regresfast <- function(X, y, covariates, hascovar = FALSE) {
+    .Call('_LESYMAP_regresfast', PACKAGE = 'LESYMAP', X, y, covariates, hascovar)
 }
 

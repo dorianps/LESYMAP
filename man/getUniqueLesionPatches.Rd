@@ -2,7 +2,7 @@
 % Please edit documentation in R/getUniqueLesionPatches.R
 \name{getUniqueLesionPatches}
 \alias{getUniqueLesionPatches}
-\title{Unique Lesion Patches}
+\title{Compute unique lesion patches}
 \usage{
 getUniqueLesionPatches(lesions.list, mask = NA, returnPatchMatrix = F,
   thresholdPercent = 0.1, binaryCheck = F, showInfo = T)

@@ -1,5 +1,6 @@
-#' lesyload_mricron
+#' @title Get inputs from MRIcron/npm file
 #'
+#' @description
 #' Function to load data from a previous analysis
 #' in MRIcron/npm in a ready format for use in lesymap
 #'

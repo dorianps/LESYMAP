@@ -1,5 +1,6 @@
-#' minSegDistance
-#' 
+#' @title Metric displacement of binary masks
+#'
+#' @description
 #' This function computes the metric displacement between two binary masks
 #'
 #' @param manual manual segmentation of class antsImage,
@@ -11,17 +12,17 @@
 #' @param label (default=1) integer or vector of labels to binarize
 #' I.e., label=c(2,4) means label 2 from manual, and 4 from predict
 #' will be compared.
-#' 
+#'
 #' @return Scalar (for 'mean', 'max', 'min') or list (for 'all').
 #' Note, results are in milimeters
 #'
 #' @note max = Hausdorff distance
-#' 
+#'
 #' @author Dorian Pustina
-#' 
+#'
 #' @export
 minSegDistance = function (manual, predict, get='all', binarize=F, label=1) {
-  
+
   if (class(manual)!='antsImage' || class(predict)!='antsImage') stop('Images must be of class antsImage')
 
   if (binarize) {
@@ -33,12 +34,12 @@ minSegDistance = function (manual, predict, get='all', binarize=F, label=1) {
       predict = thresholdImage(predict, label[1], label[1])
     }
   }
-  
+
   pdist = predict - (predict %>% iMath('ME', 1))
   pdist = pdist %>% iMath('D')
-  
+
   mbord = manual - (manual %>% iMath('ME', 1))
-  
+
   if (get=='mean')
     return ( mean(pdist[mbord==1]) )
   if (get=='min')

@@ -2,7 +2,7 @@
 % Please edit documentation in R/lsm_chisq.R
 \name{lsm_chisq}
 \alias{lsm_chisq}
-\title{lsm_chisq}
+\title{Chi square tests for symptom mapping}
 \usage{
 lsm_chisq(lesmat, behavior, YatesCorrect = TRUE, runPermutations = F,
   nperm = 2000, showInfo = TRUE, ...)

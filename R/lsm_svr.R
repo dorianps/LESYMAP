@@ -1,5 +1,6 @@
-#' Support Vector Regression for symptom mapping
+#' @title Support Vector Regression for symptom mapping
 #'
+#' @description
 #' Lesion to symptom mapping performed on a prepared matrix.
 #' The SVR method is used. The function relies on the
 #' \code{\link[e1071]{svm}} function of the e1071 package. The

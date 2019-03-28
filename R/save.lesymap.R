@@ -1,5 +1,6 @@
-#' Save the output of lesymap.
+#' @title Save the output of lesymap.
 #'
+#' @description
 #' Function to save the output of lesymap.
 #'
 #' @param lsm object obtained with lesymap()
@@ -130,7 +131,7 @@ save.lesymap <- function(lsm, saveDir, infoFile='Info.txt', template=NA, saveTem
   write(line, outfile, append = T)
   line = paste('Suprathreshold voxels:', sum(lsm$stat.img!=0))
   write(line, outfile, append = T)
-  
+
   if ("rawWeights.img" %in% names(lsm)) {
     line = paste('Range rawWeights:', paste( range(lsm$rawWeights.img) , collapse=' '))
     write(line, outfile, append = T)

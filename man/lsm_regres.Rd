@@ -2,7 +2,7 @@
 % Please edit documentation in R/lsm_regres.R
 \name{lsm_regres}
 \alias{lsm_regres}
-\title{lsm_regres}
+\title{Regression tests for symptom mapping (slow)}
 \usage{
 lsm_regres(lesmat, behavior)
 }

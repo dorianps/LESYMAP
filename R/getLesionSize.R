@@ -1,5 +1,6 @@
-#' getLesionSize
+#' @title Lesion size computation
 #'
+#' @description
 #' Compute lesion sizes from a list of antsImages.
 #'
 #' @param lesions.list List of antsImages or vector of filenames.

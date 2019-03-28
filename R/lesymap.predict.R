@@ -1,5 +1,6 @@
-#' Prediction of new cases from lesymap output
+#' @title Prediction of new cases from lesymap output
 #'
+#' @description
 #' Uses an existing lesyamp object output from your
 #' analysis to predict new cases.
 #'
@@ -182,6 +183,7 @@ lesymap.predict <- function(lsm, lesions.list,
   ########
   # unscale behavior
   behavior.raw = behavior.scaled * lsm$sccan.behavior.scaleval + lsm$sccan.behavior.centerval
+  behavior.raw = predict(lsm$sccan.predictlm, newdata = data.frame(predbehav.raw = behavior.raw))
   ########
 
   output = list()

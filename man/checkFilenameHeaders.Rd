@@ -2,9 +2,9 @@
 % Please edit documentation in R/checkFilenameHeaders.R
 \name{checkFilenameHeaders}
 \alias{checkFilenameHeaders}
-\title{checkFilenameHeaders}
+\title{Check headers of files stored on disk}
 \usage{
-checkFilenameHeaders(files, showError = T)
+checkFilenameHeaders(files, showError = TRUE)
 }
 \arguments{
 \item{files}{character vector of filenames}
@@ -18,7 +18,7 @@ logical if the test was successful or not
 }
 \description{
 Function to check that all filenames in a vector
-point to existing files with the same resolution, 
+point to existing files with the same resolution,
 orientation, size, and origin.
 }
 \author{

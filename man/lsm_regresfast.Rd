@@ -2,7 +2,7 @@
 % Please edit documentation in R/lsm_regresfast.R
 \name{lsm_regresfast}
 \alias{lsm_regresfast}
-\title{lsm_regresfast}
+\title{Regression tests for symptom mapping (fast)}
 \usage{
 lsm_regresfast(lesmat, behavior, covariates = NA, FWERperm = F,
   nperm = 1000, v = 1, pThreshold = 0.05, clusterPerm = F,

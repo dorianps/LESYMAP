@@ -2,7 +2,7 @@
 % Please edit documentation in R/lsm_ttest.R
 \name{lsm_ttest}
 \alias{lsm_ttest}
-\title{lsm_ttest}
+\title{T-tests for symptom mapping (slow)}
 \usage{
 lsm_ttest(lesmat, behavior, var.equal = T, alternative = "greater",
   checkAssumptions = TRUE, showInfo = TRUE, ...)

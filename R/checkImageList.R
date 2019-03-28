@@ -1,5 +1,6 @@
-#' checkImageList
+#' @title Check headers of list of antsImages
 #'
+#' @description
 #' Function to check that all antsImages in a list have
 #' the same orientation, origin, and resolution.
 #' The function stops with an error if one of the images

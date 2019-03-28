@@ -1,5 +1,6 @@
-#' getLesionLoad
+#' @title Compute regional lesion load
 #'
+#' @description
 #' Computes lesion loads from a series of images. A parcellation
 #' image (or simple mask) is required to define the regions from
 #' which to compute the lesion load.

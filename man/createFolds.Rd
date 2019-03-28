@@ -2,7 +2,7 @@
 % Please edit documentation in R/createFolds.R
 \name{.createFolds}
 \alias{.createFolds}
-\title{createFolds}
+\title{Create folds for k-fold validation}
 \usage{
 .createFolds(y, k = 10, list = TRUE, returnTrain = FALSE)
 }
@@ -17,7 +17,8 @@
 or the test samples (F)}
 }
 \description{
-Used to create folds for k-fold validation
+Used to create balanced folds with respect to y input
+for k-fold validation.
 }
 \author{
 Caret Package

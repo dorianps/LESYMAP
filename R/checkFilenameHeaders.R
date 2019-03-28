@@ -1,20 +1,21 @@
-#' checkFilenameHeaders
-#' 
+#' @title Check headers of files stored on disk
+#'
+#' @description
 #' Function to check that all filenames in a vector
-#' point to existing files with the same resolution, 
+#' point to existing files with the same resolution,
 #' orientation, size, and origin.
-#' 
+#'
 #' @param files character vector of filenames
 #' @param showError logical whether to show an error (True) or
 #'                    to return a boolean instead. Returned
 #'                    values are True=pass,False=Fail
 #' @return logical if the test was successful or not
-#' 
+#'
 #' @author Dorian Pustina
-#' 
+#'
 #' @export
-checkFilenameHeaders <- function(files, showError=T) {
-  
+checkFilenameHeaders <- function(files, showError=TRUE) {
+
   compareto = antsImageHeaderInfo(files[1])
   compnames = names(compareto)
   for (i in 1:length(files)) {
@@ -26,6 +27,6 @@ checkFilenameHeaders <- function(files, showError=T) {
       }
     }
   }
-  
+
   if (!showError) return(TRUE) # if all turned ok
 }

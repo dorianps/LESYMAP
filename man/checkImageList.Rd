@@ -2,7 +2,7 @@
 % Please edit documentation in R/checkImageList.R
 \name{checkImageList}
 \alias{checkImageList}
-\title{checkImageList}
+\title{Check headers of list of antsImages}
 \usage{
 checkImageList(imgList, showError = T, binaryCheck = F)
 }

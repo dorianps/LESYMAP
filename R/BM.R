@@ -1,6 +1,7 @@
-#' Massive Brunner-Munzel tests
+#' @title Slow R-based Brunner-Munzel tests
 #'
-#'Takes a binary matrix of voxels and a vector of behavior
+#' @description
+#' Takes a binary matrix of voxels and a vector of behavior
 #' and runs Brunner-Munzel tests on each voxel.
 #' This function is not compiled and is slow.
 #'

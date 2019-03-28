@@ -2,7 +2,7 @@
 % Please edit documentation in R/registerLesionToTemplate.R
 \name{registerLesionToTemplate}
 \alias{registerLesionToTemplate}
-\title{registerLesionToTemplate}
+\title{Register lesions in template space}
 \usage{
 registerLesionToTemplate(subImg, subLesion, templateImg = NA,
   templateBrainMask = NA, templateRegMask = NA, skullStrip = T,

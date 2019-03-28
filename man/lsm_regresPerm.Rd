@@ -2,7 +2,7 @@
 % Please edit documentation in R/lsm_regresPerm.R
 \name{lsm_regresPerm}
 \alias{lsm_regresPerm}
-\title{lsm_regresPerm}
+\title{Regression tests for symptom mapping (permutation p-vlaues)}
 \usage{
 lsm_regresPerm(lesmat, behavior)
 }

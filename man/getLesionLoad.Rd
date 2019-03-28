@@ -2,7 +2,7 @@
 % Please edit documentation in R/getLesionLoad.R
 \name{getLesionLoad}
 \alias{getLesionLoad}
-\title{getLesionLoad}
+\title{Compute regional lesion load}
 \usage{
 getLesionLoad(lesions.list, parcellation, label = NA, mask = NA,
   binaryCheck = F, keepAllLabels = F, minSubjectPerLabel = "10\%")

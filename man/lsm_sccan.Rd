@@ -2,7 +2,7 @@
 % Please edit documentation in R/lsm_sccan.R
 \name{lsm_sccan}
 \alias{lsm_sccan}
-\title{Sparse canonical correlations for symptom mapping.}
+\title{Sparse canonical correlations for symptom mapping}
 \usage{
 lsm_sccan(lesmat, behavior, mask, showInfo = TRUE,
   optimizeSparseness = TRUE, validateSparseness = FALSE,

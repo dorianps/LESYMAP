@@ -2,7 +2,7 @@
 % Please edit documentation in R/lesyload_mricron.R
 \name{lesyload_mricron}
 \alias{lesyload_mricron}
-\title{lesyload_mricron}
+\title{Get inputs from MRIcron/npm file}
 \usage{
 lesyload_mricron(valfile, imageFolder = NA, returnFilenames = F,
   checkHeaders = T, showInfo = T)

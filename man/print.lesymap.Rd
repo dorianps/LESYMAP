@@ -2,7 +2,7 @@
 % Please edit documentation in R/print.lesymap.R
 \name{print.lesymap}
 \alias{print.lesymap}
-\title{print.lesymap}
+\title{Console print of lesymap object}
 \usage{
 \method{print}{lesymap}(x, ...)
 }

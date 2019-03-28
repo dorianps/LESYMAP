@@ -2,7 +2,7 @@
 % Please edit documentation in R/printInfo.R
 \name{printInfo}
 \alias{printInfo}
-\title{printInfo}
+\title{Display info messages in console}
 \usage{
 printInfo(message, type = "full", tstamp = "\%H:\%M:\%S", ...)
 }

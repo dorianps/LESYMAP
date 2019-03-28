@@ -1,5 +1,6 @@
-#' checkMask
+#' @title Compare headers between mask and other images
 #'
+#' @description
 #' Function to check if mask is in the same space as inputs
 #'
 #' @param lesions.list list of antsImages or character vector

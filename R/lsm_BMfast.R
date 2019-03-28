@@ -1,6 +1,6 @@
-#' lsm_BMfast
+#' @title Brunner-Munzel tests for symptom mapping (fast)
 #'
-#'
+#' @description
 #' Lesion to symptom mapping performed on a prepared matrix.
 #' Brunner-Munzel tests are performed using each column
 #' of the matrix to split the behavioral scores in two

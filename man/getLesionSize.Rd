@@ -2,7 +2,7 @@
 % Please edit documentation in R/getLesionSize.R
 \name{getLesionSize}
 \alias{getLesionSize}
-\title{getLesionSize}
+\title{Lesion size computation}
 \usage{
 getLesionSize(lesions.list, showInfo = TRUE)
 }

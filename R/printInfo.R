@@ -1,5 +1,6 @@
-#' printInfo
+#' @title Display info messages in console
 #'
+#' @description
 #' Displays in the R console the information sent
 #' by LESYMAP functions.
 #'

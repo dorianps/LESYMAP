@@ -1,5 +1,6 @@
-#' lsm_ttest
+#' @title T-tests for symptom mapping (slow)
 #'
+#' @description
 #' Lesion to symptom mapping performed on a prepared matrix.
 #' T-tests are performed using each column of the
 #' matrix to split the behavioral scores in two groups. If
@@ -87,8 +88,9 @@ lsm_ttest <- function(lesmat, behavior,
 }
 
 
-#' checkAssumptions_ttest
+#' @title Check t-test assumptions at each voxel
 #'
+#' @description
 #' Routine to test statistical assumptions are met
 #' at each voxel for t-tests
 #'

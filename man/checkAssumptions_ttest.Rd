@@ -2,7 +2,7 @@
 % Please edit documentation in R/lsm_ttest.R
 \name{checkAssumptions_ttest}
 \alias{checkAssumptions_ttest}
-\title{checkAssumptions_ttest}
+\title{Check t-test assumptions at each voxel}
 \usage{
 checkAssumptions_ttest(lesmat, behavior, assumptionThreshold = 0.05,
   showInfo = TRUE, ...)

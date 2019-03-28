@@ -2,7 +2,7 @@
 % Please edit documentation in R/checkMask.R
 \name{checkMask}
 \alias{checkMask}
-\title{checkMask}
+\title{Compare headers between mask and other images}
 \usage{
 checkMask(lesions.list, mask)
 }

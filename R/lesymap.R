@@ -1,5 +1,6 @@
-#' Lesion to Symptom Mapping
+#' @title Lesion to Symptom Mapping
 #'
+#' @description
 #' Lesymap uses univariate and multivariate methods to map
 #' functional regions of the brain that, when lesioned,
 #' cause specific cognitive deficits. It requires is
@@ -299,7 +300,7 @@
 #' @import ANTsRCore
 #' @importFrom stats chisq.test cor dt lm optimize na.fail
 #' @importFrom stats p.adjust p.adjust.methods pt qchisq qnorm
-#' @importFrom stats quantile residuals runif t.test
+#' @importFrom stats quantile residuals runif t.test predict
 #' @importFrom utils find getSrcDirectory installed.packages
 #' @importFrom utils packageVersion read.table capture.output
 

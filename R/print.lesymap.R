@@ -1,5 +1,6 @@
-#' print.lesymap
+#' @title Console print of lesymap object
 #'
+#' @description
 #' Funciton to display some meaningful summary
 #' when a lesymap output is called in command line.
 #'

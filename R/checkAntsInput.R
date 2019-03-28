@@ -1,5 +1,6 @@
-#' checkAntsInput
+#' @title Determine type of variable passed by user
 #'
+#' @description
 #' Function to check a variable whether is composed
 #' of an antsImage, list of antsImages, or simply filenames.
 #' If none of the above, an error is returned.
@@ -22,7 +23,7 @@
 #' @author Dorian Pustina
 #'
 #' @export
-checkAntsInput <- function(input, checkHeaders=F) {
+checkAntsInput <- function(input, checkHeaders=FALSE) {
 
   if (class(input) == 'antsImage') return('antsImage')
   else if (class(input) == 'list') { # list of antsImages

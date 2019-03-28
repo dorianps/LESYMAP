@@ -1,5 +1,6 @@
-#' lsm_chisq
+#' @title Chi square tests for symptom mapping
 #'
+#' @description
 #' Lesion to symptom mapping performed on a prepared matrix.
 #' The behavior must be a binary vector.
 #' Chi square tests are performed at each voxel. By default

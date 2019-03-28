@@ -2,7 +2,7 @@
 % Please edit documentation in R/lsm_BM.R
 \name{lsm_BM}
 \alias{lsm_BM}
-\title{lsm_BM}
+\title{Brunner-Munzel tests for symptom mapping (slow)}
 \usage{
 lsm_BM(lesmat, behavior, permuteNthreshold = 9, nperm = 10000,
   alternative = "greater", showInfo = TRUE, ...)

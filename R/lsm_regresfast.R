@@ -1,5 +1,6 @@
-#' lsm_regresfast
+#' @title Regression tests for symptom mapping (fast)
 #'
+#' @description
 #' Lesion to symptom mapping performed on a prepared matrix.
 #' Regressions are performed between behavior and each column
 #' of the lesmat matrix. Fast function based on compiled code.

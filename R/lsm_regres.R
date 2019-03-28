@@ -1,5 +1,6 @@
-#' lsm_regres
+#' @title Regression tests for symptom mapping (slow)
 #'
+#' @description
 #' Lesion to symptom mapping performed on a prepared matrix.
 #' Regressions are performed between behavior and each column in the
 #' lesmat matrix.

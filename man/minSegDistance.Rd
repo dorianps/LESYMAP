@@ -2,7 +2,7 @@
 % Please edit documentation in R/minSegDistance.R
 \name{minSegDistance}
 \alias{minSegDistance}
-\title{minSegDistance}
+\title{Metric displacement of binary masks}
 \usage{
 minSegDistance(manual, predict, get = "all", binarize = F, label = 1)
 }

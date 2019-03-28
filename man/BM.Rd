@@ -2,7 +2,7 @@
 % Please edit documentation in R/BM.R
 \name{BM}
 \alias{BM}
-\title{Massive Brunner-Munzel tests}
+\title{Slow R-based Brunner-Munzel tests}
 \usage{
 BM(lesmat, behavior)
 }
