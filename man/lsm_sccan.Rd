@@ -109,6 +109,10 @@ Correlation between true and predicted score with k-fold validation
 using the optimal sparseness value
 \item\code{CVcorrelation.pval} - (if optimizeSparseness=TRUE) p-value
  of the above correlation
+ \item\code{sccan.behavior.scaleval} - scaling value for behavior
+ \item\code{sccan.behavior.centerval} - center value for behavior
+ \item\code{sccan.lesmat.scaleval} - scaling value for lesion matrix
+ \item\code{sccan.lesmat.centerval} - center value for lesion matrix
 }
 }
 \description{

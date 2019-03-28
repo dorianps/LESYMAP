@@ -1,4 +1,9 @@
 ==============
+LESYMAP v0.0.0.xxxx (Release date: 2019-xx-xx)
+  - Added TTfast, 60x faster compiled t-tests
+  - Added lesymap.predict to apply an existing model to new cases
+
+==============
 LESYMAP v0.0.0.9210 (Release date: 2019-03-15)
   - Added method 'svr' - Support Vector Regression (experimental)
   - Added assumption checks for t-test analysis

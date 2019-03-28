@@ -87,6 +87,10 @@
 #' using the optimal sparseness value
 #' \item\code{CVcorrelation.pval} - (if optimizeSparseness=TRUE) p-value
 #'  of the above correlation
+#'  \item\code{sccan.behavior.scaleval} - scaling value for behavior
+#'  \item\code{sccan.behavior.centerval} - center value for behavior
+#'  \item\code{sccan.lesmat.scaleval} - scaling value for lesion matrix
+#'  \item\code{sccan.lesmat.centerval} - center value for lesion matrix
 #' }
 #'
 #' @examples{
@@ -234,6 +238,13 @@ lsm_sccan <- function(lesmat, behavior, mask, showInfo=TRUE,
   output$rawWeights.img = makeImage(mask,sccan$eig1)
   output$sccan.eig2 = sccan$eig2
   output$sccan.ccasummary = sccan$ccasummary
+
+  # needed later to rescale for prediction purposes
+  output$sccan.behavior.scaleval = attr(behavior, 'scaled:scale')
+  output$sccan.behavior.centerval = attr(behavior, 'scaled:center')
+  output$sccan.lesmat.scaleval = attr(lesmat, 'scaled:scale')
+  output$sccan.lesmat.centerval = attr(lesmat, 'scaled:center')
+
 
   if (optimizeSparseness) {
     output$optimalSparseness = sparse.optim$minimum
