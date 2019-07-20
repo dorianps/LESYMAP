@@ -51,14 +51,14 @@
 #' @author Dorian Pustina
 #'
 #' @export
-getUniqueLesionPatches <- function(lesions.list, mask=NA, returnPatchMatrix=F,
-                                       thresholdPercent=0.1, binaryCheck=F, showInfo=T) {
+getUniqueLesionPatches <- function(lesions.list, mask=NA, returnPatchMatrix=FALSE,
+                                       thresholdPercent=0.1, binaryCheck=FALSE, showInfo=TRUE) {
 
   # cannot set both mask and thresholdPercent
-  if (!is.na(mask) & thresholdPercent!=0.1) stop('Cannot set both mask and thresholdPercent. Choose one.')
+  if ((!is.na(mask)) & thresholdPercent != 0.1) stop('Cannot set both mask and thresholdPercent. Choose one.')
   if (thresholdPercent < 0 | thresholdPercent > 1) stop('thresholdPercent must be between 0 and 1.')
 
-  inputtype = checkAntsInput(lesions.list, checkHeaders = F)
+  inputtype = checkAntsInput(lesions.list, checkHeaders = FALSE)
 
   # compute mask from average, if not defined by user
   if (is.na(mask)) {
