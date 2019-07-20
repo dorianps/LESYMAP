@@ -8,7 +8,7 @@ lesymap(lesions.list, behavior, mask = NA, patchinfo = NA,
   method = "sccan", correctByLesSize = "none",
   multipleComparison = "fdr", pThreshold = 0.05, flipSign = F,
   minSubjectPerVoxel = "10\%", nperm = 1000, saveDir = NA,
-  binaryCheck = FALSE, noPatch = FALSE, showInfo = TRUE, ...)
+  binaryCheck = TRUE, noPatch = FALSE, showInfo = TRUE, ...)
 }
 \arguments{
 \item{lesions.list}{list of antsImages, or a vector of

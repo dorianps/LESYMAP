@@ -317,7 +317,7 @@ lesymap <- function(lesions.list, behavior,
                     minSubjectPerVoxel = '10%',
                     nperm=1000,
                     saveDir=NA,
-                    binaryCheck=FALSE,
+                    binaryCheck=TRUE,
                     noPatch=FALSE, showInfo=TRUE,
                     ...) {
   ver = as.character(packageVersion('LESYMAP'))
@@ -339,6 +339,8 @@ lesymap <- function(lesions.list, behavior,
                               correctByLesSize = c('none', 'behavior') )
     acceptedArgs$welch = list(multipleComparison = c(p.adjust.methods),
                               correctByLesSize = c('none', 'behavior') )
+    acceptedArgs$ttestslow = list(multipleComparison = c(p.adjust.methods),
+                              correctByLesSize = c('none', 'behavior') )
     acceptedArgs$regres = list(multipleComparison = c(p.adjust.methods),
                                correctByLesSize = c('none', 'behavior', 'voxel', 'both') )
     acceptedArgs$regresfast = list(multipleComparison = c(p.adjust.methods, 'FWERperm', 'clusterPerm'),
@@ -350,6 +352,8 @@ lesymap <- function(lesions.list, behavior,
     acceptedArgs$chisqperm = list(multipleComparison = c(p.adjust.methods),
                                   correctByLesSize = c('none') )
     acceptedArgs$sccan = list(multipleComparison = c(p.adjust.methods),
+                              correctByLesSize = c('none', 'behavior', 'voxel', 'both') )
+    acceptedArgs$svr = list(multipleComparison = c(p.adjust.methods),
                               correctByLesSize = c('none', 'behavior', 'voxel', 'both') )
 
     # now check the inputs
@@ -416,7 +420,7 @@ lesymap <- function(lesions.list, behavior,
     ##############
     # Few tests on images coming as filenames
     # check proper binarization and 255 values, maybe preload
-    if (inputtype == 'antsFiles') {
+    if (binaryCheck & inputtype == 'antsFiles') {
       if (showInfo) printInfo('Filenames as input, checking lesion values on 1st image...')
 
       temp = antsImageRead(lesions.list[1])
@@ -457,10 +461,15 @@ lesymap <- function(lesions.list, behavior,
     # check antsImageList is binary
     # for antsFiles, we checked only 1st, and
     # will check lesmat later
-    if (binaryCheck & inputtype == 'antsImageList') {
-      if (showInfo) printInfo('Verifying that lesions are binary 0/1...')
-      checkImageList(lesions.list, binaryCheck = TRUE)
-    }
+    # THIS TAKES TOO LONG, DISABLING IT
+    # THE BINARY CHECK WILL BE DONE ON THE MATRIX ITSELF
+    #
+    # if (binaryCheck & inputtype == 'antsImageList') {
+    #   if (showInfo) printInfo('Verifying that lesions are binary 0/1...')
+    #   checkImageList(lesions.list, binaryCheck = TRUE)
+    #   # no need to check binarization anymore
+    #   binaryCheck=FALSE
+    # }
 
     #########
     # check lesions and behavior have same length
@@ -504,7 +513,7 @@ lesymap <- function(lesions.list, behavior,
       }
 
       # check mask is binary
-      if (! checkImageList(list(mask), binaryCheck = T, showError = F))
+      if (! checkImageList(list(mask), binaryCheck = TRUE, showError = FALSE))
         stop('Mask is not binary. Must have only 0 and 1 values')
 
     } else if (!is.na(patchinfo[1])) { # GET IT FROM patchinfo
@@ -592,9 +601,10 @@ lesymap <- function(lesions.list, behavior,
     # check the matrix is binary
     # at this point discrepancies come only from unchecked filenames
     if (binaryCheck) {
+      if (showInfo) printInfo('Checking matrix values are binary 0/1...')
       if ( !all(lesmat %in% 0:1) )
         stop('Voxels other than 0/1 detected in lesion matrix.
-           To find offending image, try:
+           To find offending image, try something like:
            lesions=imageFileNames2ImageList(filenames)
            checkImageList(lesions,binaryCheck=T).')
     }
@@ -631,9 +641,11 @@ lesymap <- function(lesions.list, behavior,
                            clusterPerm=(multipleComparison=='clusterPerm'), mask=mask, voxindx=voxindx, samplemask=voxmask,
                            showInfo=showInfo, ...)
     } else if (method == 'ttest') {
-      lsm = lsm_ttest(lesmat, behavior, showInfo=showInfo, ...)
+      lsm = lsm_ttestFast(lesmat, behavior, showInfo=showInfo, ...)
     } else if (method == 'welch') {
-      lsm = lsm_ttest(lesmat, behavior, var.equal = FALSE, showInfo=showInfo, ...)
+      lsm = lsm_ttestFast(lesmat, behavior, var.equal = FALSE, showInfo=showInfo, ...)
+    } else if (method == 'ttestslow') {
+      lsm = lsm_ttest(lesmat, behavior, showInfo=showInfo, ...)
     } else if (method == 'chisq') {
       lsm = lsm_chisq(lesmat, behavior, runPermutations = FALSE)
     } else if (method == 'chisqPerm') {

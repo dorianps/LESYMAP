@@ -4,7 +4,7 @@ Lesion to Symptom Mapping (R toolbox)
 *****  
 #### Package details  
 [![Open Source Love](https://badges.frapsoft.com/os/v3/open-source.svg?v=103)](https://github.com/dorianps/LESYMAP)  
-Version:  0.0.0.9210  
+Version:  0.0.0.9220  
 Systems:  Linux, Mac or [Windows Linux Subsystem](https://github.com/stnava/ANTsR/wiki/Installing-ANTsR-in-Windows-10-(along-with-FSL,-Rstudio,-Freesurfer,-etc).)  
 Language: R (version 3.0 or above)  
 License:  Apache License 2.0  

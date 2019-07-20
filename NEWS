@@ -1,11 +1,16 @@
 ==============
-LESYMAP v0.0.0.xxxx (Release date: 2019-xx-xx)
-  - Added TTfast, 60x faster compiled t-tests
-  - Added lesymap.predict to apply an existing model to new cases
+LESYMAP v0.0.0.9220 (Release date: 2019-07-19)
+  - Added compiled TTfast function, 60x faster on full matrices
+  - Enabled default faster runs for method='ttest'
+  - Added slower method='ttestslow' for backward compatibility
+  - Added lesymap.predict to make predictions of new cases using lesymap model
+  - Enabled analyses of non-binary (continuous) voxel values
+  - Switched to default binaryCheck=TRUE
+  - Fixed bug that didn't allow method='svr' calls
 
 ==============
 LESYMAP v0.0.0.9210 (Release date: 2019-03-15)
-  - Added method 'svr' - Support Vector Regression (experimental)
+  - Added method='svr' - Support Vector Regression (experimental)
   - Added assumption checks for t-test analysis
   - Fixed missing 'rawWeights.img' in SCCAN output
   - Fixed missing 'sccan.ccasummary' in save.lesymap printout

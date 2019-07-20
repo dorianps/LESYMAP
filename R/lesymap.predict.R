@@ -61,6 +61,12 @@ lesymap.predict <- function(lsm, lesions.list,
   }
 
 
+  ####
+  # check existing mask space same as new images
+  voxmask = lsm$mask.img
+  checkMask(lesions.list, voxmask)
+  #### now we are sure new images are ok
+
   ### check input type
   inputtype = checkAntsInput(lesions.list, checkHeaders = TRUE)
 
@@ -116,13 +122,14 @@ lesymap.predict <- function(lsm, lesions.list,
   # if input='antsFiles', it needs a binary check later on lesmat
   if (inputtype == 'antsImageList') {
     rebinarize = FALSE
-    if (max(lesions.list[[1]]) > 1) rebinarize = TRUE # just check 1st, for is too long
-    # for (i in 1:length(lesions.list)) {
-    #   if (max(as.array(lesions.list[[i]])) > 1) {
-    #     rebinarize = TRUE
-    #     break
-    #   }
-    # }
+    if (showInfo) printInfo('Checking lesions are labeled with value 1...')
+    # if (max(lesions.list[[1]]) > 1) rebinarize = TRUE # just check 1st, for is too long
+    for (i in 1:length(lesions.list)) {
+      if (max(as.array(lesions.list[[i]])) > 1) {
+        rebinarize = TRUE
+        break
+      }
+    }
 
     # perform binarization if needed
     if (rebinarize) {
@@ -142,16 +149,9 @@ lesymap.predict <- function(lsm, lesions.list,
     checkImageList(lesions.list, binaryCheck = TRUE)
   }
 
-  ###
-  # at some point we must check headers of lesions.list
-  # are same as mask in lsm object
-  ###
-
 
   #######
   # we are ready to create the voxel matrix
-  voxmask = lsm$mask.img
-
   if (showInfo) printInfo('Computing lesion matrix... ', type='head')
   if (inputtype == 'antsImageList') { # list of antsImages
     lesmat = imageListToMatrix(lesions.list, voxmask)
