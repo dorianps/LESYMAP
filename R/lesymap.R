@@ -543,7 +543,7 @@ lesymap <- function(lesions.list, behavior,
 
       if (showInfo) printInfo(paste(sum(mask), 'found'), type='tail') # voxels in mask
       # check mask is not empty
-      if (max(mask) == 0) stop('Mask is empty. No voxels to run VLSM on.')
+      if (max(mask) == 0) stop('Mask is empty. No voxels to run analysis on.')
     }
 
 
