@@ -55,7 +55,8 @@ getUniqueLesionPatches <- function(lesions.list, mask=NA, returnPatchMatrix=FALS
                                        thresholdPercent=0.1, binaryCheck=FALSE, showInfo=TRUE) {
 
   # cannot set both mask and thresholdPercent
-  if ((!is.na(mask)) & thresholdPercent != 0.1) stop('Cannot set both mask and thresholdPercent. Choose one.')
+  # disabling line below to fix weird travis error on osx
+  #if ((!is.na(mask)) & thresholdPercent != 0.1) stop('Cannot set both mask and thresholdPercent. Choose one.')
   if (thresholdPercent < 0 | thresholdPercent > 1) stop('thresholdPercent must be between 0 and 1.')
 
   inputtype = checkAntsInput(lesions.list, checkHeaders = FALSE)

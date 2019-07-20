@@ -4,8 +4,9 @@
 \alias{getUniqueLesionPatches}
 \title{Compute unique lesion patches}
 \usage{
-getUniqueLesionPatches(lesions.list, mask = NA, returnPatchMatrix = F,
-  thresholdPercent = 0.1, binaryCheck = F, showInfo = T)
+getUniqueLesionPatches(lesions.list, mask = NA,
+  returnPatchMatrix = FALSE, thresholdPercent = 0.1,
+  binaryCheck = FALSE, showInfo = TRUE)
 }
 \arguments{
 \item{lesions.list}{list of antsImages (faster) or filenames (slower)}

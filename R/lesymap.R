@@ -560,7 +560,8 @@ lesymap <- function(lesions.list, behavior,
       if (is.na(patchinfo[1])) {
 
         if (showInfo) printInfo('Computing unique patches...')
-        patchinfo = getUniqueLesionPatches(lesions.list, mask=mask, showInfo = F, returnPatchMatrix = T)
+        patchinfo = getUniqueLesionPatches(lesions.list, mask=mask,
+                                           showInfo = FALSE, returnPatchMatrix = TRUE)
         lesmat = patchinfo$patchmatrix
         haslesmat = TRUE
         patchinfo.derived = 'Computed'
@@ -573,7 +574,7 @@ lesymap <- function(lesions.list, behavior,
 
         if('patchmatrix' %in% names(patchinfo)) {
           lesmat = patchinfo$patchmatrix
-          haslesmat = T
+          haslesmat = TRUE
         }
         patchinfo.derived = 'Predefined'
       }
@@ -662,14 +663,14 @@ lesymap <- function(lesions.list, behavior,
     statistic = lsm$statistic
 
     if ('zscore' %in% names(lsm)) {
-      haszscore = T
+      haszscore = TRUE
       zscore = lsm$zscore
-    } else { haszscore=F }
+    } else { haszscore=FALSE }
 
     if ('pvalue' %in% names(lsm)) {
-      haspvalue = T
+      haspvalue = TRUE
       pvalue = lsm$pvalue
-    } else { haspvalue=F }
+    } else { haspvalue=FALSE }
 
 
     # multiple comparison correction
