@@ -500,7 +500,7 @@ lesymap <- function(lesions.list, behavior,
 
     ## CHECK AND PREPARE MASK
     writeavgles = F
-    if (!is.na(mask)) { # USER DEFINED
+    if (!is.na(c(mask))) { # USER DEFINED
 
       if (showInfo) printInfo('Using predefined mask...')
 
@@ -516,7 +516,7 @@ lesymap <- function(lesions.list, behavior,
       if (! checkImageList(list(mask), binaryCheck = TRUE, showError = FALSE))
         stop('Mask is not binary. Must have only 0 and 1 values')
 
-    } else if (!is.na(patchinfo[1])) { # GET IT FROM patchinfo
+    } else if (!is.na(c(patchinfo[1]))) { # GET IT FROM patchinfo
 
       if (showInfo) printInfo('Using mask passed with patchinfo...')
       mask = patchinfo$patchimg.mask
@@ -557,7 +557,7 @@ lesymap <- function(lesions.list, behavior,
       voxindx = 1:sum(mask)
       patchinfo.derived = 'not computed'
     } else {
-      if (is.na(patchinfo[1])) {
+      if (is.na(c(patchinfo[1]))) {
 
         if (showInfo) printInfo('Computing unique patches...')
         patchinfo = getUniqueLesionPatches(lesions.list, mask=mask,

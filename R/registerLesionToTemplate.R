@@ -104,7 +104,7 @@ registerLesionToTemplate <- function(subImg, subLesion,
   toc = Sys.time()
 
   # load provided MNI template if user did not specify
-  if (is.na(templateImg)) {
+  if (is.na(c(templateImg))) {
     if (showInfo) printInfo('Template undefined, using provided MNI152_2009c')
     mnipath = file.path(find.package('LESYMAP'), 'extdata', 'template','other_templates', 'MNI152_2009c')
     if (showInfo) printInfo(paste0('     ', mnipath), type='tail' )
@@ -128,16 +128,16 @@ registerLesionToTemplate <- function(subImg, subLesion,
     if (showInfo) printInfo('Loading template anatomical...')
     templateImg = antsImageRead(templateImg)
   }
-  if ( !is.na(templateBrainMask) && checkAntsInput(templateBrainMask) == 'antsFiles') {
+  if ( !is.na(c(templateBrainMask)) && checkAntsInput(templateBrainMask) == 'antsFiles') {
     if (showInfo) printInfo('Loading template brain mask...')
     templateBrainMask = antsImageRead(templateBrainMask)
   }
-  if ( !is.na(templateRegMask) && checkAntsInput(templateRegMask) == 'antsFiles') {
+  if ( !is.na(c(templateRegMask)) && checkAntsInput(templateRegMask) == 'antsFiles') {
     if (showInfo) printInfo('Loading template registration mask...')
     templateRegMask = antsImageRead(templateRegMask)
   }
 
-  if ( is.na(templateBrainMask) & skullStrip) {
+  if ( is.na(c(templateBrainMask)) & skullStrip) {
     if (showInfo) printInfo('templateBrainMask not specified. No skull stripping will be performed...')
     skullStrip = FALSE
   }
@@ -146,8 +146,8 @@ registerLesionToTemplate <- function(subImg, subLesion,
 
   # binarize mask inputs to be always 0-1
   subLesion = thresholdImage(subLesion, 0.1, Inf)
-  if ( !is.na(templateBrainMask) ) templateBrainMask = thresholdImage(templateBrainMask, 0.1, Inf)
-  if ( !is.na(templateRegMask) ) templateRegMask = thresholdImage(templateRegMask, 0.1, Inf)
+  if ( !is.na(c(templateBrainMask)) ) templateBrainMask = thresholdImage(templateBrainMask, 0.1, Inf)
+  if ( !is.na(c(templateRegMask)) ) templateRegMask = thresholdImage(templateRegMask, 0.1, Inf)
 
   # make sure lesion and anatomical are in the same space
   if (showInfo) printInfo('Assuring lesion and antomical are in the same space...')

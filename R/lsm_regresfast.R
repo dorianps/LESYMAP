@@ -128,6 +128,7 @@ lsm_regresfast <- function(lesmat, behavior, covariates=NA,
 
         if (any(is.na( c(mask, voxindx, samplemask, clusterPermThreshold) ))) stop('Missing proper inputs to run clusterPerm')
 
+
         # mask, voxindx, pThreshold, clusterPermThreshold, samplemask, needed from lesymap
         perm.pvalue = pt( abs(tempperm$statistic) * -1, tempperm$n - tempperm$kxmat) * 2
         tempperm$statistic[perm.pvalue > pThreshold] = 0

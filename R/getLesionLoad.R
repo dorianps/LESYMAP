@@ -78,7 +78,7 @@ getLesionLoad <- function(lesions.list, parcellation, label=NA,
   if (binaryCheck & inputtype == 'antsImageList') checkImageList(lesions.list, binaryCheck = T)
 
   # check the mask
-  if (!is.na(mask)) {
+  if (!is.na(c(mask))) {
     if (checkAntsInput(mask) == 'antsFiles') {
       if (inputtype == 'antsFiles') if (!checkFilenameHeaders(c(mask,lesions.list), showError = F))
         stop('Mask have different headers from lesions')

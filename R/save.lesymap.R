@@ -50,7 +50,7 @@ save.lesymap <- function(lsm, saveDir, infoFile='Info.txt', template=NA, saveTem
 
   # do we have a template?
   hastemplate = F
-  if (!is.na(template)) {
+  if (!is.na(c(template))) {
     if (checkAntsInput(template) == 'antsFiles') template = antsImageRead(template)
     if (!checkImageList(list(template, lsm$stat.img), showError = F, binaryCheck = F)) {
       warning('Ignoring template: not in same space with lesymap output.')

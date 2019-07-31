@@ -191,7 +191,7 @@ lsm_sccan <- function(lesmat, behavior, mask, showInfo=TRUE,
 
 
   if (showInfo) {
-    printInfo(paste('\n       Calling SCCAN with:'))
+    printInfo(paste('\n       Calling SCCAN with:'), type='middle')
     printInfo(paste('\n            Components:\t\t', nvecs), type='middle')
     printInfo(paste('\n            Use ranks:\t\t', robust), type='middle')
     printInfo(paste('\n            Sparseness:\t\t', round(sparseness[1], 3)), type='middle')

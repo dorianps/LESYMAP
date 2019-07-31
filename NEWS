@@ -1,4 +1,9 @@
 ==============
+LESYMAP v0.0.0.9221 (Release date: 2019-07-30)
+  - Fixed compatibility with ANTsR: is.na(mask) -> is.na(c(mask))
+  - Minor display info fix
+
+==============
 LESYMAP v0.0.0.9220 (Release date: 2019-07-19)
   - Added compiled TTfast function, 60x faster on full matrices
   - Enabled default faster runs for method='ttest'
