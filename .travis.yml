@@ -9,7 +9,6 @@ compiler:
 
 matrix:
  allow_failures:
-   - os: osx
    - r: devel
    - r: 3.2
    - r: 3.3
@@ -45,6 +44,7 @@ env:
   - _R_CHECK_TIMINGS_="0"
   - BOOTSTRAP_LATEX=1
   - DISPLAY=:99.0
+  - R_REMOTES_NO_ERRORS_FROM_WARNINGS=true
 
 before_install:
   - ulimit -n 2048
