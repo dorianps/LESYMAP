@@ -58,7 +58,7 @@ before_install:
   - Rscript -e 'install.packages("ggplot2")'
   - Rscript -e 'install.packages("psych")'
   - Rscript -e 'install.packages("randomForest")'
-  - Rscript -e "install.packages(c('lmPerm', 'multcomp', 'nparcomp', 'RcppArmadillo', 'sandwitch', 'TH.data', 'zoo'), type = 'source', repos=c(CRAN='https://cran.rstudio.com'))"
+  - Rscript -e "install.packages(c('lmPerm', 'nparcomp', 'RcppArmadillo', 'sandwitch', 'TH.data', 'zoo'), type = 'source', repos=c(CRAN='https://cran.rstudio.com'))"
   - cat DESCRIPTION
   
 after_failure:
