@@ -21,7 +21,7 @@ Takes lesion maps and cognitive performance scores from patients with stroke, an
 *****
 ## Install
 
-The quickest way to install is:
+The quickest way to install is: 
 ```
 if (! 'devtools' %in% installed.packages()) install.packages('devtools')
 devtools::install_github('dorianps/LESYMAP')
