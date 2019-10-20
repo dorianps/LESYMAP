@@ -64,7 +64,7 @@ getUniqueLesionPatches <- function(lesions.list, mask=NA, returnPatchMatrix=FALS
   # compute mask from average, if not defined by user
   if (is.na(c(mask))) {
     if (inputtype == 'antsImage') avgles = getAverageOfTimeSeries(lesions.list)
-    else avgles = antsAverageImages(lesions.list)
+    else avgles = antsAverageImages(lesions.list, verbose = FALSE)
 
     if (max(avgles) > 1) stop('Average lesion map exceeds 1. This is not possible.')
     # compute mask, no too few or too many subjects lesioned

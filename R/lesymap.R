@@ -533,7 +533,7 @@ lesymap <- function(lesions.list, behavior,
       }
 
       # compute average map
-      avgles = antsAverageImages(lesions.list)
+      avgles = antsAverageImages(lesions.list, verbose=FALSE)
 
       # we remove voxels with too few, or too many, subjects
       mask = thresholdImage(avgles, thresholdPercent, 1 - thresholdPercent)
