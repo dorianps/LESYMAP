@@ -11,7 +11,9 @@ License:  Apache License 2.0
   
 [![Travis](https://travis-ci.org/dorianps/LESYMAP.svg?branch=master)](https://travis-ci.org/dorianps/LESYMAP)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/774904ddb8ac4ea5b93a525b697f31f0)](https://www.codacy.com/manual/dorianps/LESYMAP?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=dorianps/LESYMAP&amp;utm_campaign=Badge_Grade)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1452007.svg)](https://doi.org/10.5281/zenodo.1452007)  
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1452007.svg)](https://doi.org/10.5281/zenodo.1452007)
+[![RRID badge](https://img.shields.io/badge/RRID-SCR__017967-blue.svg)]()
+
 
   
 *****
