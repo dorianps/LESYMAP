@@ -36,8 +36,7 @@ This will install all the dependencies, including ANTsR (may take one hour on so
 You can get LESYMAP pre-installed in a docker container (along with RStudio), no need to install anything if you have Docker.  
 We have built scripts for one-click start and stop of containers (Windows/Linux/Mac):  
 https://github.com/dorianps/docker   
-The list of current and past container builds is here:  
-https://hub.docker.com/r/dorianps/lesymap/tags  
+The list of current and past container builds is [here](https://hub.docker.com/r/dorianps/lesymap/tags)  
   
 *****  
 ## Test the installation
