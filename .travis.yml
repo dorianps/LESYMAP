@@ -17,7 +17,7 @@ matrix:
    
 
 
-dist: trusty
+dist: xenial
 
 language: r
 cache:
