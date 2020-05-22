@@ -527,6 +527,7 @@ lesymap <- function(lesions.list, behavior,
       # compute thresholdPercent based on minSubjectPerVoxel
       # it's used to remove voxels lesioned in few subjects
       if (!is.numeric(minSubjectPerVoxel) & is.character(minSubjectPerVoxel)) { # input is percentage
+        if (! grepl('%', minSubjectPerVoxel) ) stop('minSubjectPerVoxel set as character with no % symbol, switch to numeric for exact number of subjects.')
         thresholdPercent = as.numeric(gsub('%','', minSubjectPerVoxel)) / 100
       } else if (is.numeric(minSubjectPerVoxel)) { # user defined exact subject number
         thresholdPercent = minSubjectPerVoxel / length(lesions.list)
