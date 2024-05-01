@@ -16,7 +16,6 @@ Depends:
     R (>= 3.0),
     ANTsR
 Imports:
-    ANTsRCore,
     graphics,
     lmPerm,
     Rcpp,
@@ -26,7 +25,6 @@ Suggests:
     nparcomp,
     e1071
 Remotes: ANTsX/ANTsR,
-    ANTsX/ANTsRCore
 LinkingTo: Rcpp, RcppArmadillo
 NeedsCompilation: yes
 RoxygenNote: 6.1.1.9000
