@@ -297,7 +297,6 @@
 #' @useDynLib LESYMAP
 #' @importFrom Rcpp sourceCpp
 #' @import ANTsR
-#' @import ANTsRCore
 #' @importFrom stats chisq.test cor dt lm optimize na.fail
 #' @importFrom stats p.adjust p.adjust.methods pt qchisq qnorm
 #' @importFrom stats quantile residuals runif t.test predict
